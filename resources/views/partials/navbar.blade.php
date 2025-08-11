@@ -41,8 +41,8 @@
             color: white;
             text-decoration: none;
             font-weight: bold;
-            padding: 8px 12px;
-            border-radius: 4px;
+            padding: 8px 2px;
+            border-radius: 6px;
             transition: background-color 0.3s ease;
             display: block;
         }
@@ -159,42 +159,117 @@
         <a href="#"><i class="fas fa-box"></i> Barang</a>
         <ul>
             <li><a href="#">Data Barang</a></li>
-            <li><a href="#">Stok Barang</a></li>
+            <li><a href="#">Terima Barang</a></li>
+            <li class="has-submenu">
+                <a href="#">Cuci Sepuh<span style="float: right;"></span></a>
+                <ul class="dropdown-menu-1">
+                    <li><a href="#">Formulir Cuci Sepuh</a></li>
+                    <li><a href="#">Riwayat Cuci Sepuh</a></li>
+                    <li><a href="#">Formulir Penyimpanan Mutu</a></li>
+                    <li><a href="#">Riwayat Penyimpanan Mutu</a></li>
+            </ul>
+        </li>
+            <li class="has-submenu">
+                <a href="#">Rongsok <span style="float: right;"></span></a>
+                <ul class="dropdown-menu-1">
+                    <li><a href="#">Formulir Rongsok</a></li>
+                    <li><a href="#">Riwayat Rongsok</a></li>
+                    <li><a href="#">Formulir Ketidaksesuaian</a></li>
+                    <li><a href="#">Riwayat Ketidaksesuaian</a></li>
+            </ul>
+        </li>
+            <li class="has-submenu">
+                <a href="#">Pindah Barang <span style="float: right;"></span></a>
+                <ul class="dropdown-menu-1">
+                    <li><a href="#">Pindah Baki</a></li>
+                    <li><a href="#">Riwayat Pindah Baki</a></li>
+                    <li><a href="#">Pindah Brangkas</a></li>
+                    <li><a href="#">Riwayat Pindah Brangkas</a></li>
+            </ul>
+        </li>
         </ul>
     </li>
     <li>
         <a href="#"><i class="fas fa-cash-register"></i> Jual</a>
         <ul>
-            <li><a href="#">Transaksi Jual</a></li>
+            <li><a href="#">Transaksi Penjualan</a></li>
+            <li><a href="#">Batal Penjualan</a></li>
             <li><a href="#">Riwayat Penjualan</a></li>
+            <li><a href="#">Riwayat Batal jual</a></li>
+            <li><a href="#">Selisih Jual & Batal</a></li>
+
         </ul>
     </li>
     <li>
         <a href="#"><i class="fas fa-cart-arrow-down"></i> Beli</a>
         <ul>
-            <li><a href="#">Pembelian</a></li>
+            <li><a href="#">Transaksi Pembelian</a></li>
+            <li><a href="#">Batal Pembelian</a></li>
             <li><a href="#">Riwayat Pembelian</a></li>
+            <li><a href="#">Riwayat Batal beli</a></li>
+            <li><a href="#">Selisih Beli & Batal</a></li>
         </ul>
     </li>
     <li>
         <a href="#"><i class="fas fa-clipboard-list"></i> Pesanan</a>
         <ul>
             <li><a href="#">Daftar Pesanan</a></li>
-            <li><a href="#">Riwayat Pesanan</a></li>
         </ul>
     </li>
     <li>
         <a href="#"><i class="fas fa-tools"></i> Service</a>
         <ul>
-            <li><a href="#">Input Service</a></li>
-            <li><a href="#">Riwayat Service</a></li>
+            <li><a href="#">Transaksi Service</a></li>
+            <li><a href="#">Daftar Service</a></li>
+        </ul>
+    </li>
+    <li>
+        <a href="#"><i class="fa-solid fa-sack-dollar"></i>Uang Kas</a>
+        <ul>
+            <li><a href="#">Daftar Keluar Masuk KAS</a></li>
         </ul>
     </li>
     <li>
         <a href="#"><i class="fas fa-chart-bar"></i> Laporan</a>
         <ul>
-            <li><a href="#">Laporan Penjualan</a></li>
-            <li><a href="#">Laporan Pembelian</a></li>
+            <li class="has-submenu">
+                <a href="#">Laporan Barang<span style="float: right;"></span></a>
+                <ul class="dropdown-menu">
+                    <li><a href="#">Stok Barang</a></li>
+                    <li><a href="#">Persedian Barang</a></li>
+                    <li><a href="#">Stok Kosong</a></li>
+                    <li><a href="#">Barang Cepat Laku</a></li>
+                    <li><a href="#">Barang Lambat Laku</a></li>
+                    <li><a href="#">Hapus Barang</a></li>
+            </ul>
+        </li>
+            <li class="has-submenu">
+                <a href="#">Laporan Pembelian<span style="float: right;"></span></a>
+                <ul class="dropdown-menu">
+                    <li><a href="#">Pembelian Umum</a></li>
+                    <li><a href="#">Batal Beli Umum</a></li>
+            </ul>
+        </li>
+            <li class="has-submenu">
+                <a href="#">Laporan Penjualan<span style="float: right;"></span></a>
+                <ul class="dropdown-menu">
+                    <li><a href="#">Penjualan Umum</a></li>
+                    <li><a href="#">Penjualan Staff</a></li>
+                    <li><a href="#">Batal Jual</a></li>
+            </ul>
+        </li>
+            <li><a href="#">Laporan Transaksi Kas</a></li>
+            <li><a href="#">Laporan Laba Rugi</a></li>
+            <li><a href="#">Laporan Stok Opname</a></li>
+            <li><a href="#">Laporan Tukar Poin</a></li>
+            <li><a href="#">Laporan Tukar Rupiah</a></li>
+            <li><a href="#">Laporan Cuci Sepuh</a></li>
+        </ul>
+    </li>
+    <li>
+        <a href="#"><i class="fa-solid fa-building-columns"></i> Stok Opname</a>
+        <ul>
+            <li><a href="#">Stok Opname Global</a></li>
         </ul>
     </li>
     <li>
@@ -208,8 +283,21 @@
             </ul>
         </li>
 
-            <li><a href="#">Akun</a></li>
-            <li><a href="#">Setting</a></li>
+        <li class="has-submenu">
+            <a href="#">Akun <span style="float: right;"></span></a>
+            <ul class="dropdown-menu-1">
+                <li><a href="#">Akun</a></li>
+                <li><a href="#">Profil</a></li>
+            </ul>
+        </li>
+
+        <li class="has-submenu">
+            <a href="#">Setting <span style="float: right;"></span></a>
+            <ul class="dropdown-menu-1">
+                <li><a href="#">Printer BL</a></li>
+                <li><a href="#">QR Direktur Oprasional</a></li>
+            </ul>
+        </li>
             <li><a href="#">Tukar Koin</a></li>
             <li><a href="#">Tukar Rupiah</a></li>
             <li><a href="#">Profile Perusahaan</a></li>
