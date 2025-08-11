@@ -12,7 +12,7 @@
     <div class="navbar">
         <div class="menu">
             <li class="dropdown">
-                <a href="#"><i class="fa fa-database"></i> Data Master</a>
+                <a href="#"><i class="fa fa-database"></i> Data Master Anang Cihuy</a>
                 <div class="dropdown-content">
                     <a href="{{ route('datamaster.area') }}">Area</a>
                     <a href="#">Cabang</a>
