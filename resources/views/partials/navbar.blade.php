@@ -126,13 +126,17 @@
     <script>
         function toggleMenu() {
             const menu = document.querySelector('.menu');
+            const overlay = document.querySelector('.menu-overlay');
             menu.classList.toggle('active');
+            overlay.style.display = menu.classList.contains('active') ? 'block' : 'none';
         }
     </script>
 
     <div class="navbar">
+        <div class="burger" onclick="toggleMenu()">
+            <i class="fas fa-bars"></i>
+        </div>
         <ul class="menu">
-
             <li>
                 <a href="{{ route('laporan.dashboard') }}"><i class="fas fa-home"></i> Home</a>
             </li>
@@ -261,13 +265,13 @@
 
 
             <!-- navbar uang kas  -->
-              @if(session('typeuser') == 1 )
-            <li>
-                <a href="#"><i class="fa-solid fa-sack-dollar"></i>Uang Kas</a>
-                <ul>
-                    <li><a href="#">Daftar Keluar Masuk KAS</a></li>
-                </ul>
-            </li>
+            @if(session('typeuser') == 1)
+                <li>
+                    <a href="#"><i class="fa-solid fa-sack-dollar"></i>Uang Kas</a>
+                    <ul>
+                        <li><a href="#">Daftar Keluar Masuk KAS</a></li>
+                    </ul>
+                </li>
             @endif
 
 
@@ -313,13 +317,13 @@
 
 
             <!-- navbar opname  -->
-             @if(session('typeuser') == 1 )
-            <li>
-                <a href="#"><i class="fa-solid fa-building-columns"></i> Stok Opname</a>
-                <ul>
-                    <li><a href="#">Stok Opname Global</a></li>
-                </ul>
-            </li>
+            @if(session('typeuser') == 1)
+                <li>
+                    <a href="#"><i class="fa-solid fa-building-columns"></i> Stok Opname</a>
+                    <ul>
+                        <li><a href="#">Stok Opname Global</a></li>
+                    </ul>
+                </li>
             @endif
 
 
@@ -328,41 +332,41 @@
             <li>
                 <a href="#"><i class="fas fa-cogs"></i> Utility</a>
                 <ul>
-                     @if(session('typeuser') == 1 )
-                    <li class="has-submenu">
-                        <a href="#">Permintaan Pembelian <span style="float: right;"></span></a>
-                        <ul class="dropdown-menu-1">
-                            <li><a href="#">Formulir PP</a></li>
-                            <li><a href="#">Riwayat PP</a></li>
-                        </ul>
-                    </li>
+                    @if(session('typeuser') == 1)
+                        <li class="has-submenu">
+                            <a href="#">Permintaan Pembelian <span style="float: right;"></span></a>
+                            <ul class="dropdown-menu-1">
+                                <li><a href="#">Formulir PP</a></li>
+                                <li><a href="#">Riwayat PP</a></li>
+                            </ul>
+                        </li>
                     @endif
 
 
                     <li class="has-submenu">
                         <a href="#">Akun <span style="float: right;"></span></a>
                         <ul class="dropdown-menu-1">
-                             @if(session('typeuser') == 1 )
-                            <li><a href="#">Akun</a></li>
+                            @if(session('typeuser') == 1)
+                                <li><a href="#">Akun</a></li>
                             @endif
                             <li><a href="#">Profil</a></li>
                         </ul>
                     </li>
 
-                     @if(session('typeuser') == 1 )
-                    <li class="has-submenu">
-                        <a href="#">Setting <span style="float: right;"></span></a>
-                        <ul class="dropdown-menu-1">
-                            <li><a href="#">Printer BL</a></li>
-                            <li><a href="#">QR Direktur Oprasional</a></li>
-                        </ul>
-                    </li>
+                    @if(session('typeuser') == 1)
+                        <li class="has-submenu">
+                            <a href="#">Setting <span style="float: right;"></span></a>
+                            <ul class="dropdown-menu-1">
+                                <li><a href="#">Printer BL</a></li>
+                                <li><a href="#">QR Direktur Oprasional</a></li>
+                            </ul>
+                        </li>
                     @endif
 
                     <li><a href="#">Tukar Koin</a></li>
                     <li><a href="#">Tukar Rupiah</a></li>
-                     @if(session('typeuser') == 1 )
-                    <li><a href="{{ route('utility.company_profile') }}">Profil Perusahaan</a></li>
+                    @if(session('typeuser') == 1)
+                        <li><a href="{{ route('utility.company_profile') }}">Profil Perusahaan</a></li>
                     @endif
                     <li><a href="#">Backup Data</a></li>
                     <li><a href="#">Dokumen</a></li>
@@ -375,6 +379,8 @@
             <a href="{{ url('/logout') }}" class="icon"><i class="fa fa-sign-out-alt"></i></a>
         </div>
     </div>
+
+    <div class="menu-overlay" onclick="toggleMenu()"></div>
 
     <div class="footer-navbar">
         <i class="fa fa-user"></i>
@@ -391,6 +397,7 @@
         }
         setInterval(updateClock, 1000);
         updateClock();
+
     </script>
 </body>
 
