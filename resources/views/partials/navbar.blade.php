@@ -5,120 +5,6 @@
     <title>Navbar Goldstore</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="{{ asset('css/navbar.css') }}">
-    <link rel="stylesheet" href="navbar.css" />
-    <style>
-        html, body {
-            margin: 0;
-            padding: 0;
-        }
-
-        .navbar {
-            background: linear-gradient(to right, #d60000, #900000);
-            padding: 10px 20px;
-            height: 60px;
-            color: white;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            font-size: 15px;
-            font-family: Arial, sans-serif;
-            position: relative;
-        }
-
-        .menu {
-            list-style: none;
-            display: flex;
-            gap: 15px;
-            margin: 0;
-            padding: 0;
-        }
-
-        .menu > li {
-            position: relative;
-        }
-
-        .menu > li > a {
-            color: white;
-            text-decoration: none;
-            font-weight: bold;
-            padding: 8px 12px;
-            border-radius: 4px;
-            transition: background-color 0.3s ease;
-            display: block;
-        }
-
-        .menu > li > a:hover {
-            background-color: #fd7575;
-        }
-
-        /* Dropdown */
-        .menu li ul {
-            display: none;
-            position: absolute;
-            top: 100%;
-            left: 0;
-            background-color: #900000;
-            padding: 0;
-            margin: 0;
-            border-radius: 4px;
-            list-style: none;
-            z-index: 1000;
-            min-width: 150px;
-        }
-
-        .menu li:hover ul {
-            display: block;
-        }
-
-        .menu li ul li a {
-            display: block;
-            padding: 10px;
-            color: white;
-            text-decoration: none;
-            font-weight: normal;
-        }
-
-        .menu li ul li a:hover {
-            background-color: #fd7575;
-        }
-
-        .navbar-icons {
-            display: flex;
-            gap: 15px;
-            align-items: center;
-        }
-
-        .navbar-icons .icon {
-            color: white;
-            text-decoration: none;
-            font-size: 18px;
-            transition: color 0.3s ease;
-        }
-
-        .navbar-icons .icon:hover {
-            color: #ffcccb;
-        }
-
-        .footer-navbar {
-            position: fixed;
-            bottom: 0;
-            left: 0;
-            width: 100%;
-            background: linear-gradient(to right, #d60000, #900000);
-            color: white;
-            text-align: center;
-            padding: 10px 20px;
-            font-size: 14px;
-            font-family: Arial, sans-serif;
-        }
-
-        .navbar span {
-            color: white;
-            text-decoration: none;
-            margin: 0 10px;
-            font-weight: bold;
-        }
-    </style>
 </head>
 <body>
     <script>
@@ -132,12 +18,12 @@
         <ul class="menu">
 
     <li>
-        <a href="#"><i class="fas fa-home"></i> Home</a>
+        <a href="{{ route('laporan.dashboard') }}"><i class="fas fa-home"></i> Home</a>
     </li>
     <li>
         <a href="#"><i class="fas fa-database"></i> Data Master</a>
         <ul>
-            <li><a href="#">Area</a></li>
+            <li><a href="{{ route('datamaster.area') }}">Area</a></li>
             <li><a href="#">Cabang</a></li>
             <li><a href="#">Supplier</a></li>
             <li><a href="#">Karyawan</a></li>
@@ -212,7 +98,7 @@
             <li><a href="#">Setting</a></li>
             <li><a href="#">Tukar Koin</a></li>
             <li><a href="#">Tukar Rupiah</a></li>
-            <li><a href="#">Profile Perusahaan</a></li>
+            <li><a href="{{ route('utility.company_profile') }}">Profil Perusahaan</a></li>
             <li><a href="#">Backup Data</a></li>
             <li><a href="#">Dokumen</a></li>
         </ul>

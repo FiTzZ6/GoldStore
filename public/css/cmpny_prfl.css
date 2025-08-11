@@ -7,26 +7,10 @@ body {
     color: #333;
 }
 
-/* ====== Breadcrumb ====== */
-.breadcrumb {
-    font-size: 14px;
-    margin: 10px 40px;
-    color: #6c757d;
-}
-
-.breadcrumb a {
-    text-decoration: none;
-    color: #007bff;
-}
-
-.breadcrumb a:hover {
-    text-decoration: underline;
-}
-
 /* ====== Form Container ====== */
 .form-container {
     background-color: #fff;
-    padding: 30px 40px;
+    padding: 30px px;
     height: 430px;
     width: 90%;
     margin: 0 auto;
@@ -145,4 +129,20 @@ input[type="text"]:focus {
     .form-actions {
         text-align: center;
     }
+}
+
+#my_camera {
+    width: 250px;
+    height: 150px;
+    border: 1px solid #333;
+    margin-left: 35%;
+    margin-bottom: 5px;
+}
+
+#hasil {
+    width: 250px;
+    height: 150px;
+    border: 1px solid #333;
+    margin-left: 35%;
+    margin-bottom: 5px;
 }

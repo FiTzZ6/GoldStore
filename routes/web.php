@@ -25,6 +25,10 @@ Route::get('/jual', [JualController::class, 'index'])->name('jual.index');
 Route::get('/laporan/dashboard', [LaporanController::class, 'dashboard'])->name('laporan.dashboard');
 
 Route::get('/utility', [UtilityController::class, 'index'])->name('utility.company_profile');
+Route::get('/utility/company-profile', [UtilityController::class, 'companyProfile'])
+    ->name('utility.company_profile');
+Route::post('/utility/company-profile', [UtilityController::class, 'setUpCompany'])
+    ->name('utility.set_up_company');
 
 Route::get('/datamaster/area', [DataController::class, 'area'])->name('datamaster.area');
 

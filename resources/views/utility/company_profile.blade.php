@@ -9,21 +9,15 @@
 <body>
     @include('partials.navbar')
 
-    <div class="breadcrumb">
-        <a href="{{ route('laporan.dashboard') }}">Home</a> &gt; 
-        <a href="#">Utility</a> &gt; 
-        <span>Setting Profil Perusahaan</span>
-    </div>
-
     <div class="form-container">
-        <form action="{{ route('utility.company_profile') }}" method="POST" enctype="multipart/form-data">
+        <form action="{{ route('utility.set_up_company') }}" method="POST" enctype="multipart/form-data">
             @csrf
             <div class="form-grid">
                 <!-- Kolom Kiri -->
                 <div class="form-left">
                     <div class="form-group">
                         <label>Nama Perusahaan</label>
-                        <input type="text" name="nama_perusahaan" value="{{ old('nama_perusahaan', 'PT. ELING SAMBAS GRUP') }}">
+                        <input type="text" name="nama" value="{{ old('nama', 'PT. ELING SAMBAS GRUP') }}">
                     </div>
                     <div class="form-group">
                         <label>Alamat</label>
@@ -35,7 +29,7 @@
                     </div>
                     <div class="form-group">
                         <label>Telp.</label>
-                        <input type="text" name="telp">
+                        <input type="text" name="kontak">
                     </div>
                 </div>
 
