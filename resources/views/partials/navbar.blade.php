@@ -1,4 +1,3 @@
-<!-- resources/views/navbar.blade.php -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -6,45 +5,231 @@
     <title>Navbar Goldstore</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="{{ asset('css/navbar.css') }}">
+    <link rel="stylesheet" href="navbar.css" />
+    <style>
+        html, body {
+            margin: 0;
+            padding: 0;
+        }
+
+        .navbar {
+            background: linear-gradient(to right, #d60000, #900000);
+            padding: 10px 20px;
+            height: 60px;
+            color: white;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 15px;
+            font-family: Arial, sans-serif;
+            position: relative;
+        }
+
+        .menu {
+            list-style: none;
+            display: flex;
+            gap: 15px;
+            margin: 0;
+            padding: 0;
+        }
+
+        .menu > li {
+            position: relative;
+        }
+
+        .menu > li > a {
+            color: white;
+            text-decoration: none;
+            font-weight: bold;
+            padding: 8px 12px;
+            border-radius: 4px;
+            transition: background-color 0.3s ease;
+            display: block;
+        }
+
+        .menu > li > a:hover {
+            background-color: #fd7575;
+        }
+
+        /* Dropdown */
+        .menu li ul {
+            display: none;
+            position: absolute;
+            top: 100%;
+            left: 0;
+            background-color: #900000;
+            padding: 0;
+            margin: 0;
+            border-radius: 4px;
+            list-style: none;
+            z-index: 1000;
+            min-width: 150px;
+        }
+
+        .menu li:hover ul {
+            display: block;
+        }
+
+        .menu li ul li a {
+            display: block;
+            padding: 10px;
+            color: white;
+            text-decoration: none;
+            font-weight: normal;
+        }
+
+        .menu li ul li a:hover {
+            background-color: #fd7575;
+        }
+
+        .navbar-icons {
+            display: flex;
+            gap: 15px;
+            align-items: center;
+        }
+
+        .navbar-icons .icon {
+            color: white;
+            text-decoration: none;
+            font-size: 18px;
+            transition: color 0.3s ease;
+        }
+
+        .navbar-icons .icon:hover {
+            color: #ffcccb;
+        }
+
+        .footer-navbar {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            background: linear-gradient(to right, #d60000, #900000);
+            color: white;
+            text-align: center;
+            padding: 10px 20px;
+            font-size: 14px;
+            font-family: Arial, sans-serif;
+        }
+
+        .navbar span {
+            color: white;
+            text-decoration: none;
+            margin: 0 10px;
+            font-weight: bold;
+        }
+    </style>
 </head>
 <body>
-    
+    <script>
+    function toggleMenu() {
+        const menu = document.querySelector('.menu');
+        menu.classList.toggle('active');
+    }
+</script>
+
     <div class="navbar">
-        <div class="menu">
-            <li class="dropdown">
-                <a href="#"><i class="fa fa-database"></i> Data Master Anang Cihuy</a>
-                <div class="dropdown-content">
-                    <a href="{{ route('datamaster.area') }}">Area</a>
-                    <a href="#">Cabang</a>
-                    <a href="#">Kategori</a>
-                    <a href="#">Supplier</a>
-                </div>
-            </li>
-            <li><i class="fa fa-box"></i><a href="#">Barang</a></li>
-            <li><i class="fa fa-calculator"></i><a href="#">Jual</a></li>
-            <li><i class="fa fa-tags"></i><a href="#">Beli</a></li>
-            <li><i class="fa fa-shopping-basket"></i><a href="#">Pesanan</a></li>
-            <li><i class="fa fa-wrench"></i><a href="#">Service</a></li>
-            <li><i class="fa fa-file"></i><a href="#">Laporan</a></li>
-            <li>
-                <a href="{{ route('utility.company_profile') }}">
-                    <i class="fa fa-gear"></i> Utility
-                </a>
-            </li>
-        </div>
+        <ul class="menu">
+
+    <li>
+        <a href="#"><i class="fas fa-home"></i> Home</a>
+    </li>
+    <li>
+        <a href="#"><i class="fas fa-database"></i> Data Master</a>
+        <ul>
+            <li><a href="#">Area</a></li>
+            <li><a href="#">Cabang</a></li>
+            <li><a href="#">Supplier</a></li>
+            <li><a href="#">Karyawan</a></li>
+            <li><a href="#">Kategori Barang</a></li>
+            <li><a href="#">Jenis Barang</a></li>
+            <li><a href="#">Baki Barang</a></li>
+            <li><a href="#">Kondisi Barang</a></li>
+            <li><a href="#">Ongkos</a></li>
+            <li><a href="#">Potongan</a></li>
+            <li><a href="#">Parameter Kas</a></li>
+            <li><a href="#">Staff</a></li>
+            <li><a href="#">Merchandise</a></li>
+            <li><a href="#">Pelanggan</a></li>
+            <li><a href="#">Cari Pelanggan</a></li>
+
+        </ul>
+    </li>
+    <li>
+        <a href="#"><i class="fas fa-box"></i> Barang</a>
+        <ul>
+            <li><a href="#">Data Barang</a></li>
+            <li><a href="#">Stok Barang</a></li>
+        </ul>
+    </li>
+    <li>
+        <a href="#"><i class="fas fa-cash-register"></i> Jual</a>
+        <ul>
+            <li><a href="#">Transaksi Jual</a></li>
+            <li><a href="#">Riwayat Penjualan</a></li>
+        </ul>
+    </li>
+    <li>
+        <a href="#"><i class="fas fa-cart-arrow-down"></i> Beli</a>
+        <ul>
+            <li><a href="#">Pembelian</a></li>
+            <li><a href="#">Riwayat Pembelian</a></li>
+        </ul>
+    </li>
+    <li>
+        <a href="#"><i class="fas fa-clipboard-list"></i> Pesanan</a>
+        <ul>
+            <li><a href="#">Daftar Pesanan</a></li>
+            <li><a href="#">Riwayat Pesanan</a></li>
+        </ul>
+    </li>
+    <li>
+        <a href="#"><i class="fas fa-tools"></i> Service</a>
+        <ul>
+            <li><a href="#">Input Service</a></li>
+            <li><a href="#">Riwayat Service</a></li>
+        </ul>
+    </li>
+    <li>
+        <a href="#"><i class="fas fa-chart-bar"></i> Laporan</a>
+        <ul>
+            <li><a href="#">Laporan Penjualan</a></li>
+            <li><a href="#">Laporan Pembelian</a></li>
+        </ul>
+    </li>
+    <li>
+        <a href="#"><i class="fas fa-cogs"></i> Utility</a>
+        <ul>
+        <li class="has-submenu">
+            <a href="#">Permintaan Pembelian <span style="float: right;"></span></a>
+            <ul class="dropdown-menu-1">
+                <li><a href="#">Formulir PP</a></li>
+                <li><a href="#">Riwayat PP</a></li>
+            </ul>
+        </li>
+
+            <li><a href="#">Akun</a></li>
+            <li><a href="#">Setting</a></li>
+            <li><a href="#">Tukar Koin</a></li>
+            <li><a href="#">Tukar Rupiah</a></li>
+            <li><a href="#">Profile Perusahaan</a></li>
+            <li><a href="#">Backup Data</a></li>
+            <li><a href="#">Dokumen</a></li>
+        </ul>
+    </li>
+</ul>
 
         <div class="navbar-icons">
             <a href="#" class="icon"><i class="fa fa-bell"></i></a>
             <a href="{{ url('/logout') }}" class="icon"><i class="fa fa-sign-out-alt"></i></a>
         </div>
+    </div>
 
-        <div class="footer-navbar">
-            <div class="info">
-                <span><i class="fa fa-user"></i> {{ session('username') }}</span>| 
-                <span>{{ \Carbon\Carbon::now()->translatedFormat('l, j F Y') }}</span> | 
-                <span>{{ \Carbon\Carbon::now()->format('H:i:s') }}</span>
-            </div>
-        </div>
+    <div class="footer-navbar">
+        <i class="fa fa-user"></i>
+        <span>{{ session('username') }}</span> | 
+        <span>{{ \Carbon\Carbon::now()->translatedFormat('l, j F Y') }}</span> | 
+        <span>{{ \Carbon\Carbon::now()->format('H:i:s') }}</span>
     </div>
 
     <script>
@@ -59,6 +244,5 @@
         setInterval(updateDateTime, 1000);
         updateDateTime();
     </script>
-
 </body>
 </html>
