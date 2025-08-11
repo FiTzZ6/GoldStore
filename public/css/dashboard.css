@@ -1,23 +1,14 @@
 body {
-    font-family: 'Montserrat', sans-serif;
+    font-family: 'Times New Roman', Times, serif;
+    font-size: 20px;
     margin: 0;
     padding: 0;
     background-color: #f8f9fa;
     color: #333;
 }
 
-/* ====== Breadcrumb ====== */
-.breadcrumb {
-    font-size: 14px;
-    margin: 10px 40px;
-    color: #6c757d;
-}
-
-.breadcrumb a {
-    text-decoration: none;
-    color: #007bff;
-}
-
-.breadcrumb a:hover {
-    text-decoration: underline;
+.company-info img {
+    width: auto;      /* Biar proporsi tetap terjaga */
+    height: 400px;    /* Tinggi gambar */
+    max-height: none; /* Hilangkan batasan tinggi */
 }

@@ -10,9 +10,15 @@
 <body>
     @include('partials.navbar')
 
-    <div class="breadcrumb">
-        <a href="{{ route('laporan.dashboard') }}">Home</a> &gt; 
-        <span>Dashboard</span>
+    <div class="company-info" style="text-align: center; margin-top: 50px;">
+        @if($company)
+        <h1>Toko Emas<br>{{ $company->name }}</h1>
+            <img src="{{ asset('storage/assets/' . $company->logo) }}" alt="Logo Perusahaan">
+        @else
+            <p>Data perusahaan belum tersedia</p>
+        @endif
     </div>
+
 </body>
 </html>
+

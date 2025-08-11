@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Storage;
 
 class UtilityController extends Controller
 {
@@ -44,10 +45,13 @@ class UtilityController extends Controller
         ];
 
         // Jika ada file logo
+        $fileName = null;
         if ($request->hasFile('logo')) {
-            $photo = file_get_contents($request->file('logo')->getRealPath());
-            $data['logo'] = $photo;
+            $fileName = $request->file('logo')->getClientOriginalName();
+            $request->file('logo')->storeAs('assets', $fileName, 'public');
+            $data['logo'] = $fileName;
         }
+    
 
         DB::table('company_profile')->where('id', 1)->update($data);
 

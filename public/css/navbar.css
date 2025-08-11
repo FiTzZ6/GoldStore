@@ -2,57 +2,70 @@ body {
     margin: 0;
     padding: 0;
 }
-
 .navbar {
     background: linear-gradient(to right, #d60000, #900000);
     padding: 10px 20px;
-    height: 60px;
+    height: 50px;
     color: white;
     display: flex;
     justify-content: space-between;
     align-items: center;
-    font-size: 15px;
+    font-size: 5px;
     font-family: Arial, sans-serif;
-    position: relative;
+    position: relative; /* untuk dropdown position absolute */
+}
+
+.navbar a {
+    color: white;
+    text-decoration: none;
+    font-weight: bold;
 }
 
 .menu {
     list-style: none;
     display: flex;
-    gap: 15px;
-    margin: 0;
+    gap: 10px;
     padding: 0;
-}
-
-.menu > li {
+    margin: 0;
     position: relative;
 }
 
-.menu > li > a {
+.menu li {
+    position: relative;
+}
+
+.menu a {
+    color: white;
+    text-decoration: none;
+    margin: 0 5px;
+    font-weight: bold;
+}
+
+.menu li a {
     color: white;
     text-decoration: none;
     font-weight: bold;
-    padding: 8px 12px;
+    padding: 3px 9px;
     border-radius: 4px;
     transition: background-color 0.3s ease;
     display: block;
 }
 
-.menu > li > a:hover {
+.menu li a:hover {
     background-color: #fd7575;
 }
 
-/* Dropdown */
+/* Dropdown menu */
 .menu li ul {
     display: none;
     position: absolute;
     top: 100%;
     left: 0;
     background-color: #900000;
+    list-style: none;
     padding: 0;
     margin: 0;
     border-radius: 4px;
-    list-style: none;
     z-index: 1000;
     min-width: 150px;
 }
@@ -61,16 +74,70 @@ body {
     display: block;
 }
 
-.menu li ul li a {
-    display: block;
-    padding: 10px;
-    color: white;
-    text-decoration: none;
-    font-weight: normal;
+.menu li ul li {
+    width: 100%;
 }
 
-.menu li ul li a:hover {
-    background-color: #fd7575;
+.menu li ul li a {
+    padding: 10px;
+    border-radius: 0;
+}
+
+/* Dropdown dalam dropdown */
+.menu li ul li.has-submenu {
+    position: relative;
+}
+
+.menu li ul li.has-submenu > ul {
+    display: none;
+    position: absolute;
+    top: 0;
+    left: 100%;
+    white-space: nowrap;
+    background-color: #fff;
+    border: 1px solid #ccc;
+    z-index: 1000;
+}
+
+.menu li ul li.has-submenu:hover > ul {
+    display: block;
+}
+
+/* Style untuk submenu horizontal (dropdown dalam dropdown) */
+.menu li ul li.has-submenu {
+    position: relative;
+}
+
+.menu li ul li.has-submenu > a::after {
+    content: "▶";
+    float: right;
+    margin-left: 5px;
+    font-size: 10px;
+}
+
+.menu li ul li.has-submenu > ul {
+    display: none;
+    position: absolute;
+    top: 0;
+    left: 100%;
+    background-color: #900000;
+    padding: 0;
+    margin: 0;
+    border-radius: 4px;
+    min-width: 150px;
+}
+
+.menu li ul li.has-submenu:hover > ul {
+    display: block;
+}
+
+.menu li ul li.has-submenu ul li a {
+    padding: 10px;
+    white-space: nowrap;
+}
+
+.fas {
+    margin-left: 5px;
 }
 
 .navbar-icons {
