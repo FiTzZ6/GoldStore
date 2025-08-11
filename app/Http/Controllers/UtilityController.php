@@ -48,7 +48,7 @@ class UtilityController extends Controller
         $fileName = null;
         if ($request->hasFile('logo')) {
             $fileName = $request->file('logo')->getClientOriginalName();
-            $request->file('logo')->storeAs('assets', $fileName, 'public');
+            $request->file('logo')->storeAs('assets_company', $fileName, 'public');
             $data['logo'] = $fileName;
         }
     

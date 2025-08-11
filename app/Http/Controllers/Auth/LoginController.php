@@ -13,7 +13,7 @@ class LoginController extends Controller
 {
     public function index()
     {
-        $typeuser = Session::get('typeuser');
+        $typeuser = Session::get('usertype');
 
         if ($typeuser == 1 || $typeuser == 2 || $typeuser == 3 || $typeuser == 7 || $typeuser == 8) {
             return redirect()->route('laporan.dashboard');
