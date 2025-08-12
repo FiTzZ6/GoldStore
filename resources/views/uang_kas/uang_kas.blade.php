@@ -71,7 +71,7 @@
                 <label>Parameter Kas</label>
                 <select name="idparameterkas" required>
                     @foreach($parameterKasList as $param)
-                        <option value="{{ $param->id }}">{{ $param->nama }}</option>
+                        <option value="{{ $param->kdparameterkas }}">{{ $param->parameterkas }}</option>
                     @endforeach
                 </select>
 

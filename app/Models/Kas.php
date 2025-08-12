@@ -14,4 +14,5 @@ class Kas extends Model
         'tanggal',
         'keterangan'
     ];
+    
 }
