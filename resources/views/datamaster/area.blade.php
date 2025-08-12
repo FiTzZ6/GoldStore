@@ -9,12 +9,6 @@
 <body>
     @include('partials.navbar')
 
-    <div class="breadcrumb">
-        <a href="{{ route('laporan.dashboard') }}">Home</a> &gt; 
-        <a href="#">Data Master</a> &gt; 
-        <span>Area</span>
-    </div>
-
     <div class="card">
         <div class="card-header">
             <h2>DAFTAR AREA</h2>

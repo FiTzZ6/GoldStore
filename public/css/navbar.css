@@ -1,18 +1,20 @@
-html, body {
+html,
+body {
     margin: 0;
     padding: 0;
 }
+
 .navbar {
     background: linear-gradient(to right, #d60000, #900000);
     padding: 10px 20px;
-    height: 50px;
+    height: 60px;
     color: white;
     display: flex;
     justify-content: space-between;
     align-items: center;
-    font-size: 5px;
+    font-size: 15px;
     font-family: Arial, sans-serif;
-    position: relative; /* untuk dropdown position absolute */
+    position: relative;
 }
 
 .navbar a {
@@ -24,14 +26,27 @@ html, body {
 .menu {
     list-style: none;
     display: flex;
-    gap: 10px;
-    padding: 0;
+    gap: 15px;
     margin: 0;
+    padding: 0;
+}
+
+.menu>li {
     position: relative;
 }
 
-.menu li {
-    position: relative;
+.menu>li>a {
+    color: white;
+    text-decoration: none;
+    font-weight: bold;
+    padding: 8px 2px;
+    border-radius: 6px;
+    transition: background-color 0.3s ease;
+    display: block;
+}
+
+.menu>li>a:hover {
+    background-color: #fd7575;
 }
 
 .menu a {
@@ -62,10 +77,10 @@ html, body {
     top: 100%;
     left: 0;
     background-color: #900000;
-    list-style: none;
     padding: 0;
     margin: 0;
     border-radius: 4px;
+    list-style: none;
     z-index: 1000;
     min-width: 150px;
 }
@@ -79,8 +94,15 @@ html, body {
 }
 
 .menu li ul li a {
+    display: block;
     padding: 10px;
-    border-radius: 0;
+    color: white;
+    text-decoration: none;
+    font-weight: normal;
+}
+
+.menu li ul li a:hover {
+    background-color: #fd7575;
 }
 
 /* Dropdown dalam dropdown */
@@ -88,7 +110,7 @@ html, body {
     position: relative;
 }
 
-.menu li ul li.has-submenu > ul {
+.menu li ul li.has-submenu>ul {
     display: none;
     position: absolute;
     top: 0;
@@ -99,7 +121,7 @@ html, body {
     z-index: 1000;
 }
 
-.menu li ul li.has-submenu:hover > ul {
+.menu li ul li.has-submenu:hover>ul {
     display: block;
 }
 
@@ -109,13 +131,13 @@ html, body {
 }
 
 .menu li ul li.has-submenu > a::after {
-    content: "▶";
+    content: "▶"; /* panah kanan */
     float: right;
     margin-left: 5px;
     font-size: 10px;
 }
 
-.menu li ul li.has-submenu > ul {
+.menu li ul li.has-submenu>ul {
     display: none;
     position: absolute;
     top: 0;
@@ -127,7 +149,7 @@ html, body {
     min-width: 150px;
 }
 
-.menu li ul li.has-submenu:hover > ul {
+.menu li ul li.has-submenu:hover>ul {
     display: block;
 }
 
@@ -175,4 +197,74 @@ html, body {
     text-decoration: none;
     margin: 0 10px;
     font-weight: bold;
+}
+
+.menu-overlay {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0,0,0,0.5);
+    z-index: 998;
+}
+
+.menu.active + .menu-overlay {
+    display: block;
+}
+
+
+.burger {
+    display: none;
+    font-size: 24px;
+    cursor: pointer;
+    color: white;
+}
+
+
+/* Mobile view */
+@media (max-width: 768px) {
+    .burger {
+        display: block; /* tampilkan burger */
+    }
+
+    .menu {
+        position: fixed;
+        top: 0;
+        left: -100%;
+        width: 75%;
+        height: 100%;
+        background-color: #900000;
+        flex-direction: column;
+        padding-top: 60px;
+        transition: left 0.3s ease;
+        overflow-y: auto;
+        z-index: 999;
+    }
+
+    .menu.active {
+        left: 0;
+    }
+
+    /* Sembunyikan ikon kanan di mobile */
+    .navbar-icons {
+        display: none;
+    }
+
+    /* Overlay gelap */
+    .menu-overlay {
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0,0,0,0.5);
+        z-index: 998;
+    }
+
+    .menu.active + .menu-overlay {
+        display: block;
+    }
 }

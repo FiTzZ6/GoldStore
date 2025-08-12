@@ -10,15 +10,9 @@
 <body>
     @include('partials.navbar')
 
-    <div class="company-info" style="text-align: center; margin-top: 50px;">
-        @if($company)
-        <h1>Toko Emas<br>{{ $company->name }}</h1>
-            <img src="{{ asset('storage/assets_company/' . $company->logo) }}" alt="Logo Perusahaan">
-        @else
-            <p>Data perusahaan belum tersedia</p>
-        @endif
+    <div class="container">
+        <h1>Set Up Company</h1>
+        <p>Halaman pengaturan perusahaan.</p>
     </div>
-
 </body>
 </html>
-

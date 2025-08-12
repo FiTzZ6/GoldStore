@@ -73,4 +73,5 @@ class BarangController extends Controller
             'form_cabang' => $opt
         ]);
     }
+}
     

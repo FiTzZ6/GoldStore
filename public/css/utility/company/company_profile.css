@@ -7,31 +7,16 @@ body {
     color: #333;
 }
 
-/* ====== Breadcrumb ====== */
-.breadcrumb {
-    font-size: 14px;
-    margin: 10px 40px;
-    color: #6c757d;
-}
-
-.breadcrumb a {
-    text-decoration: none;
-    color: #007bff;
-}
-
-.breadcrumb a:hover {
-    text-decoration: underline;
-}
-
 /* ====== Form Container ====== */
 .form-container {
     background-color: #fff;
-    padding: 30px 40px;
-    height: 430px;
+    padding: 30px;
+    height: auto;
     width: 90%;
-    margin: 0 auto;
-    border-radius: 10px;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    max-width: 1000px;
+    margin: 30px auto;
+    border-radius: 12px;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
 }
 
 /* ====== Grid Layout ====== */
@@ -39,6 +24,7 @@ body {
     display: flex;
     justify-content: space-between;
     gap: 40px;
+    flex-wrap: wrap;
 }
 
 /* Kolom kiri */
@@ -54,28 +40,30 @@ body {
 
 /* ====== Form Group ====== */
 .form-group {
-    margin-bottom: 20px;
-    text-align: left;
+    margin-bottom: 18px;
 }
 
 label {
     display: block;
-    font-weight: bold;
+    font-weight: 600;
     margin-bottom: 6px;
+    color: #444;
 }
 
 input[type="text"], 
 input[type="file"] {
     width: 100%;
-    padding: 10px;
+    padding: 10px 12px;
     border: 1px solid #ced4da;
     border-radius: 6px;
     font-size: 14px;
     box-sizing: border-box;
+    transition: all 0.3s ease;
 }
 
 input[type="text"]:focus {
     border-color: #007bff;
+    box-shadow: 0 0 6px rgba(0, 123, 255, 0.25);
     outline: none;
 }
 
@@ -109,8 +97,8 @@ input[type="text"]:focus {
     border-radius: 6px;
     border: none;
     cursor: pointer;
-    font-weight: bold;
-    transition: background 0.3s ease;
+    font-weight: 600;
+    transition: background 0.3s ease, transform 0.2s ease;
 }
 
 .btn-cancel {
@@ -121,6 +109,7 @@ input[type="text"]:focus {
 
 .btn-cancel:hover {
     background-color: #5a6268;
+    transform: scale(1.02);
 }
 
 .btn-save {
@@ -130,6 +119,7 @@ input[type="text"]:focus {
 
 .btn-save:hover {
     background-color: #218838;
+    transform: scale(1.02);
 }
 
 /* ====== Responsive ====== */
@@ -137,12 +127,16 @@ input[type="text"]:focus {
     .form-grid {
         flex-direction: column;
     }
-
-    .form-right {
-        text-align: left;
-    }
-
     .form-actions {
         text-align: center;
     }
+}
+
+/* ====== Kamera Preview ====== */
+#my_camera, #hasil {
+    width: 250px;
+    height: 150px;
+    border: 1px solid #333;
+    margin: 0 auto 5px;
+    display: block;
 }
