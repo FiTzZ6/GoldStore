@@ -269,7 +269,7 @@
                 <li>
                     <a href="#"><i class="fa-solid fa-sack-dollar"></i>Uang Kas</a>
                     <ul>
-                        <li><a href="#">Daftar Keluar Masuk KAS</a></li>
+                        <li><a href="{{ route('uang_kas.index') }}">Daftar Keluar Masuk KAS</a></li>
                     </ul>
                 </li>
             @endif

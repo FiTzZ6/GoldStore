@@ -1,59 +1,241 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Uang_Kas</title>
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css">
+    <script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
+    <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
+    <link rel="stylesheet" href="{{ asset('css/uang_kas/uangkas.css') }}">
+    <link href="https://fonts.googleapis.com/css?family=Montserrat:400,800" rel="stylesheet">
+    <title>Uang Kas</title>
 </head>
+
 <body>
-    @extends('layouts.app')
+    @include('partials.navbar')
+    <div class="container">
+        <h2 class="mb-4">Data Uang Kas</h2>
 
-@section('content')
-<div class="container">
-    <h2 class="mb-4 text-center">DAFTAR KAS KELUAR MASUK</h2>
-    <a href="{{ route('kas.create') }}" class="btn btn-success mb-3">+ Transaksi Kas</a>
+        <!-- Tombol Tambah -->
+        <button class="btn btn-primary" onclick="openModal('modalTambah')">Tambah Kas</button>
 
-    <table id="kasTable" class="table table-bordered">
-        <thead>
-            <tr>
-                <th>TANGGAL</th>
-                <th>JUMLAH</th>
-                <th>KATEGORI</th>
-                <th>KETERANGAN</th>
-                <th>TYPE</th>
-                <th>ACTION</th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach ($kas as $row)
-            <tr>
-                <td>{{ $row->tanggal }}</td>
-                <td>Rp. {{ number_format($row->jumlahkas, 0, ',', '.') }}</td>
-                <td>{{ $row->idparameterkas }}</td>
-                <td>{{ $row->keterangan }}</td>
-                <td>{{ $row->type }}</td>
-                <td>
-                    <a href="{{ route('kas.edit', $row->id) }}" class="btn btn-warning btn-sm">✏</a>
-                    <form action="{{ route('kas.destroy', $row->id) }}" method="POST" style="display:inline-block;">
-                        @csrf
-                        @method('DELETE')
-                        <button type="submit" onclick="return confirm('Yakin mau hapus?')" class="btn btn-danger btn-sm">🗑</button>
-                    </form>
-                </td>
-            </tr>
-            @endforeach
-        </tbody>
-    </table>
-</div>
+        <!-- Wrapper Tabel -->
+        <div class="table-wrapper" style="overflow-x:auto;">
+            <table id="kasTable" class="table table-bordered table-striped">
+                <thead>
+                    <tr>
+                        <th>No</th>
+                        <th>Jumlah Kas</th>
+                        <th>Parameter Kas</th>
+                        <th>Type</th>
+                        <th>Tanggal</th>
+                        <th>Keterangan</th>
+                        <th>Aksi</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach($kas as $i => $row)
+                        <tr data-id="{{ $row->id }}">
+                            <td>{{ $i + 1 }}</td>
+                            <td>{{ $row->jumlahkas }}</td>
+                            <td>{{ $row->idparameterkas }}</td>
+                            <td>{{ $row->type }}</td>
+                            <td>{{ $row->tanggal }}</td>
+                            <td>{{ $row->keterangan }}</td>
+                            <td>
+                                <button class="btn btn-sm btn-warning btnEdit">Edit</button>
+                                <button class="btn btn-sm btn-danger btnHapus">Hapus</button>
+                            </td>
+                        </tr>
+                    @endforeach
+                </tbody>
+            </table>
+        </div>
+    </div>
 
-@push('scripts')
-<script>
-    $(document).ready(function() {
-        $('#kasTable').DataTable();
-    });
-</script>
-@endpush
-@endsection
+    <!-- Modal Tambah -->
+    <div id="modalTambah" class="modal-overlay" style="display:none;">
+        <div class="modal-box">
+            <h3>Tambah Kas</h3>
+            <form id="formTambah">
+                @csrf
+                <label>Tanggal</label>
+                <input type="date" name="tanggal" required>
 
+                <label>Jenis</label>
+                <select name="type" required>
+                    <option value="masuk">Masuk</option>
+                    <option value="keluar">Keluar</option>
+                </select>
+
+                <label>Parameter Kas</label>
+                <select name="idparameterkas" required>
+                    @foreach($parameterKasList as $param)
+                        <option value="{{ $param->id }}">{{ $param->nama }}</option>
+                    @endforeach
+                </select>
+
+                <label>Jumlah</label>
+                <input type="number" name="jumlahkas" required>
+
+                <label>Keterangan</label>
+                <textarea name="keterangan"></textarea>
+
+                <button type="submit">Simpan</button>
+                <button type="button" onclick="closeModal('modalTambah')">Batal</button>
+            </form>
+        </div>
+    </div>
+
+
+    <!-- Modal Edit -->
+    <div id="modalEdit" class="modal-overlay" style="display:none;">
+        <div class="modal-box">
+            <h3>Edit Kas</h3>
+            <form id="formEdit">
+                @csrf
+                @method('PUT')
+                <input type="hidden" name="id">
+
+                <label>Tanggal</label>
+                <input type="date" name="tanggal" required>
+
+                <label>Jenis</label>
+                <select name="jenis" required>
+                    <option value="masuk">Masuk</option>
+                    <option value="keluar">Keluar</option>
+                </select>
+
+                <label>Jumlah</label>
+                <input type="number" name="jumlah" required>
+
+                <label>Keterangan</label>
+                <textarea name="keterangan"></textarea>
+
+                <button type="submit">Update</button>
+                <button type="button" onclick="closeModal('modalEdit')">Batal</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Alert -->
+    <div id="alertBox" class="alert-box"></div>
+
+    <script>
+        function openModal(id) {
+            document.getElementById(id).style.display = 'flex';
+        }
+
+        function closeModal(id) {
+            document.getElementById(id).style.display = 'none';
+        }
+
+        function showAlert(message, type) {
+            let alertBox = document.getElementById("alertBox");
+            alertBox.textContent = message;
+            alertBox.className = `alert-box alert-${type}`;
+            alertBox.style.display = 'block';
+            setTimeout(() => {
+                alertBox.style.display = 'none';
+            }, 3000);
+        }
+
+        $(document).ready(function () {
+            let table = $('#kasTable').DataTable({
+                "lengthMenu": [[10, 20, 25, 50, 75, 100], [10, 20, 25, 50, 75, 100]], // opsi jumlah data tampil
+                "order": [[4, "desc"]], // sorting default berdasarkan kolom Tanggal (index 4 dimulai dari 0)
+                "columnDefs": [
+                    { "orderable": false, "targets": 6 } // kolom aksi tidak bisa di sort
+                ],
+                "language": {
+                    "search": "Cari: ",
+                    "lengthMenu": "Tampilkan _MENU_ data",
+                    "zeroRecords": "Data tidak ditemukan",
+                    "info": "Menampilkan _START_ sampai _END_ dari _TOTAL_ data",
+                    "infoEmpty": "Tidak ada data tersedia",
+                    "infoFiltered": "(disaring dari _MAX_ total data)"
+                }
+            });
+
+            // Tambah
+            $('#formTambah').submit(function (e) {
+                e.preventDefault();
+                $.post("{{ route('uang_kas.store') }}", $(this).serialize(), function (res) {
+                    if (res.success) {
+                        table.row.add([
+                            table.rows().count() + 1,
+                            res.data.jumlahkas,
+                            res.data.idparameterkas,
+                            res.data.type,
+                            res.data.tanggal,
+                            res.data.keterangan ?? '',
+                            `<button class="btn btn-sm btn-warning btnEdit">Edit</button>
+                     <button class="btn btn-sm btn-danger btnHapus">Hapus</button>`
+                        ]).draw();
+                        closeModal('modalTambah');
+                        $('#formTambah')[0].reset();
+                        showAlert("Data berhasil ditambahkan!", "success");
+                    } else {
+                        showAlert("Gagal menambahkan data!", "error");
+                    }
+                });
+            });
+
+
+            // Edit - tampilkan
+            $('#kasTable').on('click', '.btnEdit', function () {
+                let tr = $(this).closest('tr');
+                $('#formEdit [name=id]').val(tr.data('id'));
+                $('#formEdit [name=jumlahkas]').val(tr.find('td:eq(1)').text());
+                $('#formEdit [name=idparameterkas]').val(tr.find('td:eq(2)').text());
+                $('#formEdit [name=type]').val(tr.find('td:eq(3)').text());
+                $('#formEdit [name=tanggal]').val(tr.find('td:eq(4)').text());
+                $('#formEdit [name=keterangan]').val(tr.find('td:eq(5)').text());
+                openModal('modalEdit');
+            });
+
+            // Edit - kirim
+            $('#formEdit').submit(function (e) {
+                e.preventDefault();
+                let id = $('#formEdit [name=id]').val();
+                $.post("/uang-kas/" + id, $(this).serialize() + '&_method=PUT', function (res) {
+                    if (res.success) {
+                        let tr = $('#kasTable tr[data-id="' + id + '"]');
+                        table.row(tr).data([
+                            tr.find('td:eq(0)').text(),
+                            res.data.jumlahkas,
+                            res.data.idparameterkas,
+                            res.data.type,
+                            res.data.tanggal,
+                            res.data.keterangan ?? '',
+                            `<button class="btn btn-sm btn-warning btnEdit">Edit</button>
+                     <button class="btn btn-sm btn-danger btnHapus">Hapus</button>`
+                        ]).draw();
+                        closeModal('modalEdit');
+                        showAlert("Data berhasil diupdate!", "success");
+                    } else {
+                        showAlert("Gagal update data!", "error");
+                    }
+                });
+            });
+
+            // Hapus
+            $('#kasTable').on('click', '.btnHapus', function () {
+                if (confirm('Yakin hapus data ini?')) {
+                    let tr = $(this).closest('tr');
+                    let id = tr.data('id');
+                    $.post("/uang-kas/" + id, { _method: 'DELETE', _token: '{{ csrf_token() }}' }, function (res) {
+                        if (res.success) {
+                            table.row(tr).remove().draw();
+                            showAlert("Data berhasil dihapus!", "success");
+                        } else {
+                            showAlert("Gagal menghapus data!", "error");
+                        }
+                    });
+                }
+            });
+        });
+    </script>
 </body>
+
 </html>

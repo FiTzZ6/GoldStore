@@ -1,20 +1,19 @@
 <?php
-namespace App\Http\Controllers;
 
+namespace App\Http\Controllers\uang_kas;
+
+use App\Http\Controllers\Controller;
 use App\Models\Kas;
 use Illuminate\Http\Request;
+use App\Models\ParameterKas; 
 
 class KasController extends Controller
 {
     public function index()
     {
         $kas = Kas::orderBy('tanggal', 'desc')->get();
-        return view('uang_kas.uang_kas', compact('kas'));
-    }
-
-    public function create()
-    {
-        return view('kas.create');
+        $parameterKasList = ParameterKas::all();
+        return view('uang_kas.uang_kas', compact('kas', 'parameterKasList'));
     }
 
     public function store(Request $request)
@@ -27,26 +26,31 @@ class KasController extends Controller
             'keterangan' => 'nullable|string'
         ]);
 
-        Kas::create($request->all());
-        return redirect()->route('uang_kas.uang_kas')->with('success', 'Data kas berhasil ditambahkan');
-    }
+        $kas = Kas::create($request->all());
 
-    public function edit($id)
-    {
-        $kas = Kas::findOrFail($id);
-        return view('kas.edit', compact('kas'));
+        return response()->json(['success' => true, 'data' => $kas]);
     }
 
     public function update(Request $request, $id)
     {
+        $request->validate([
+            'jumlahkas' => 'required|numeric',
+            'idparameterkas' => 'required|string',
+            'type' => 'required|string',
+            'tanggal' => 'required|date',
+            'keterangan' => 'nullable|string'
+        ]);
+
         $kas = Kas::findOrFail($id);
         $kas->update($request->all());
-        return redirect()->route('uang_kas.uang_kas')->with('success', 'Data kas berhasil diperbarui');
+
+        return response()->json(['success' => true, 'data' => $kas]);
     }
 
     public function destroy($id)
     {
         Kas::destroy($id);
-        return redirect()->route('uang_kas.uang_kas')->with('success', 'Data kas berhasil dihapus');
+
+        return response()->json(['success' => true]);
     }
 }
