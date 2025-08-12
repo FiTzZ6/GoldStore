@@ -347,7 +347,7 @@
                         <a href="#">Akun <span style="float: right;"></span></a>
                         <ul class="dropdown-menu-1">
                             @if(session('typeuser') == 1)
-                                <li><a href="{{ route('utility.table_akun') }}">Akun</a></li>
+                                <li><a href="{{ route('utility.akun.table_akun') }}">Akun</a></li>
                             @endif
                             <li><a href="#">Profil</a></li>
                         </ul>
@@ -366,7 +366,7 @@
                     <li><a href="#">Tukar Koin</a></li>
                     <li><a href="#">Tukar Rupiah</a></li>
                     @if(session('typeuser') == 1)
-                        <li><a href="{{ route('utility.company_profile') }}">Profil Perusahaan</a></li>
+                        <li><a href="{{ route('utility.company.company_profile') }}">Profil Perusahaan</a></li>
                     @endif
                     <li><a href="#">Backup Data</a></li>
                     <li><a href="#">Dokumen</a></li>

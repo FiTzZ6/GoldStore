@@ -2,14 +2,14 @@
 <html lang="id">
 <head>
     <meta charset="UTF-8">
+    <link rel="stylesheet" href="{{ asset('css/utility/company/company_profile.css') }}">
     <link href="https://fonts.googleapis.com/css?family=Montserrat:400,800" rel="stylesheet">
     <title>Halaman Utility</title>
 </head>
 <body>
     @include('partials.navbar')
-
     <div class="form-container">
-        <form action="{{ route('utility.set_up_company') }}" method="POST" enctype="multipart/form-data">
+        <form action="{{ route('utility.company.set_up_company') }}" method="POST" enctype="multipart/form-data">
             @csrf
             <div class="form-grid">
                 <!-- Kolom Kiri -->

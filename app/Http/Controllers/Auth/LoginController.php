@@ -115,7 +115,7 @@ class LoginController extends Controller
     public function listAkun()
     {
         $users = UserModel::with('userTypeData')->get();
-        return view('utility.table_akun', compact('users'));
+        return view('utility.akun.table_akun', compact('users'));
     }
     // Form tambah akun
     public function createAkun()
@@ -135,7 +135,7 @@ class LoginController extends Controller
             'kdtoko' => 'required|integer',
         ]);
         if ($validator->fails()) {
-            return redirect()->route('utility.table_akun')
+            return redirect()->route('utility.akun.table_akun')
                 ->with([
                     'msg' => 'password kamu kurang harusnya 6, kamu tidak memnuhi kriteria!',
                     'status' => 'error'
@@ -152,13 +152,13 @@ class LoginController extends Controller
         ]);
 
         if ($user) {
-            return redirect()->route('utility.table_akun')->with([
+            return redirect()->route('utility.akun.table_akun')->with([
                 'msg' => 'Yeay Akun kamu telah berhasil dibuat!',
                 'status' => 'success'
             ]);
         }
 
-        return redirect()->route('utility.table_akun')->with([
+        return redirect()->route('utility.akun.table_akun')->with([
             'msg' => 'Gagal menambahkan akun!',
             'status' => 'error'
         ]);
@@ -169,7 +169,7 @@ class LoginController extends Controller
     {
         $user = UserModel::findOrFail($id);
         $usertypes = UserType::all();
-        return view('utility.edit_akun', compact('user', 'usertypes'));
+        return view('utility.akun.table_akun', compact('user', 'usertypes'));
     }
 
     // Update akun
@@ -199,13 +199,13 @@ class LoginController extends Controller
         $user->update($data);
 
         if ($user) {
-            return redirect()->route('utility.table_akun')->with([
+            return redirect()->route('utility.akun.table_akun')->with([
                 'msg' => 'Akun berhasil diEdit!',
                 'status' => 'success'
             ]);
         }
 
-        return redirect()->route('utility.table_akun')->with([
+        return redirect()->route('utility.akun.table_akun')->with([
             'msg' => 'Gagal mengedit table!',
             'status' => 'error'
         ]);
@@ -216,13 +216,13 @@ class LoginController extends Controller
     {
         $user = UserModel::findOrFail($id)->delete();
         if ($user) {
-            return redirect()->route('utility.table_akun')->with([
+            return redirect()->route('utility.akun.table_akun')->with([
                 'msg' => 'Akun berhasil dihapus!',
                 'status' => 'success'
             ]);
         }
 
-        return redirect()->route('utility.table_akun')->with([
+        return redirect()->route('utility.akun.table_akun')->with([
             'msg' => 'Gagal menghapus table kamu!',
             'status' => 'error'
         ]);

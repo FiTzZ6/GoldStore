@@ -24,13 +24,13 @@ Route::get('/jual', [JualController::class, 'index'])->name('jual.index');
 
 Route::get('/laporan/dashboard', [LaporanController::class, 'dashboard'])->name('laporan.dashboard');
 
-Route::get('/utility', [UtilityController::class, 'index'])->name('utility.company_profile');
+Route::get('/utility', [UtilityController::class, 'index'])->name('utility.company.company_profile');
 Route::get('/utility/company-profile', [UtilityController::class, 'companyProfile'])
-    ->name('utility.company_profile');
+    ->name('utility.company.company_profile');
 Route::post('/utility/company-profile', [UtilityController::class, 'setUpCompany'])
-    ->name('utility.set_up_company');
+    ->name('utility.company.set_up_company');
 
-Route::get('/utility/akun', [LoginController::class, 'listAkun'])->name('utility.table_akun');
+Route::get('/utility/akun', [LoginController::class, 'listAkun'])->name('utility.akun.table_akun');
 Route::get('/utility/akun/create', [LoginController::class, 'createAkun'])->name('user.create');
 Route::post('/utility/akun', [LoginController::class, 'storeAkun'])->name('user.store');
 Route::get('/utility/akun/{id}/edit', [LoginController::class, 'editAkun'])->name('user.edit');
