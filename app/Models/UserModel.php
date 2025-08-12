@@ -14,5 +14,10 @@ class UserModel extends Model
     protected $fillable = [
         'name', 'username', 'password', 'usertype', 'kdtoko', 'createddate'
     ];
+
+     public function userTypeData()
+    {
+        return $this->belongsTo(UserType::class, 'usertype', 'usertypeid');
+    }
 }
 

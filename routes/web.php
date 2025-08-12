@@ -30,6 +30,15 @@ Route::get('/utility/company-profile', [UtilityController::class, 'companyProfil
 Route::post('/utility/company-profile', [UtilityController::class, 'setUpCompany'])
     ->name('utility.set_up_company');
 
+Route::get('/utility/akun', [LoginController::class, 'listAkun'])->name('utility.table_akun');
+Route::get('/utility/akun/create', [LoginController::class, 'createAkun'])->name('user.create');
+Route::post('/utility/akun', [LoginController::class, 'storeAkun'])->name('user.store');
+Route::get('/utility/akun/{id}/edit', [LoginController::class, 'editAkun'])->name('user.edit');
+Route::put('/utility/akun/{id}', [LoginController::class, 'updateAkun'])->name('user.update');
+Route::delete('/utility/akun/{id}', [LoginController::class, 'destroyAkun'])->name('user.destroy');
+
+
+
 Route::get('/datamaster/area', [DataController::class, 'area'])->name('datamaster.area');
 
 Route::get('/', function () {

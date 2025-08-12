@@ -2,7 +2,6 @@
 <html lang="id">
 <head>
     <meta charset="UTF-8">
-    <link rel="stylesheet" href="{{ asset('css/cmpny_prfl.css') }}">
     <link href="https://fonts.googleapis.com/css?family=Montserrat:400,800" rel="stylesheet">
     <title>Halaman Utility</title>
 </head>

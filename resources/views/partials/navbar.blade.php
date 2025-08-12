@@ -347,7 +347,7 @@
                         <a href="#">Akun <span style="float: right;"></span></a>
                         <ul class="dropdown-menu-1">
                             @if(session('typeuser') == 1)
-                                <li><a href="#">Akun</a></li>
+                                <li><a href="{{ route('utility.table_akun') }}">Akun</a></li>
                             @endif
                             <li><a href="#">Profil</a></li>
                         </ul>

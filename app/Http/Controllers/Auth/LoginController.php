@@ -8,8 +8,9 @@ use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use App\Models\UserModel;
+use Illuminate\Support\Facades\Validator;
 
-class LoginController extends Controller    
+class LoginController extends Controller
 {
     public function index()
     {
@@ -59,7 +60,7 @@ class LoginController extends Controller
                     case 5:
                         return redirect()->route('barang.index');
                     case 6:
-                        return redirect()->route('jual.index');
+                        return redirect()->route('laporan.dashboard');
                     case 9:
                         return redirect()->route('beli.index');
                     default:
@@ -109,5 +110,121 @@ class LoginController extends Controller
     {
         Session::flush();
         return redirect()->route('login')->with('logout_notification', 'logged_out');
+    }
+
+    public function listAkun()
+    {
+        $users = UserModel::with('userTypeData')->get();
+        return view('utility.table_akun', compact('users'));
+    }
+    // Form tambah akun
+    public function createAkun()
+    {
+        $usertypes = UserType::all();
+        return view('utility.create_akun', compact('usertypes'));
+    }
+
+    // Simpan akun baru
+    public function storeAkun(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'name' => 'required|string',
+            'username' => 'required|unique:user,username',
+            'password' => 'required|min:6',
+            'usertype' => 'required|integer',
+            'kdtoko' => 'required|integer',
+        ]);
+        if ($validator->fails()) {
+            return redirect()->route('utility.table_akun')
+                ->with([
+                    'msg' => 'password kamu kurang harusnya 6, kamu tidak memnuhi kriteria!',
+                    'status' => 'error'
+                ]);
+        }
+
+        $user = UserModel::create([
+            'name' => $request->name,
+            'username' => $request->username,
+            'password' => Hash::make($request->password),
+            'usertype' => $request->usertype,
+            'kdtoko' => $request->kdtoko,
+            'createddate' => now(),
+        ]);
+
+        if ($user) {
+            return redirect()->route('utility.table_akun')->with([
+                'msg' => 'Yeay Akun kamu telah berhasil dibuat!',
+                'status' => 'success'
+            ]);
+        }
+
+        return redirect()->route('utility.table_akun')->with([
+            'msg' => 'Gagal menambahkan akun!',
+            'status' => 'error'
+        ]);
+    }
+
+    // Form edit akun
+    public function editAkun($id)
+    {
+        $user = UserModel::findOrFail($id);
+        $usertypes = UserType::all();
+        return view('utility.edit_akun', compact('user', 'usertypes'));
+    }
+
+    // Update akun
+    public function updateAkun(Request $request, $id)
+    {
+        $user = UserModel::findOrFail($id);
+
+        $request->validate([
+            'name' => 'required|string',
+            'username' => 'required|unique:user,username,' . $id . ',kduser',
+            'password' => 'nullable|min:6',
+            'usertype' => 'required|integer',
+            'kdtoko' => 'required|integer',
+        ]);
+
+        $data = [
+            'name' => $request->name,
+            'username' => $request->username,
+            'usertype' => $request->usertype,
+            'kdtoko' => $request->kdtoko,
+        ];
+
+        if ($request->filled('password')) {
+            $data['password'] = Hash::make($request->password);
+        }
+
+        $user->update($data);
+
+        if ($user) {
+            return redirect()->route('utility.table_akun')->with([
+                'msg' => 'Akun berhasil diEdit!',
+                'status' => 'success'
+            ]);
+        }
+
+        return redirect()->route('utility.table_akun')->with([
+            'msg' => 'Gagal mengedit table!',
+            'status' => 'error'
+        ]);
+    }
+
+    // Hapus akun
+    public function destroyAkun($id)
+    {
+        $user = UserModel::findOrFail($id)->delete();
+        if ($user) {
+            return redirect()->route('utility.table_akun')->with([
+                'msg' => 'Akun berhasil dihapus!',
+                'status' => 'success'
+            ]);
+        }
+
+        return redirect()->route('utility.table_akun')->with([
+            'msg' => 'Gagal menghapus table kamu!',
+            'status' => 'error'
+        ]);
     }
 }
