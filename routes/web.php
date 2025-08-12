@@ -11,6 +11,7 @@ use App\Http\Controllers\PesananController;
 use App\Http\Controllers\ServisController;
 use App\Http\Controllers\BeliController;
 use App\Http\Controllers\JualController;
+use App\Http\Controllers\uang_kas\KasController;
 
 Route::get('/login', [LoginController::class, 'index'])->name('login');
 Route::post('/login', [LoginController::class, 'masuk'])->name('login.masuk');
@@ -37,6 +38,8 @@ Route::get('/utility/akun/{id}/edit', [LoginController::class, 'editAkun'])->nam
 Route::put('/utility/akun/{id}', [LoginController::class, 'updateAkun'])->name('user.update');
 Route::delete('/utility/akun/{id}', [LoginController::class, 'destroyAkun'])->name('user.destroy');
 
+
+Route::resource('kas', uang_kas\KasController::class);
 
 
 Route::get('/datamaster/area', [DataController::class, 'area'])->name('datamaster.area');
