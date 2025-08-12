@@ -109,7 +109,7 @@ html, body {
 }
 
 .menu li ul li.has-submenu > a::after {
-    content: "▶"; /* panah kanan */
+    content: "▶";
     float: right;
     margin-left: 5px;
     font-size: 10px;
@@ -136,13 +136,10 @@ html, body {
     white-space: nowrap;
 }
 
-
-/* Ikon dropdown (opsional) */
 .fas {
     margin-left: 5px;
 }
 
-/* Icon container */
 .navbar-icons {
     display: flex;
     gap: 15px;
