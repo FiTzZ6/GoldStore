@@ -1,7 +1,10 @@
 .container-pp {
+    max-width: 1400px;
+    margin: 40px auto;
     background: #fff;
+    border-radius: 6px;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.1);
     padding: 20px;
-    border-radius: 10px;
 }
 
 .header-pp {
@@ -24,6 +27,29 @@
 }
 .btn-primary:hover {
     background: #0056b3;
+}
+
+.icon-group {
+    display: flex;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    overflow: hidden;
+}
+
+.icon-group button {
+    border: none;
+    border-right: 1px solid #ccc;
+    background: white;
+    cursor: pointer;
+    padding: 6px 10px;
+}
+
+.icon-group button:last-child {
+    border-right: none;
+}
+
+.icon-group button:hover {
+    background: #f0f0f0;
 }
 
 .filter-section {
