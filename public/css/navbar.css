@@ -130,8 +130,8 @@ body {
     position: relative;
 }
 
-.menu li ul li.has-submenu>a::after {
-    content: "▶";
+.menu li ul li.has-submenu > a::after {
+    content: "▶"; /* panah kanan */
     float: right;
     margin-left: 5px;
     font-size: 10px;

@@ -2,71 +2,70 @@
 <html lang="id">
 <head>
     <meta charset="UTF-8">
-    <link rel="stylesheet" href="{{ asset('css/area.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/datamaster/area.css') }}">
     <link href="https://fonts.googleapis.com/css?family=Montserrat:400,800" rel="stylesheet">
     <title>Halaman Area</title>
 </head>
 <body>
     @include('partials.navbar')
+<div class="container">
+    <h1>DAFTAR AREA</h1>
 
-    <div class="card">
-        <div class="card-header">
-            <h2>DAFTAR AREA</h2>
+    <div class="top-bar">
+        <div class="left-controls">
+            <select>
+                <option>Export Basic</option>
+            </select>
+            <button class="btn-primary">+ Tambah Area</button>
         </div>
-        <div class="card-body">
-            <div class="toolbar">
-                <div class="left-tools">
-                    <select class="export-select">
-                        <option>Export Basic</option>
-                        <option>Excel</option>
-                        <option>PDF</option>
-                    </select>
-                    <button class="btn-primary">
-                        <i class="fa fa-plus"></i> Tambah Area
-                    </button>
-                </div>
-                <div class="search-container">
-                    <input type="text" placeholder="Search">
-                    <button><i class="fa fa-search"></i></button>
-                </div>
+        <div style="display:flex; align-items:center; gap:6px;">
+            <div class="icon-group">
+                <button title="Sorting"><i class="fas fa-sort"></i></button>
+                <button title="Refresh"><i class="fas fa-sync"></i></button>
+                <button title="Tampilan List"><i class="fas fa-list"></i></button>
+                <button title="Tampilan Grid"><i class="fas fa-th"></i></button>
+                <button title="Export"><i class="fas fa-file-export"></i></button>
             </div>
-
-
-            <table class="data-table">
-                <thead>
-                    <tr>
-                        <th><input type="checkbox"></th>
-                        <th>Kode Area</th>
-                        <th>Nama Area</th>
-                        <th>Action</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td><input type="checkbox"></td>
-                        <td>DSA</td>
-                        <td>SDSD</td>
-                        <td>
-                            <button class="btn-edit"><i class="fa fa-pen"></i></button>
-                            <button class="btn-delete"><i class="fa fa-trash"></i></button>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td><input type="checkbox"></td>
-                        <td>PBG</td>
-                        <td>PURBALINGGA</td>
-                        <td>
-                            <button class="btn-edit"><i class="fa fa-pen"></i></button>
-                            <button class="btn-delete"><i class="fa fa-trash"></i></button>
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
-            <div class="table-footer">
-                Showing 1 to 2 of 2 rows
-            </div>
+            <input type="text" placeholder="Search">
         </div>
     </div>
+
+    <table>
+        <thead>
+            <tr>
+                <th><input type="checkbox"></th>
+                <th>Kode Area</th>
+                <th>Nama Area</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td><input type="checkbox"></td>
+                <td>DSA</td>
+                <td>SDSD</td>
+                <td>
+                    <button class="action-btn"><i class="fa-solid fa-pen-to-square"></i></button>
+                    <button class="action-btn"><i class="fas fa-trash"></i></button>
+                </td>
+            </tr>
+            <tr>
+                <td><input type="checkbox"></td>
+                <td>PBG</td>
+                <td>PURBALINGGA</td>
+                <td>
+                    <button class="action-btn"><i class="fa-solid fa-pen-to-square"></i></button>
+                    <button class="action-btn"><i class="fas fa-trash"></i></button>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+
+    <div class="footer">
+        SKIBIDI
+    </div>
+</div>
+
 </body>
 </html>
 
