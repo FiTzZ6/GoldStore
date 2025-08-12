@@ -336,7 +336,7 @@
                         <li class="has-submenu">
                             <a href="#">Permintaan Pembelian <span style="float: right;"></span></a>
                             <ul class="dropdown-menu-1">
-                                <li><a href="#">Formulir PP</a></li>
+                                <li><a href="{{ route('utility.permintaan_pembelian.index') }}">Formulir PP</a></li>
                                 <li><a href="#">Riwayat PP</a></li>
                             </ul>
                         </li>

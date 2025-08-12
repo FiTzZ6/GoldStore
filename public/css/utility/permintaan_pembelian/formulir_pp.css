@@ -1,0 +1,72 @@
+/* Reset dasar */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* Container halaman */
+.container {
+    width: 95%;
+    margin: 20px auto;
+    font-family: Arial, sans-serif;
+}
+
+/* Tabel PP */
+.table-pp {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+    background: #fff;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+}
+
+.table-pp thead {
+    background-color: #007bff;
+    color: white;
+}
+
+.table-pp th,
+.table-pp td {
+    padding: 12px 15px;
+    border: 1px solid #ddd;
+    text-align: center;
+}
+
+.table-pp tbody tr:nth-child(even) {
+    background-color: #f9f9f9;
+}
+
+.table-pp tbody tr:hover {
+    background-color: #f1f1f1;
+}
+
+/* Tombol icon */
+.btn-icon {
+    display: inline-block;
+    padding: 6px 8px;
+    margin: 0 2px;
+    border: none;
+    border-radius: 4px;
+    background: #007bff;
+    color: white;
+    text-decoration: none;
+    transition: background 0.3s ease;
+}
+
+.btn-icon:hover {
+    background: #0056b3;
+}
+
+.btn-icon i {
+    font-size: 14px;
+}
+
+/* Tombol delete merah */
+form .btn-icon {
+    background: #dc3545;
+}
+
+form .btn-icon:hover {
+    background: #a71d2a;
+}

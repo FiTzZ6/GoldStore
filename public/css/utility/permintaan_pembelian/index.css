@@ -1,0 +1,82 @@
+.container-pp {
+    background: #fff;
+    padding: 20px;
+    border-radius: 10px;
+}
+
+.header-pp {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 15px;
+}
+.header-pp h1 {
+    font-size: 20px;
+    margin: 0;
+}
+.btn-primary {
+    background: #007bff;
+    color: white;
+    padding: 8px 12px;
+    border-radius: 5px;
+    text-decoration: none;
+    font-size: 14px;
+}
+.btn-primary:hover {
+    background: #0056b3;
+}
+
+.filter-section {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 15px;
+}
+.select-export {
+    padding: 6px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+}
+.search-box {
+    display: flex;
+}
+.search-box input {
+    border: 1px solid #ddd;
+    padding: 6px;
+    border-radius: 5px 0 0 5px;
+}
+.search-box .btn-icon {
+    background: #f8f9fa;
+    border: 1px solid #ddd;
+    padding: 6px 10px;
+    border-radius: 0 5px 5px 0;
+    cursor: pointer;
+}
+
+.table-pp {
+    width: 100%;
+    border-collapse: collapse;
+}
+.table-pp th, .table-pp td {
+    padding: 10px;
+    border: 1px solid #ddd;
+    text-align: center;
+}
+.table-pp th {
+    background: #f8f9fa;
+}
+.no-data {
+    text-align: center;
+    color: #999;
+}
+
+.btn-icon {
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 4px;
+    font-size: 14px;
+    color: #333;
+}
+.btn-icon:hover {
+    color: #007bff;
+}
