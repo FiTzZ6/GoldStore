@@ -7,14 +7,17 @@
     <title>Halaman Area</title>
 </head>
 <body>
-    @include('partials.navbar')
+
+<h1 class="page-title">DAFTAR CABANG</h1>
+
 <div class="container">
-    <h1>DAFTAR CABANG</h1>
 
     <div class="top-bar">
         <div class="left-controls">
             <select>
                 <option>Export Basic</option>
+                <option>Export Basic</option>
+                
             </select>
             <button class="btn-primary">+ Tambah Area</button>
         </div>
@@ -34,8 +37,10 @@
         <thead>
             <tr>
                 <th><input type="checkbox"></th>
-                <th>Kode Area</th>
-                <th>Nama Area</th>
+                <th>Kode Cabang</th>
+                <th>Nama Cabang</th>
+                <th>Alamat</th>
+                <th>Area</th>
                 <th>Action</th>
             </tr>
         </thead>
@@ -44,15 +49,8 @@
                 <td><input type="checkbox"></td>
                 <td>DSA</td>
                 <td>SDSD</td>
-                <td>
-                    <button class="action-btn"><i class="fa-solid fa-pen-to-square"></i></button>
-                    <button class="action-btn"><i class="fas fa-trash"></i></button>
-                </td>
-            </tr>
-            <tr>
-                <td><input type="checkbox"></td>
-                <td>PBG</td>
-                <td>PURBALINGGA</td>
+                <td>Jl. Raya Purbalingga No. 123</td>
+                <td>Area 1</td>
                 <td>
                     <button class="action-btn"><i class="fa-solid fa-pen-to-square"></i></button>
                     <button class="action-btn"><i class="fas fa-trash"></i></button>
