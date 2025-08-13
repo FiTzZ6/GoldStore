@@ -45,17 +45,12 @@ Route::get('/formulir-pp/create', [UtilityController::class, 'create'])->name('f
 Route::post('/utility/permintaan-pembelian/kirim', [UtilityController::class, 'kirimPP'])
     ->name('utility.kirim_pp');
 
-
-
 Route::prefix('uang-kas')->name('uang_kas.')->group(function () {
     Route::get('/', [KasController::class, 'index'])->name('index');
-    Route::get('/create', [KasController::class, 'create'])->name('create');
     Route::post('/', [KasController::class, 'store'])->name('store');
-    Route::get('/{id}/edit', [KasController::class, 'edit'])->name('edit');
     Route::put('/{id}', [KasController::class, 'update'])->name('update');
     Route::delete('/{id}', [KasController::class, 'destroy'])->name('destroy');
 });
-
 
 
 Route::get('/datamaster/area', [DataController::class, 'area'])->name('datamaster.area');
