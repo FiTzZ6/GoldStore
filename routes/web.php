@@ -54,6 +54,8 @@ Route::prefix('uang-kas')->name('uang_kas.')->group(function () {
 
 
 Route::get('/datamaster/area', [DataController::class, 'area'])->name('datamaster.area');
+Route::get('/datamaster/cabang', [DataController::class, 'cabang'])->name('datamaster.cabang');
+
 
 Route::get('/', function () {
     return view('login');

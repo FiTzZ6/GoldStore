@@ -15,6 +15,8 @@
         <div class="left-controls">
             <select>
                 <option>Export Basic</option>
+                <option>Export Excel</option>
+                <option>Export PDF</option>
             </select>
             <button class="btn-primary">+ Tambah Area</button>
         </div>
