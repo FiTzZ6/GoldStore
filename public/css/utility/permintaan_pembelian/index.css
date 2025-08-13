@@ -29,6 +29,29 @@
     background: #0056b3;
 }
 
+.icon-group {
+    display: flex;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    overflow: hidden;
+}
+
+.icon-group button {
+    border: none;
+    border-right: 1px solid #ccc;
+    background: white;
+    cursor: pointer;
+    padding: 6px 10px;
+}
+
+.icon-group button:last-child {
+    border-right: none;
+}
+
+.icon-group button:hover {
+    background: #f0f0f0;
+}
+
 .filter-section {
     display: flex;
     justify-content: space-between;

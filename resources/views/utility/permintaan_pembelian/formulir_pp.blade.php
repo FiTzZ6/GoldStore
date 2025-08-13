@@ -15,16 +15,16 @@
     
     <div class="card mb-4">
         <div class="card-body">
-            <p><strong>No. PP:</strong> {{ $nopp }}</p>
+            <p><strong>No. PP:</strong> {{ $nopp ?? '-' }}</p>
             <p><strong>Nama Toko:</strong> {{ $detailToko->nama_toko ?? '-' }}</p>
             <p><strong>Alamat:</strong> {{ $detailToko->alamat ?? '-' }}</p>
         </div>
     </div>
 
     {{-- Form --}}
-    <form action="{{ route('kirimPP') }}" method="POST">
+    <form action="{{ route('utility.kirim_pp') }}" method="POST">
         @csrf
-        <input type="hidden" name="no_pp" value="{{ $nopp }}">
+        <input type="hidden" name="no_pp" value="{{ $nopp ?? '' }}">
         <input type="hidden" name="id_toko" value="{{ $detailToko->id_toko ?? '' }}">
 
         {{-- Tanggal --}}
@@ -60,7 +60,7 @@
         {{-- Tombol Submit --}}
         <div>
             <button type="submit" class="btn btn-success">Kirim PP</button>
-            <a href="{{ route('pp.index') }}" class="btn btn-secondary">Batal</a>
+            <a href="{{ route('utility.permintaan_pembelian.index') }}" class="btn btn-secondary">Batal</a>
         </div>
     </form>
 </div>

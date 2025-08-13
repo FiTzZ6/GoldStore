@@ -13,19 +13,19 @@
 
     <!-- Judul dan Tombol -->
     <div class="header-pp">
+        <h1>Formulir Permintaan Pembelian</h1>
         <a href="{{ route('formulir_pp.index') }}" class="btn-primary">
             <i class="fa fa-plus"></i> Formulir Permintaan Pembelian
         </a>
     </div>
 
-
-<!-- Filter Export -->
-<div class="filter-section">
-    <select class="select-export">
-        <option>Export Basic</option>
-        <option>Export Excel</option>
-        <option>Export PDF</option>
-    </select>
+    <!-- Filter Export -->
+    <div class="filter-section">
+        <select class="select-export">
+            <option>Export Basic</option>
+            <option>Export Excel</option>
+            <option>Export PDF</option>
+        </select>
 
     <div class="right-tools">
         <div class="icon-group">
@@ -37,9 +37,9 @@
         </div>
         <div class="search-box">
             <input type="text" placeholder="Search">
+            <button class="btn-icon"><i class="fa fa-search"></i></button>
         </div>
     </div>
-</div>
 
 
     <!-- Tabel Data -->
