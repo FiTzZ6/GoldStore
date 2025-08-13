@@ -5,67 +5,132 @@
     <link rel="stylesheet" href="{{ asset('css/datamaster/area.css') }}">
     <link href="https://fonts.googleapis.com/css?family=Montserrat:400,800" rel="stylesheet">
     <title>Halaman Area</title>
+
+    {{-- DataTables CSS --}}
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css">
+    <link rel="stylesheet" href="https://cdn.datatables.net/buttons/2.4.2/css/buttons.dataTables.min.css">
+
+    <script src="https://kit.fontawesome.com/a076d05399.js"></script>
 </head>
 <body>
     @include('partials.navbar')
-<div class="container">
-    <h1>DAFTAR AREA</h1>
 
-    <div class="top-bar">
-        <div class="left-controls">
-            <select>
-                <option>Export Basic</option>
-            </select>
-            <button class="btn-primary">+ Tambah Area</button>
-        </div>
-        <div style="display:flex; align-items:center; gap:6px;">
-            <div class="icon-group">
-                <button title="Sorting"><i class="fas fa-sort"></i></button>
-                <button title="Refresh"><i class="fas fa-sync"></i></button>
-                <button title="Tampilan List"><i class="fas fa-list"></i></button>
-                <button title="Tampilan Grid"><i class="fas fa-th"></i></button>
-                <button title="Export"><i class="fas fa-file-export"></i></button>
+    <div class="container">
+        <h1>DAFTAR AREA</h1>
+
+        {{-- Alert sukses --}}
+        @if(session('success'))
+            <div style="padding:10px; background: #d4edda; color:#155724; margin-bottom:15px; border-radius:5px;">
+                {{ session('success') }}
             </div>
-            <input type="text" placeholder="Search">
+        @endif
+
+        <div class="top-bar">
+            <div class="left-controls">
+                <button class="btn-primary" onclick="openModal('modalTambah')">+ Tambah Area</button>
+            </div>
+        </div>
+
+        <table id="tabelArea" class="display">
+            <thead>
+                <tr>
+                    <th>Kode Area</th>
+                    <th>Nama Area</th>
+                    <th>Aksi</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach($areas as $area)
+                    <tr>
+                        <td>{{ $area->kdarea }}</td>
+                        <td>{{ $area->namaarea }}</td>
+                        <td>
+                            <button onclick="editArea('{{ $area->kdarea }}', '{{ $area->namaarea }}')">Edit</button>
+                            <button onclick="hapusArea('{{ $area->kdarea }}')">Hapus</button>
+                        </td>
+                    </tr>
+                @endforeach
+            </tbody>
+        </table>
+    </div>
+
+    {{-- Modal Tambah --}}
+    <div id="modalTambah" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal('modalTambah')">&times;</span>
+            <h2>Tambah Area</h2>
+            <form action="{{ route('datamaster.store') }}" method="POST">
+                @csrf
+                <label>Kode Area</label>
+                <input type="text" name="kdarea" required>
+                <label>Nama Area</label>
+                <input type="text" name="namaarea">
+                <button type="submit">Simpan</button>
+            </form>
         </div>
     </div>
 
-    <table>
-        <thead>
-            <tr>
-                <th><input type="checkbox"></th>
-                <th>Kode Area</th>
-                <th>Nama Area</th>
-                <th>Action</th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr>
-                <td><input type="checkbox"></td>
-                <td>DSA</td>
-                <td>SDSD</td>
-                <td>
-                    <button class="action-btn"><i class="fa-solid fa-pen-to-square"></i></button>
-                    <button class="action-btn"><i class="fas fa-trash"></i></button>
-                </td>
-            </tr>
-            <tr>
-                <td><input type="checkbox"></td>
-                <td>PBG</td>
-                <td>PURBALINGGA</td>
-                <td>
-                    <button class="action-btn"><i class="fa-solid fa-pen-to-square"></i></button>
-                    <button class="action-btn"><i class="fas fa-trash"></i></button>
-                </td>
-            </tr>
-        </tbody>
-    </table>
-
-    <div class="footer">
-        SKIBIDI
+    {{-- Modal Edit --}}
+    <div id="modalEdit" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal('modalEdit')">&times;</span>
+            <h2>Edit Area</h2>
+            <form id="formEdit" method="POST">
+                @csrf
+                <label>Nama Area</label>
+                <input type="text" name="namaarea" id="editNamaArea">
+                <button type="submit">Update</button>
+            </form>
+        </div>
     </div>
-</div>
 
+    {{-- Modal Hapus --}}
+    <div id="modalHapus" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal('modalHapus')">&times;</span>
+            <h2>Hapus Area</h2>
+            <p>Yakin ingin menghapus area ini?</p>
+            <form id="formHapus" method="POST">
+                @csrf
+                @method('DELETE')
+                <button type="submit">Hapus</button>
+            </form>
+        </div>
+    </div>
+
+    {{-- jQuery & DataTables --}}
+    <script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
+    <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
+
+    {{-- DataTables Buttons --}}
+    <script src="https://cdn.datatables.net/buttons/2.4.2/js/dataTables.buttons.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.7/pdfmake.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.7/vfs_fonts.js"></script>
+    <script src="https://cdn.datatables.net/buttons/2.4.2/js/buttons.html5.min.js"></script>
+    <script src="https://cdn.datatables.net/buttons/2.4.2/js/buttons.print.min.js"></script>
+
+    <script>
+        $(document).ready(function () {
+            $('#tabelArea').DataTable({
+                dom: 'Bfrtip',
+                buttons: ['csv', 'excel', 'pdf', 'print']
+            });
+        });
+
+        function openModal(id) { document.getElementById(id).style.display = 'block'; }
+        function closeModal(id) { document.getElementById(id).style.display = 'none'; }
+
+        function editArea(kd, nama) {
+            document.getElementById('formEdit').action = '/datamaster/area/' + kd;
+            document.getElementById('editNamaArea').value = nama;
+            openModal('modalEdit');
+        }
+
+        function hapusArea(kd) {
+            document.getElementById('formHapus').action = '/datamaster/area/' + kd;
+            openModal('modalHapus');
+        }
+    </script>
 </body>
 </html>
-

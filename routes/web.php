@@ -13,6 +13,7 @@ use App\Http\Controllers\BeliController;
 use App\Http\Controllers\JualController;
 use App\Http\Controllers\uang_kas\KasController;
 use App\Http\Controllers\datamaster\SupplierController;
+use App\Http\Controllers\datamaster\AreaController;
 
 Route::get('/login', [LoginController::class, 'index'])->name('login');
 Route::post('/login', [LoginController::class, 'masuk'])->name('login.masuk');
@@ -54,6 +55,7 @@ Route::prefix('uang-kas')->name('uang_kas.')->group(function () {
 });
 
 
+
 Route::prefix('supplier')->name('datamaster.')->group(function () {
     Route::get('/', [SupplierController::class, 'index'])->name('supplier');
     Route::post('/', [SupplierController::class, 'store'])->name('store');
@@ -61,7 +63,14 @@ Route::prefix('supplier')->name('datamaster.')->group(function () {
     Route::delete('/{id}', [SupplierController::class, 'destroy'])->name('destroy');
 });
 
-Route::get('/datamaster/area', [DataController::class, 'area'])->name('datamaster.area');
+Route::prefix('datamaster/area')->name('datamaster.')->group(function () {
+    Route::get('/', [AreaController::class, 'index'])->name('area');
+    Route::post('/', [AreaController::class, 'store'])->name('store');
+    Route::post('/{kdarea}', [AreaController::class, 'update'])->name('update');
+    Route::delete('/{kdarea}', [AreaController::class, 'destroy'])->name('destroy');
+});
+
+// Route::get('/datamaster/area', [DataController::class, 'area'])->name('datamaster.area');
 
 Route::get('/', function () {
     return view('login');
