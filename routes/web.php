@@ -12,6 +12,7 @@ use App\Http\Controllers\ServisController;
 use App\Http\Controllers\BeliController;
 use App\Http\Controllers\JualController;
 use App\Http\Controllers\uang_kas\KasController;
+use App\Http\Controllers\datamaster\SupplierController;
 
 Route::get('/login', [LoginController::class, 'index'])->name('login');
 Route::post('/login', [LoginController::class, 'masuk'])->name('login.masuk');
@@ -52,6 +53,13 @@ Route::prefix('uang-kas')->name('uang_kas.')->group(function () {
     Route::delete('/{id}', [KasController::class, 'destroy'])->name('destroy');
 });
 
+
+Route::prefix('supplier')->name('datamaster.')->group(function () {
+    Route::get('/', [SupplierController::class, 'index'])->name('supplier');
+    Route::post('/', [SupplierController::class, 'store'])->name('store');
+    Route::put('/{id}', [SupplierController::class, 'update'])->name('update');
+    Route::delete('/{id}', [SupplierController::class, 'destroy'])->name('destroy');
+});
 
 Route::get('/datamaster/area', [DataController::class, 'area'])->name('datamaster.area');
 Route::get('/datamaster/cabang', [DataController::class, 'cabang'])->name('datamaster.cabang');
