@@ -14,6 +14,7 @@ use App\Http\Controllers\JualController;
 use App\Http\Controllers\uang_kas\KasController;
 use App\Http\Controllers\datamaster\SupplierController;
 use App\Http\Controllers\datamaster\AreaController;
+use App\Http\Controllers\datamaster\CabangController;
 
 Route::get('/login', [LoginController::class, 'index'])->name('login');
 Route::post('/login', [LoginController::class, 'masuk'])->name('login.masuk');
@@ -80,6 +81,15 @@ Route::prefix('datamaster/area')->name('datamaster.')->group(function () {
     Route::post('/{kdarea}', [AreaController::class, 'update'])->name('update');
     Route::delete('/{kdarea}', [AreaController::class, 'destroy'])->name('destroy');
 });
+
+
+Route::prefix('datamaster/cabang')->name('datamaster.')->group(function () {
+    Route::get('/', [CabangController::class, 'index'])->name('cabang');
+    Route::post('/', [CabangController::class, 'store'])->name('store');
+    Route::put('/{kdtoko}', [CabangController::class, 'update'])->name('update');
+    Route::delete('/{kdtoko}', [CabangController::class, 'destroy'])->name('destroy');
+});
+
 
 // Route::get('/datamaster/area', [DataController::class, 'area'])->name('datamaster.area');
 
