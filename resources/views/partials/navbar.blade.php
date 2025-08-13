@@ -148,7 +148,7 @@
                     @if(session('typeuser') == 1)
                         <li><a href="{{ route('datamaster.area') }}">Area</a></li>
                         <li><a href="#">Cabang</a></li>
-                        <li><a href="#">Supplier</a></li>
+                        <li><a href="{{ route('datamaster.supplier') }}">Supplier</a></li>
                         <li><a href="#">Karyawan</a></li>
                         <li><a href="#">Kategori Barang</a></li>
                         <li><a href="#">Jenis Barang</a></li>

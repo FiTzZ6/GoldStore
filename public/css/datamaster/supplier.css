@@ -1,0 +1,185 @@
+body {
+    font-family: Arial, sans-serif;
+    background: #f5f5f5;
+    padding: 20px;
+}
+
+h2 {
+    text-align: center;
+    color: #444;
+}
+
+.btn-add {
+    background: #28a745;
+    color: white;
+    border: none;
+    padding: 8px 14px;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.btn-add:hover { background: #218838; }
+
+.btn-edit {
+    background: #ffc107;
+    border: none;
+    color: black;
+    padding: 5px 10px;
+    border-radius: 4px;
+}
+
+.btn-delete {
+    background: #dc3545;
+    border: none;
+    color: white;
+    padding: 5px 10px;
+    border-radius: 4px;
+}
+
+table.dataTable {
+    background: white;
+    border-radius: 6px;
+    overflow: hidden;
+}
+
+table.dataTable thead {
+    background: #007bff;
+    color: white;
+}
+
+/* Modal Background */
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 999; /* biar di atas semua */
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow-y: auto;
+    background-color: rgba(0, 0, 0, 0.5);
+    animation: fadeIn 0.3s ease-in-out;
+}
+
+/* Modal Content */
+.modal-content {
+    background: #fff;
+    margin: 80px auto;
+    padding: 20px 25px;
+    border-radius: 10px;
+    width: 90%;
+    max-width: 500px;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+    animation: slideDown 0.3s ease-in-out;
+}
+
+/* Modal Title */
+.modal-content h3 {
+    margin-top: 0;
+    font-family: 'Montserrat', sans-serif;
+    font-size: 20px;
+    color: #333;
+    text-align: center;
+    font-weight: 600;
+}
+
+/* Label & Input */
+.modal-content label {
+    display: block;
+    font-size: 14px;
+    margin-top: 12px;
+    color: #555;
+    font-weight: 500;
+}
+
+.modal-content input,
+.modal-content textarea {
+    width: 100%;
+    padding: 8px 10px;
+    margin-top: 5px;
+    border-radius: 6px;
+    border: 1px solid #ccc;
+    font-size: 14px;
+    transition: border 0.2s ease-in-out;
+}
+
+.modal-content input:focus,
+.modal-content textarea:focus {
+    border-color: #007bff;
+    outline: none;
+}
+
+/* Tombol Simpan */
+.modal-content button[type="submit"] {
+    width: 100%;
+    padding: 10px;
+    margin-top: 18px;
+    background: #007bff;
+    color: white;
+    font-size: 15px;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: bold;
+    transition: background 0.2s ease-in-out;
+}
+
+.modal-content button[type="submit"]:hover {
+    background: #0056b3;
+}
+
+/* Tombol Close */
+.close {
+    position: absolute;
+    top: 12px;
+    right: 18px;
+    font-size: 22px;
+    font-weight: bold;
+    color: #999;
+    cursor: pointer;
+    transition: color 0.2s ease-in-out;
+}
+
+.close:hover {
+    color: #333;
+}
+
+
+.alert {
+    position: fixed;
+    top: 20px;
+    right: -300px; /* awal tersembunyi */
+    min-width: 250px;
+    padding: 12px 18px;
+    border-radius: 6px;
+    color: white;
+    font-weight: bold;
+    font-family: Arial, sans-serif;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+    z-index: 9999;
+    opacity: 0;
+    transition: all 0.4s ease-in-out;
+}
+
+/* Warna alert */
+.alert.success { background-color: #28a745; }
+.alert.edit { background-color: #ffc107; color: #333; }
+.alert.delete { background-color: #dc3545; }
+
+/* Saat muncul */
+.alert.show {
+    right: 20px;
+    opacity: 1;
+}
+
+
+/* Animasi */
+@keyframes fadeIn {
+    from {opacity: 0;}
+    to {opacity: 1;}
+}
+
+@keyframes slideDown {
+    from {transform: translateY(-20px); opacity: 0;}
+    to {transform: translateY(0); opacity: 1;}
+}
