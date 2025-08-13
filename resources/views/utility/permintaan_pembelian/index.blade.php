@@ -13,10 +13,12 @@
 
     <!-- Judul dan Tombol -->
     <div class="header-pp">
-    <a href="{{ route('formulir_pp.index') }}" class="btn-primary">
+        <h1>Formulir Permintaan Pembelian</h1>
+        <a href="{{ route('formulir_pp.index') }}" class="btn-primary">
             <i class="fa fa-plus"></i> Formulir Permintaan Pembelian
         </a>
     </div>
+
     <!-- Filter Export -->
     <div class="filter-section">
         <select class="select-export">
@@ -25,17 +27,20 @@
             <option>Export PDF</option>
         </select>
 
-        <div class="search-box">
-        <input type="text" placeholder="Search">
+    <div class="right-tools">
         <div class="icon-group">
-                <button title="Sorting"><i class="fas fa-sort"></i></button>
-                <button title="Refresh"><i class="fas fa-sync"></i></button>
-                <button title="Tampilan List"><i class="fas fa-list"></i></button>
-                <button title="Tampilan Grid"><i class="fas fa-th"></i></button>
-                <button title="Export"><i class="fas fa-file-export"></i></button>
-            </div>
+            <button title="Sorting"><i class="fas fa-sort"></i></button>
+            <button title="Refresh"><i class="fas fa-sync"></i></button>
+            <button title="Tampilan List"><i class="fas fa-list"></i></button>
+            <button title="Tampilan Grid"><i class="fas fa-th"></i></button>
+            <button title="Export"><i class="fas fa-file-export"></i></button> 
+        </div>
+        <div class="search-box">
+            <input type="text" placeholder="Search">
+            <button class="btn-icon"><i class="fa fa-search"></i></button>
         </div>
     </div>
+
 
     <!-- Tabel Data -->
     <table class="table-pp">

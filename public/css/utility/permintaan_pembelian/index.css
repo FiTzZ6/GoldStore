@@ -56,6 +56,7 @@
     display: flex;
     justify-content: space-between;
     margin-bottom: 15px;
+    align-items: center;
 }
 .select-export {
     padding: 6px;
@@ -64,18 +65,20 @@
 }
 .search-box {
     display: flex;
+    align-items: center;
+    gap: 5px;
 }
+
+.right-tools {
+    display: flex;
+    align-items: center;
+    gap: 10px; /* jarak antara ikon dan search */
+}
+
 .search-box input {
     border: 1px solid #ddd;
     padding: 6px;
     border-radius: 5px 0 0 5px;
-}
-.search-box .btn-icon {
-    background: #f8f9fa;
-    border: 1px solid #ddd;
-    padding: 6px 10px;
-    border-radius: 0 5px 5px 0;
-    cursor: pointer;
 }
 
 .table-pp {
@@ -105,4 +108,11 @@
 }
 .btn-icon:hover {
     color: #007bff;
+}
+
+.icon-group button {
+    background: #fff;
+    border: 1px solid #ccc;
+    padding: 5px 8px;
+    cursor: pointer;
 }
