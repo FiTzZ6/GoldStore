@@ -3,91 +3,82 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="{{ asset('css/utility/permintaan_pembelian/formulir_pp.css') }}">
-    <title>Formulir PP</title>
+    <link rel="stylesheet" href="{{ asset('css/utility/permintaan_pembelian/index.css') }}">
+    <title>Permintaan Pembelian</title>
 </head>
 <body>
 @include('partials.navbar')
 
-<div class="container">
-    {{-- Header Form --}}
-    <h3 class="mb-4">Form Permintaan Pembelian</h3>
-    
-    <div class="card mb-4">
-        <div class="card-body">
-            <p><strong>No. PP:</strong> {{ $nopp }}</p>
-            <p><strong>Nama Toko:</strong> {{ $detailToko->nama_toko ?? '-' }}</p>
-            <p><strong>Alamat:</strong> {{ $detailToko->alamat ?? '-' }}</p>
-        </div>
+<div class="container-pp">
+
+    <!-- Judul dan Tombol -->
+    <div class="header-pp">
+        <a href="{{ route('formulir_pp.index') }}" class="btn-primary">
+            <i class="fa fa-plus"></i> Formulir Permintaan Pembelian
+        </a>
     </div>
 
-    {{-- Form --}}
-    <form action="{{ route('kirimPP') }}" method="POST">
-        @csrf
-        <input type="hidden" name="no_pp" value="{{ $nopp }}">
-        <input type="hidden" name="id_toko" value="{{ $detailToko->id_toko ?? '' }}">
 
-        {{-- Tanggal --}}
-        <div class="mb-3">
-            <label class="form-label">Tanggal PP</label>
-            <input type="date" name="tgl_pp" class="form-control" required>
+    <!-- Filter Export -->
+    <div class="filter-section">
+        <select class="select-export">
+            <option>Export Basic</option>
+            <option>Export Excel</option>
+            <option>Export PDF</option>
+        </select>
+        <div class="search-box">
+            <input type="text" placeholder="Search">
         </div>
+        <div class="icon-group">
+            <button title="Sorting"><i class="fas fa-sort"></i></button>
+            <button title="Refresh"><i class="fas fa-sync"></i></button>
+            <button title="Tampilan List"><i class="fas fa-list"></i></button>
+            <button title="Tampilan Grid"><i class="fas fa-th"></i></button>
+            <button title="Export"><i class="fas fa-file-export"></i></button> 
+            </div>
+    </div>
 
-        {{-- Tabel Barang --}}
-        <h5>Daftar Barang</h5>
-        <table class="table table-bordered" id="table-barang">
-            <thead>
-                <tr>
-                    <th>Nama Barang</th>
-                    <th>Qty</th>
-                    <th>Satuan</th>
-                    <th>Keterangan</th>
-                    <th>Aksi</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <td><input type="text" name="barang[0][nama]" class="form-control" required></td>
-                    <td><input type="number" name="barang[0][qty]" class="form-control" min="1" required></td>
-                    <td><input type="text" name="barang[0][satuan]" class="form-control" required></td>
-                    <td><input type="text" name="barang[0][keterangan]" class="form-control"></td>
-                    <td><button type="button" class="btn btn-danger btn-sm remove-row">Hapus</button></td>
-                </tr>
-            </tbody>
-        </table>
-        <button type="button" id="add-row" class="btn btn-primary btn-sm mb-3">Tambah Barang</button>
-
-        {{-- Tombol Submit --}}
-        <div>
-            <button type="submit" class="btn btn-success">Kirim PP</button>
-            <a href="{{ route('pp.index') }}" class="btn btn-secondary">Batal</a>
-        </div>
-    </form>
-</div>
-
-{{-- Script Tambah & Hapus Row --}}
-<script>
-    let rowIndex = 1;
-    document.getElementById('add-row').addEventListener('click', function() {
-        let tableBody = document.querySelector('#table-barang tbody');
-        let newRow = `
+    <!-- Tabel Data -->
+    <table class="table-pp">
+        <thead>
             <tr>
-                <td><input type="text" name="barang[${rowIndex}][nama]" class="form-control" required></td>
-                <td><input type="number" name="barang[${rowIndex}][qty]" class="form-control" min="1" required></td>
-                <td><input type="text" name="barang[${rowIndex}][satuan]" class="form-control" required></td>
-                <td><input type="text" name="barang[${rowIndex}][keterangan]" class="form-control"></td>
-                <td><button type="button" class="btn btn-danger btn-sm remove-row">Hapus</button></td>
+                <th>No</th>
+                <th>No. PP</th>
+                <th>KD Toko</th>
+                <th>Tgl Permintaan</th>
+                <th>Tgl Dibutuhkan</th>
+                <th>Status</th>
+                <th>Action</th>
             </tr>
-        `;
-        tableBody.insertAdjacentHTML('beforeend', newRow);
-        rowIndex++;
-    });
-
-    document.addEventListener('click', function(e) {
-        if (e.target.classList.contains('remove-row')) {
-            e.target.closest('tr').remove();
-        }
-    });
-</script>
+        </thead>
+        <tbody>
+            @forelse($data as $index => $item)
+                <tr>
+                    <td>{{ $index + 1 }}</td>
+                    <td>{{ $item->no_pp }}</td>
+                    <td>{{ $item->kd_toko }}</td>
+                    <td>{{ $item->tgl_permintaan }}</td>
+                    <td>{{ $item->tgl_dibutuhkan }}</td>
+                    <td>{{ $item->status }}</td>
+                    <td>
+                        <a href="#" class="btn-icon"><i class="fa fa-eye"></i></a>
+                        <a href="#" class="btn-icon"><i class="fa fa-edit"></i></a>
+                        <form action="{{ route('formulir_pp.destroy', $item->id) }}" method="POST" style="display:inline;">
+                            @csrf
+                            @method('DELETE')
+                            <button class="btn-icon" onclick="return confirm('Yakin ingin menghapus?')">
+                                <i class="fa fa-trash"></i>
+                            </button>
+                        </form>
+                    </td>
+                </tr>
+            @empty
+                <tr>
+                    <td colspan="7" class="no-data">No matching records found</td>
+                </tr>
+            @endforelse
+        </tbody>
+    </table>
+</div>
 </body>
 </html>
