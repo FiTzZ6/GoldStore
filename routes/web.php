@@ -11,6 +11,8 @@ use App\Http\Controllers\PesananController;
 use App\Http\Controllers\ServisController;
 use App\Http\Controllers\BeliController;
 use App\Http\Controllers\JualController;
+use App\Http\Controllers\uang_kas\KasController;
+use App\Http\Controllers\datamaster\SupplierController;
 
 Route::get('/login', [LoginController::class, 'index'])->name('login');
 Route::post('/login', [LoginController::class, 'masuk'])->name('login.masuk');
@@ -30,6 +32,8 @@ Route::post('/utility/company-profile', [UtilityController::class, 'setUpCompany
     ->name('utility.company.set_up_company');
 Route::get('/formulir_pp', [UtilityController::class, 'index'])
     ->name('formulir_pp.index');
+
+
 Route::get('/utility/akun', [LoginController::class, 'listAkun'])->name('utility.akun.table_akun');
 Route::get('/utility/akun/create', [LoginController::class, 'createAkun'])->name('user.create');
 Route::post('/utility/akun', [LoginController::class, 'storeAkun'])->name('user.store');
@@ -42,6 +46,20 @@ Route::get('/formulir-pp/create', [UtilityController::class, 'create'])->name('f
 Route::post('/utility/permintaan-pembelian/kirim', [UtilityController::class, 'kirimPP'])
     ->name('utility.kirim_pp');
 
+Route::prefix('uang-kas')->name('uang_kas.')->group(function () {
+    Route::get('/', [KasController::class, 'index'])->name('index');
+    Route::post('/', [KasController::class, 'store'])->name('store');
+    Route::put('/{id}', [KasController::class, 'update'])->name('update');
+    Route::delete('/{id}', [KasController::class, 'destroy'])->name('destroy');
+});
+
+
+Route::prefix('supplier')->name('datamaster.')->group(function () {
+    Route::get('/', [SupplierController::class, 'index'])->name('supplier');
+    Route::post('/', [SupplierController::class, 'store'])->name('store');
+    Route::put('/{id}', [SupplierController::class, 'update'])->name('update');
+    Route::delete('/{id}', [SupplierController::class, 'destroy'])->name('destroy');
+});
 
 Route::get('/datamaster/area', [DataController::class, 'area'])->name('datamaster.area');
 

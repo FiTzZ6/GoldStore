@@ -1,0 +1,266 @@
+body {
+    font-family: 'Montserrat', sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f8f9fa;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+/* Container */
+.container {
+    flex: 1;
+    background: #ffffff;
+    padding: 25px;
+    border-radius: 12px;
+    box-shadow: 0px 4px 15px rgba(0,0,0,0.08);
+    max-width: 1200px;
+    margin: 20px auto;
+    overflow-x: auto;
+}
+
+/* Heading */
+h2 {
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: #222;
+    margin-bottom: 20px;
+}
+
+/* Table */
+.table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 14px;
+    border-radius: 8px;
+    overflow: hidden;
+    background: white;
+}
+
+.table-wrapper {
+    max-height: calc(100vh - 300px);
+    overflow-y: auto;
+    margin-bottom: 20px;
+    border-radius: 8px;
+}
+
+
+.table thead {
+    background: linear-gradient(90deg, #c70000, #8b0000);
+    color: white;
+}
+
+.table thead th {
+    padding: 14px 12px;
+    font-weight: bold;
+    text-align: center;
+}
+
+.table tbody td {
+    padding: 12px 12px;
+    text-align: center;
+    vertical-align: middle;
+    border-bottom: 1px solid #eee;
+}
+
+.table-striped tbody tr:nth-child(even) {
+    background-color: #fafafa;
+}
+
+.table tbody tr:hover {
+    background-color: #f3f3f3;
+    transition: background-color 0.25s ease;
+}
+
+/* Highlight untuk type masuk / keluar */
+.table td.type-masuk {
+    color: #28a745;
+    font-weight: bold;
+}
+.table td.type-keluar {
+    color: #dc3545;
+    font-weight: bold;
+}
+
+/* Buttons */
+.btn {
+    border-radius: 6px;
+    padding: 6px 14px;
+    font-size: 13px;
+    font-weight: 500;
+    border: none;
+    transition: all 0.2s ease;
+}
+
+.btn-warning {
+    background: #ffb84d;
+    color: #333;
+}
+.btn-warning:hover {
+    background: #e6a53e;
+}
+
+.btn-danger {
+    background: #ff4d4d;
+    color: white;
+}
+.btn-danger:hover {
+    background: #e04343;
+}
+
+/* DataTables Search */
+.dataTables_wrapper .dataTables_filter {
+    margin-bottom: 15px;
+}
+.dataTables_wrapper .dataTables_filter input {
+    border-radius: 20px;
+    padding: 6px 12px;
+    border: 1px solid #ccc;
+    transition: border-color 0.2s ease;
+}
+.dataTables_wrapper .dataTables_filter input:focus {
+    border-color: #c70000;
+    outline: none;
+}
+
+/* Pagination */
+.dataTables_wrapper .dataTables_paginate {
+    margin-top: 10px;
+}
+.dataTables_wrapper .dataTables_paginate .paginate_button {
+    padding: 6px 12px;
+    border-radius: 5px;
+    margin: 0 2px;
+    border: 1px solid #ccc;
+    background: #fff;
+    transition: background 0.2s;
+}
+.dataTables_wrapper .dataTables_paginate .paginate_button:hover {
+    background: #f8f9fa;
+}
+.dataTables_wrapper .dataTables_paginate .paginate_button.current {
+    background: #c70000 !important;
+    color: white !important;
+    border: 1px solid #c70000;
+}
+
+/* Modal */
+.modal-overlay {
+    display: none;
+    position: fixed;
+    z-index: 9999;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.5);
+    backdrop-filter: blur(3px); /* efek blur */
+    justify-content: center;
+    align-items: center;
+}
+
+/* Modal box */
+.modal-box {
+    background: white;
+    padding: 25px 30px;
+    border-radius: 12px;
+    width: 420px;
+    max-width: 90%;
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
+    animation: fadeIn 0.25s ease;
+}
+
+/* Judul modal */
+.modal-box h3 {
+    margin-bottom: 18px;
+    font-size: 18px;
+    font-weight: 700;
+    color: #c70000;
+    border-bottom: 2px solid #f0f0f0;
+    padding-bottom: 8px;
+}
+
+/* Form label */
+.modal-box label {
+    display: block;
+    font-size: 13px;
+    margin-top: 12px;
+    font-weight: 600;
+    color: #444;
+}
+
+/* Input & select */
+.modal-box input,
+.modal-box select,
+.modal-box textarea {
+    width: 100%;
+    padding: 8px 10px;
+    margin-top: 5px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    font-size: 14px;
+    transition: border 0.2s ease;
+}
+
+.modal-box input:focus,
+.modal-box select:focus,
+.modal-box textarea:focus {
+    outline: none;
+    border-color: #c70000;
+    box-shadow: 0 0 4px rgba(199, 0, 0, 0.3);
+}
+
+/* Textarea */
+.modal-box textarea {
+    resize: vertical;
+    min-height: 60px;
+}
+
+/* Tombol dalam modal */
+.modal-box button {
+    margin-top: 15px;
+    padding: 8px 14px;
+    border: none;
+    border-radius: 6px;
+    font-size: 13px;
+    cursor: pointer;
+    font-weight: 600;
+}
+
+.modal-box button[type="submit"] {
+    background: #c70000;
+    color: white;
+    transition: background 0.2s ease;
+}
+
+.modal-box button[type="submit"]:hover {
+    background: #a50000;
+}
+
+.modal-box button[type="button"] {
+    background: #ccc;
+    margin-left: 6px;
+}
+
+.modal-box button[type="button"]:hover {
+    background: #b5b5b5;
+}
+
+/* Alert */
+.alert-box {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    padding: 12px 20px;
+    border-radius: 6px;
+    color: white;
+    font-weight: bold;
+    z-index: 1000;
+    display: none;
+}
+.alert-success { background: #28a745; }
+.alert-error { background: #dc3545; }
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(-10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
