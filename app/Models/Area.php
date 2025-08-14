@@ -12,8 +12,5 @@ class Area extends Model
     protected $keyType = 'string';
     public $timestamps = false;
 
-    protected $fillable = [
-        'kdarea',
-        'namaarea'
-    ];
+    protected $fillable = ['kdarea', 'namaarea'];
 }

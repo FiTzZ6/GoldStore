@@ -1,11 +1,9 @@
 <?php
 
-namespace App\Http\Controllers\datamaster;
-
+namespace App\Http\Controllers;
 
 use App\Models\Supplier;
 use Illuminate\Http\Request;
-use App\Http\Controllers\Controller;
 
 class SupplierController extends Controller
 {

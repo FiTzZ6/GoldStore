@@ -1,8 +1,7 @@
 <?php
 
-namespace App\Http\Controllers\datamaster;
+namespace App\Http\Controllers;
 
-use App\Http\Controllers\Controller;
 use App\Models\Area;
 use Illuminate\Http\Request;
 
@@ -23,19 +22,20 @@ class AreaController extends Controller
 
         Area::create($request->only(['kdarea', 'namaarea']));
 
-        return redirect()->route('datamaster.area')->with('success', 'Area berhasil ditambahkan');
+        return redirect()->route('area')->with('success', 'Area berhasil ditambahkan');
     }
 
     public function update(Request $request, $kdarea)
     {
         $request->validate([
+            'kdarea' => 'required|max:25',
             'namaarea' => 'nullable|max:100',
         ]);
 
         $area = Area::findOrFail($kdarea);
-        $area->update($request->only(['namaarea']));
+        $area->update($request->only(['kdarea', 'namaarea']));
 
-        return redirect()->route('datamaster.area')->with('success', 'Area berhasil diperbarui');
+        return redirect()->route('area')->with('success', 'Area berhasil diperbarui');
     }
 
     public function destroy($kdarea)
@@ -43,6 +43,6 @@ class AreaController extends Controller
         $area = Area::findOrFail($kdarea);
         $area->delete();
 
-        return redirect()->route('datamaster.area')->with('success', 'Area berhasil dihapus');
+        return redirect()->route('area')->with('success', 'Area berhasil dihapus');
     }
 }

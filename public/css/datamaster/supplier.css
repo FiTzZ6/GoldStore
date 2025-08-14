@@ -1,57 +1,96 @@
+/* Reset & Body */
 body {
     font-family: Arial, sans-serif;
-    background: #f5f5f5;
+    background-color: #f2f4f7;
+    margin: 0;
     padding: 20px;
 }
 
-h2 {
-    text-align: center;
-    color: #444;
+/* Container utama */
+.container {
+    max-width: 1100px;
+    margin: 40px auto;
+    background: #fff;
+    border-radius: 6px;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+    padding: 20px;
 }
 
-.btn-add {
-    background: #28a745;
+/* Heading */
+h2 {
+    text-align: center;
+    color: #333;
+    margin-bottom: 20px;
+}
+
+/* Tombol utama */
+.btn-add, .btn-primary {
+    background-color: #007bff;
     color: white;
     border: none;
     padding: 8px 14px;
     border-radius: 4px;
     cursor: pointer;
+    transition: 0.2s;
 }
 
-.btn-add:hover { background: #218838; }
+.btn-add:hover, .btn-primary:hover {
+    background-color: #0069d9;
+}
 
+/* Tombol edit & delete */
 .btn-edit {
-    background: #ffc107;
-    border: none;
+    background-color: #ffc107;
     color: black;
+    border: none;
     padding: 5px 10px;
     border-radius: 4px;
+    cursor: pointer;
+}
+
+.btn-edit:hover {
+    background-color: #e0a800;
 }
 
 .btn-delete {
-    background: #dc3545;
-    border: none;
+    background-color: #dc3545;
     color: white;
+    border: none;
     padding: 5px 10px;
     border-radius: 4px;
+    cursor: pointer;
 }
 
-table.dataTable {
-    background: white;
-    border-radius: 6px;
-    overflow: hidden;
+.btn-delete:hover {
+    background-color: #c82333;
 }
 
-table.dataTable thead {
-    background: #007bff;
-    color: white;
+/* Tabel */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 15px;
 }
 
-/* Modal Background */
+table thead {
+    background-color: #f5f5f5;
+}
+
+table th, table td {
+    padding: 10px;
+    border: 1px solid #ddd;
+    text-align: left;
+}
+
+table th {
+    font-weight: bold;
+}
+
+/* Modal modern */
 .modal {
     display: none;
     position: fixed;
-    z-index: 999; /* biar di atas semua */
+    z-index: 999;
     left: 0;
     top: 0;
     width: 100%;
@@ -61,7 +100,6 @@ table.dataTable thead {
     animation: fadeIn 0.3s ease-in-out;
 }
 
-/* Modal Content */
 .modal-content {
     background: #fff;
     margin: 80px auto;
@@ -71,25 +109,24 @@ table.dataTable thead {
     max-width: 500px;
     box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
     animation: slideDown 0.3s ease-in-out;
+    position: relative;
 }
 
-/* Modal Title */
+/* Modal title */
 .modal-content h3 {
     margin-top: 0;
-    font-family: 'Montserrat', sans-serif;
     font-size: 20px;
     color: #333;
     text-align: center;
     font-weight: 600;
 }
 
-/* Label & Input */
+/* Label & input modal */
 .modal-content label {
     display: block;
-    font-size: 14px;
     margin-top: 12px;
+    font-weight: 600;
     color: #555;
-    font-weight: 500;
 }
 
 .modal-content input,
@@ -109,7 +146,7 @@ table.dataTable thead {
     outline: none;
 }
 
-/* Tombol Simpan */
+/* Tombol simpan modal */
 .modal-content button[type="submit"] {
     width: 100%;
     padding: 10px;
@@ -128,7 +165,7 @@ table.dataTable thead {
     background: #0056b3;
 }
 
-/* Tombol Close */
+/* Tombol close modal */
 .close {
     position: absolute;
     top: 12px;
@@ -144,11 +181,11 @@ table.dataTable thead {
     color: #333;
 }
 
-
+/* Alert */
 .alert {
     position: fixed;
     top: 20px;
-    right: -300px; /* awal tersembunyi */
+    right: -300px;
     min-width: 250px;
     padding: 12px 18px;
     border-radius: 6px;
@@ -161,19 +198,16 @@ table.dataTable thead {
     transition: all 0.4s ease-in-out;
 }
 
-/* Warna alert */
 .alert.success { background-color: #28a745; }
 .alert.edit { background-color: #ffc107; color: #333; }
 .alert.delete { background-color: #dc3545; }
 
-/* Saat muncul */
 .alert.show {
     right: 20px;
     opacity: 1;
 }
 
-
-/* Animasi */
+/* Animasi modal & alert */
 @keyframes fadeIn {
     from {opacity: 0;}
     to {opacity: 1;}

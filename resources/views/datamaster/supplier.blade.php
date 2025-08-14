@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html lang="id">
 
 <head>
     <meta charset="UTF-8">
@@ -16,9 +16,7 @@
     <div id="toast" class="toast"></div>
     <div id="alertBox" class="alert"></div>
 
-
     <h2>DATA SUPPLIER</h2>
-
     <button class="btn-add" onclick="openModal('create')">+ Tambah Supplier</button>
 
     <table id="supplierTable">
@@ -51,13 +49,14 @@
         </tbody>
     </table>
 
-    <!-- Modal -->
+    <!-- Modal Form -->
     <div id="modalForm" class="modal">
         <div class="modal-content">
             <span class="close" onclick="closeModal()">&times;</span>
             <h3 id="modalTitle">Tambah Supplier</h3>
             <form id="supplierForm">
                 <input type="hidden" id="formType" value="create">
+
                 <label>Kode Supplier</label>
                 <input type="text" id="kdsupplier" required>
 
@@ -81,6 +80,7 @@
         </div>
     </div>
 
+    <!-- JS -->
     <script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
     <script src="https://cdn.datatables.net/1.13.5/js/jquery.dataTables.min.js"></script>
     <script src="https://cdn.datatables.net/buttons/2.4.1/js/dataTables.buttons.min.js"></script>
@@ -122,7 +122,7 @@
             modal.style.display = 'none';
         }
 
-        document.getElementById('supplierForm').addEventListener('submit', function (e) {
+        document.getElementById('supplierForm').addEventListener('submit', function(e) {
             e.preventDefault();
             let data = {
                 kdsupplier: document.getElementById('kdsupplier').value,
@@ -130,16 +130,16 @@
                 alamat: document.getElementById('alamat').value,
                 hp: document.getElementById('hp').value,
                 email: document.getElementById('email').value,
-                ket: document.getElementById('ket').value,
+                ket: document.getElementById('ket').value
             };
 
             let url = '';
             let method = '';
             if (formType.value === 'create') {
-                url = '{{ route("datamaster.store") }}';
+                url = '/TAMBAH';
                 method = 'POST';
             } else {
-                url = '/supplier/' + editId;
+                url = '/UPDATE/' + editId;
                 method = 'PUT';
             }
 
@@ -151,62 +151,33 @@
                 },
                 body: JSON.stringify(data)
             })
-                .then(res => res.json())
-                .then(res => {
-                    if (res.success) {
-                        closeModal();
-                        if (formType.value === 'create') {
-                            showAlert('Data kamu sudah ditambahkan!', 'success');
-                        } else {
-                            showAlert('Data kamu sudah diedit!', 'edit');
-                        }
-                        setTimeout(() => location.reload(), 1200);
-                    }
-                });
+            .then(res => res.json())
+            .then(res => {
+                if (res.success) {
+                    closeModal();
+                    showAlert(formType.value === 'create' ? 'Data kamu sudah ditambahkan!' : 'Data kamu sudah diedit!', formType.value);
+                    setTimeout(() => location.reload(), 1200);
+                }
+            });
         });
 
         function deleteSupplier(id) {
             if (confirm('Yakin hapus supplier ini?')) {
-                fetch('/supplier/' + id, {
+                fetch('/HAPUS/' + id, {
                     method: 'DELETE',
                     headers: {
                         'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content
                     }
                 })
-                    .then(res => res.json())
-                    .then(res => {
-                        if (res.success) {
-                            showAlert('Data kamu sudah dihapus!', 'delete');
-                            setTimeout(() => location.reload(), 1200);
-                        }
-                    });
+                .then(res => res.json())
+                .then(res => {
+                    if (res.success) {
+                        showAlert('Data kamu sudah dihapus!', 'delete');
+                        setTimeout(() => location.reload(), 1200);
+                    }
+                });
             }
         }
-
-        function showToast(message, type = 'success') {
-            let toast = document.getElementById('toast');
-            toast.textContent = message;
-            toast.className = 'toast ' + (type === 'error' ? 'error' : '');
-            toast.style.display = 'block';
-            setTimeout(() => {
-                toast.style.display = 'none';
-            }, 3000);
-        }
-
-        $(document).ready(function () {
-            $('#supplierTable').DataTable({
-                dom: 'Bfrtip',
-                buttons: [
-                    'excelHtml5',
-                    'csvHtml5',
-                    'pdfHtml5',
-                    'print'
-                ],
-                columnDefs: [
-                    { orderable: false, targets: -1 } // kolom aksi tidak bisa sort
-                ]
-            });
-        });
 
         function showAlert(message, type = 'success') {
             let alertBox = document.getElementById('alertBox');
@@ -217,8 +188,17 @@
             }, 3000);
         }
 
+        $(document).ready(function() {
+            $('#supplierTable').DataTable({
+                dom: 'Bfrtip',
+                buttons: [
+                    'excelHtml5', 'csvHtml5', 'pdfHtml5', 'print'
+                ],
+                columnDefs: [
+                    { orderable: false, targets: -1 } // kolom aksi tidak bisa sort
+                ]
+            });
+        });
     </script>
-
 </body>
-
 </html>

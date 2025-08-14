@@ -21,7 +21,6 @@
     @include('partials.navbar')
     <h1 class="page-title">DAFTAR CABANG</h1>
 
-
     <div class="container">
 
         <div class="top-bar">
@@ -40,8 +39,8 @@
                         <i class="fa-solid fa-print"></i> Print
                     </button>
                 </div>
-                <button class="btn-primary" onclick="document.getElementById('modalTambah')?.showModal()">+ Tambah
-                    Area</button>
+                <button class="btn-primary" onclick="document.getElementById('modalTambah').showModal()">+ Tambah
+                    Cabang</button>
             </div>
 
             <div style="display:flex; align-items:center; gap:6px;">
@@ -58,7 +57,6 @@
             </div>
         </div>
 
-        <!-- Tambahkan id pada tabel -->
         <table id="cabangTable">
             <thead>
                 <tr>
@@ -79,16 +77,11 @@
                         <td>{{ $toko->alamattoko }}</td>
                         <td>{{ $toko->area }}</td>
                         <td style="white-space:nowrap;">
-                            <!-- contoh tombol edit & delete, sesuaikan action/form kamu -->
-                            <form action="{{ route('datamaster.update', $toko->kdtoko) }}" method="POST"
-                                style="display:inline;" enctype="multipart/form-data">
-                                @csrf
-                                <button type="submit" class="action-btn" title="Edit">
-                                    <i class="fa-solid fa-pen-to-square"></i>
-                                </button>
-                            </form>
-                            <form action="{{ route('datamaster.destroy', $toko->kdtoko) }}" method="POST"
-                                style="display:inline;">
+                            <button class="action-btn" title="Edit"
+                                onclick="document.getElementById('modalEdit-{{ $toko->kdtoko }}').showModal()">
+                                <i class="fa-solid fa-pen-to-square"></i>
+                            </button>
+                            <form action="{{ route('destroy', $toko->kdtoko) }}" method="POST" style="display:inline;">
                                 @csrf
                                 @method('DELETE')
                                 <button type="submit" class="action-btn" title="Hapus"
@@ -98,6 +91,40 @@
                             </form>
                         </td>
                     </tr>
+
+                    <!-- Modal Edit Cabang -->
+                    <dialog id="modalEdit-{{ $toko->kdtoko }}">
+                        <form action="{{ route('update', $toko->kdtoko) }}" method="POST" enctype="multipart/form-data">
+                            @csrf
+                            @method('PUT')
+                            <h2>Edit Cabang</h2>
+
+                            <label>Kode Cabang</label>
+                            <input type="text" name="kdtoko" value="{{ $toko->kdtoko }}">
+
+                            <label>Nama Cabang</label>
+                            <input type="text" name="namatoko" value="{{ $toko->namatoko }}">
+
+                            <label>Alamat</label>
+                            <input type="text" name="alamattoko" value="{{ $toko->alamattoko }}">
+
+                            <label>Area</label>
+                            <input type="text" name="area" value="{{ $toko->area }}">
+
+                            <label>Logo</label>
+                            <input type="file" name="logo">
+                            @if($toko->logo)
+                                <img src="{{ asset('storage/cabang_foto/' . $toko->logo) }}" alt="Logo"
+                                    style="max-width:100px; display:block; margin-top:5px;">
+                            @endif
+
+                            <menu>
+                                <button type="submit" class="btn-primary">Simpan</button>
+                                <button type="button" class="btn-secondary"
+                                    onclick="document.getElementById('modalEdit-{{ $toko->kdtoko }}').close()">Batal</button>
+                            </menu>
+                        </form>
+                    </dialog>
                 @endforeach
             </tbody>
         </table>
@@ -105,7 +132,7 @@
 
     <!-- Modal Tambah Cabang -->
     <dialog id="modalTambah">
-        <form method="POST" action="{{ route('datamaster.store') }}" enctype="multipart/form-data">
+        <form method="POST" action="{{ route('store') }}" enctype="multipart/form-data">
             @csrf
             <h2>Tambah Cabang</h2>
 
@@ -132,45 +159,28 @@
         </form>
     </dialog>
 
-    <dialog id="modalEdit-{{ $toko->id }}">
-        <form action="{{ route('datamaster.update', $toko->kdtoko) }}" method="POST" style="display:inline;"
-            enctype="multipart/form-data">
-            @csrf
-            @method('PUT')
-            <h2>Edit Cabang</h2>
-
-            <label>Nama Cabang</label>
-            <input type="text" name="namatoko" value="{{ $toko->namatoko }}">
-
-            <label>Alamat</label>
-            <input type="text" name="alamattoko" value="{{ $toko->alamattoko }}">
-
-            <label>Area</label>
-            <input type="text" name="area" value="{{ $toko->area }}">
-
-            <label>Logo</label>
-            <input type="file" name="logo">
-
-            <menu>
-                <button type="submit" class="btn-primary">Simpan</button>
-                <button type="button" class="btn-secondary"
-                    onclick="document.getElementById('modalEdit-{{ $toko->id }}').close()">Batal</button>
-            </menu>
-        </form>
-    </dialog>
 
     @if(session('success'))
         <script>
-            // SweetAlert (pastikan sudah load swal di layout utama jika mau pakai)
-            // Swal.fire({ icon: 'success', title: @json(session('success')), showConfirmButton: false, timer: 1500 });
             console.log(@json(session('success')));
         </script>
     @endif
 
     <script>
-        // =========================
-        // 1) UTIL: Ambil data tabel
-        // =========================
+
+        document.querySelectorAll('#cabangTable th').forEach((th, idx) => {
+            th.addEventListener('click', () => sortTable(idx));
+        });
+
+        function sortTable(colIndex) {
+            const table = document.getElementById('cabangTable');
+            let rows = Array.from(table.tBodies[0].rows);
+            const asc = !table.asc;
+            rows.sort((a, b) => a.cells[colIndex].innerText.localeCompare(b.cells[colIndex].innerText));
+            if (!asc) rows.reverse();
+            table.asc = asc;
+            rows.forEach(r => table.tBodies[0].appendChild(r));
+        }
         function getTableData(includeHeaders = true) {
             const table = document.getElementById('cabangTable');
             const rows = Array.from(table.querySelectorAll('tr'));
@@ -194,9 +204,6 @@
             return data;
         }
 
-        // =========================
-        // 2) EXPORT CSV (murni JS)
-        // =========================
         function exportCSV(filename = 'cabang.csv') {
             const rows = getTableData(true);
             const csv = rows.map(r => r.map(v => {

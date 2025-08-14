@@ -12,9 +12,9 @@ use App\Http\Controllers\ServisController;
 use App\Http\Controllers\BeliController;
 use App\Http\Controllers\JualController;
 use App\Http\Controllers\uang_kas\KasController;
-use App\Http\Controllers\datamaster\SupplierController;
-use App\Http\Controllers\datamaster\AreaController;
-use App\Http\Controllers\datamaster\CabangController;
+use App\Http\Controllers\SupplierController;
+use App\Http\Controllers\AreaController;
+use App\Http\Controllers\CabangController;
 
 Route::get('/login', [LoginController::class, 'index'])->name('login');
 Route::post('/login', [LoginController::class, 'masuk'])->name('login.masuk');
@@ -59,6 +59,25 @@ Route::delete('/utility/akun/{id}', [LoginController::class, 'destroyAkun'])
 Route::get('/utility/permintaan-pembelian', [UtilityController::class, 'permintaanPembelian'])
     ->name('utility.permintaan_pembelian.index');
 
+
+//SUPPLIER -datamaster
+Route::get('/UTAMA', [SupplierController::class, 'index'])->name('supplier');
+Route::post('/TAMBAH', [SupplierController::class, 'store'])->name('store');
+Route::put('/UPDATE/{id}', [SupplierController::class, 'update'])->name('update');
+Route::delete('/HAPUS/{id}', [SupplierController::class, 'destroy'])->name('destroy');
+
+//area-datamaster
+Route::get('/area-utama', [AreaController::class, 'index'])->name('area');
+Route::post('/tambah-area', [AreaController::class, 'store'])->name('store');
+Route::put('/update-area/{kdarea}', [AreaController::class, 'update'])->name('update');
+Route::delete('/hapus-area/{kdarea}', [AreaController::class, 'destroy'])->name('destroy');
+
+//cabang-datamaster
+Route::get('/cabang-utama', [CabangController::class, 'index'])->name('cabang');
+Route::post('/tambah-cabang', [CabangController::class, 'store'])->name('store');
+Route::put('/update-cabang/{kdtoko}', [CabangController::class, 'update'])->name('update');
+Route::delete('/hapus-cabang/{kdtoko}', [CabangController::class, 'destroy'])->name('destroy');
+
 Route::prefix('uang-kas')->name('uang_kas.')->group(function () {
     Route::get('/', [KasController::class, 'index'])->name('index');
     Route::post('/', [KasController::class, 'store'])->name('store');
@@ -68,30 +87,7 @@ Route::prefix('uang-kas')->name('uang_kas.')->group(function () {
 
 
 
-Route::prefix('supplier')->name('datamaster.')->group(function () {
-    Route::get('/', [SupplierController::class, 'index'])->name('supplier');
-    Route::post('/', [SupplierController::class, 'store'])->name('store');
-    Route::put('/{id}', [SupplierController::class, 'update'])->name('update');
-    Route::delete('/{id}', [SupplierController::class, 'destroy'])->name('destroy');
-});
 
-Route::prefix('datamaster/area')->name('datamaster.')->group(function () {
-    Route::get('/', [AreaController::class, 'index'])->name('area');
-    Route::post('/', [AreaController::class, 'store'])->name('store');
-    Route::post('/{kdarea}', [AreaController::class, 'update'])->name('update');
-    Route::delete('/{kdarea}', [AreaController::class, 'destroy'])->name('destroy');
-});
-
-
-Route::prefix('datamaster/cabang')->name('datamaster.')->group(function () {
-    Route::get('/', [CabangController::class, 'index'])->name('cabang');
-    Route::post('/', [CabangController::class, 'store'])->name('store');
-    Route::put('/{kdtoko}', [CabangController::class, 'update'])->name('update');
-    Route::delete('/{kdtoko}', [CabangController::class, 'destroy'])->name('destroy');
-});
-
-
-// Route::get('/datamaster/area', [DataController::class, 'area'])->name('datamaster.area');
 
 Route::get('/', function () {
     return view('login');

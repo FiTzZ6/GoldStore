@@ -146,9 +146,9 @@
                 <a href="#"><i class="fas fa-database"></i> Data Master</a>
                 <ul>
                     @if(session('typeuser') == 1)
-                        <li><a href="{{ route('datamaster.area') }}">Area</a></li>
-                        <li><a href="{{ route('datamaster.cabang') }}">Cabang</a></li>
-                        <li><a href="{{ route('datamaster.supplier') }}">Supplier</a></li>
+                        <li><a href="{{ route('area') }}">Area</a></li>
+                        <li><a href="{{ route('cabang') }}">Cabang</a></li>
+                        <li><a href="{{ route('supplier') }}">Supplier</a></li>
                         <li><a href="#">Karyawan</a></li>
                         <li><a href="#">Kategori Barang</a></li>
                         <li><a href="#">Jenis Barang</a></li>
