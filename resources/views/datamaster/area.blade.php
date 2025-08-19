@@ -5,6 +5,7 @@
     <meta charset="UTF-8">
     <link rel="stylesheet" href="{{ asset('css/datamaster/area.css') }}">
     <link href="https://fonts.googleapis.com/css?family=Montserrat:400,800" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" />
     <title>Halaman Area</title>
 
     <!-- DataTables CSS -->
@@ -17,8 +18,9 @@
 <body>
     @include('partials.navbar')
 
+    <h1>DAFTAR AREA</h1>
+
     <div class="container">
-        <h1>DAFTAR AREA</h1>
 
         <!-- Alert sukses -->
         @if(session('success'))
