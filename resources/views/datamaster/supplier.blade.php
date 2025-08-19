@@ -17,7 +17,12 @@
     <div id="alertBox" class="alert"></div>
 
     <h2>DATA SUPPLIER</h2>
-    <button class="btn-add" onclick="openModal('create')">+ Tambah Supplier</button>
+    <div class="container">
+        <div class="top-bar">
+            <div class="left-controls">
+                <button class="btn-add" onclick="openModal('create')">+ Tambah Supplier</button>
+            </div>
+        </div>
 
     <table id="supplierTable">
         <thead>
@@ -78,6 +83,7 @@
                 <button type="submit" style="background:#007bff;color:white;border:none;">Simpan</button>
             </form>
         </div>
+    </div>
     </div>
 
     <!-- JS -->

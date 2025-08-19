@@ -46,7 +46,7 @@
         <tbody>
             <tr>
                 <td><input type="checkbox"></td>
-                <td>1</td>
+                <td>DSA</td>
                 <td>KT001</td>
                 <td>100</td>
                 <td>Diskon</td>
