@@ -8,7 +8,7 @@
 </head>
 <body>  
 @include('partials.navbar')    
-<h1 class="page-title">Kondisi BARANG</h1>
+<h1 class="page-title">KONDISI BARANG</h1>
 
 
 <div class="container">
