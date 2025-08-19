@@ -7,7 +7,7 @@
     <title>Halaman Area</title>
 </head>
 @include('partials.navbar')
-<body>  <h1 class="page-title">POTONGAN</h1>
+<body>  <h1 class="page-title">DATA POTONGAN</h1>
 
 <div class="container">
 
@@ -18,7 +18,7 @@
                 <option>Export Basic</option>
                 
             </select>
-            <button class="btn-primary">+ Tambah Area</button>
+            <button class="btn-primary">+ Tambah Potongan</button>
         </div>
         <div style="display:flex; align-items:center; gap:6px;">
             <div class="icon-group">
@@ -36,24 +36,20 @@
         <thead>
             <tr>
                 <th><input type="checkbox"></th>
-                <th>Kode Supplier</th>
-                <th>Nama Supplier</th>
-                <th>Alamat</th>
-                <th>Kontak</th>
-                <th>Email</th>
-                <th>Keterangan</th>
+                <th>Nomor</th>
+                <th>Kode Kategori</th>
+                <th>Jumlah Potongan / Gram</th>
+                <th>Jenis Potongan</th>
                 <th>Action</th>
             </tr>
         </thead>
         <tbody>
             <tr>
                 <td><input type="checkbox"></td>
-                <td>DSA</td>
-                <td>SDSD</td>
-                <td>Jl. Raya Purbalingga No. 123</td>
-                <td>08909090</td>
-                <td>supplier@example.com</td>
-                <td>Keterangan</td>
+                <td>1</td>
+                <td>KT001</td>
+                <td>100</td>
+                <td>Diskon</td>
                 <td>
                     <button class="action-btn"><i class="fa-solid fa-pen-to-square"></i></button>
                     <button class="action-btn"><i class="fas fa-trash"></i></button>

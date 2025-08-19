@@ -18,10 +18,11 @@
         <div class="left-controls">
             <select>
                 <option>Export Basic</option>
-                <option>Export Basic</option>
+                <option>Export PDF</option>
+                <option>Export CSV</option>
                 
             </select>
-            <button class="btn-primary">+ Tambah Area</button>
+            <button class="btn-primary">+ Tambah Kategori</button>
         </div>
         <div style="display:flex; align-items:center; gap:6px;">
             <div class="icon-group">
@@ -39,12 +40,10 @@
         <thead>
             <tr>
                 <th><input type="checkbox"></th>
-                <th>Kode Supplier</th>
-                <th>Nama Supplier</th>
-                <th>Alamat</th>
-                <th>Kontak</th>
-                <th>Email</th>
-                <th>Keterangan</th>
+                <th>Kode Kategori</th>
+                <th>Nama Kategori</th>
+                <th>Harga/gr</th>
+                <th>Jumlah Kadar</th>
                 <th>Action</th>
             </tr>
         </thead>
@@ -53,10 +52,8 @@
                 <td><input type="checkbox"></td>
                 <td>DSA</td>
                 <td>SDSD</td>
-                <td>Jl. Raya Purbalingga No. 123</td>
-                <td>08909090</td>
-                <td>supplier@example.com</td>
-                <td>Keterangan</td>
+                <td>10000</td>
+                <td>5%</td>
                 <td>
                     <button class="action-btn"><i class="fa-solid fa-pen-to-square"></i></button>
                     <button class="action-btn"><i class="fas fa-trash"></i></button>
