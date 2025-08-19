@@ -15,6 +15,12 @@ use App\Http\Controllers\uang_kas\KasController;
 use App\Http\Controllers\SupplierController;
 use App\Http\Controllers\AreaController;
 use App\Http\Controllers\CabangController;
+use App\Http\Controllers\BakiBarangController;
+use App\Http\Controllers\JenisBarangController;
+use App\Http\Controllers\KategoriBarangController;
+use App\Http\Controllers\KondisiBarangController;
+use App\Http\Controllers\OngkosController;
+use App\Http\Controllers\PotonganController;
 
 Route::get('/login', [LoginController::class, 'index'])->name('login');
 Route::post('/login', [LoginController::class, 'masuk'])->name('login.masuk');
@@ -85,6 +91,17 @@ Route::prefix('uang-kas')->name('uang_kas.')->group(function () {
     Route::delete('/{id}', [KasController::class, 'destroy'])->name('destroy');
 });
 
+Route::get('/baki-utama', [BakiBarangController::class, 'index'])->name('bakibarang');
+
+Route::get('/jenis-utama', [JenisBarangController::class, 'index'])->name('jenisbarang');
+
+Route::get('/kategori-utama', [KategoriBarangController::class, 'index'])->name('kategoribarang');
+
+Route::get('/kondisi-utama', [KondisiBarangController::class, 'index'])->name('kondisibarang');
+
+Route::get('/ongkos-utama', [OngkosController::class, 'index'])->name('ongkos');
+
+Route::get('/potongan-utama', [PotonganController::class, 'index'])->name('potongan');
 
 
 

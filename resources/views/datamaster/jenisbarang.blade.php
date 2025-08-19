@@ -6,9 +6,12 @@
     <link href="https://fonts.googleapis.com/css?family=Montserrat:400,800" rel="stylesheet">
     <title>Halaman Area</title>
 </head>
-<body>  <h1 class="page-title">JENIS BARANG</h1>
+<body>  
+@include('partials.navbar')    
 
- @include('partials.navbar')
+<h1 class="page-title">JENIS BARANG</h1>
+
+
 
 <div class="container">
 

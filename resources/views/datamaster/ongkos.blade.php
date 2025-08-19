@@ -6,9 +6,10 @@
     <link href="https://fonts.googleapis.com/css?family=Montserrat:400,800" rel="stylesheet">
     <title>Halaman Area</title>
 </head>
-<body>  <h1 class="page-title">BAKI BARANG</h1>
+<body>  
+@include('partials.navbar')    
+<h1 class="page-title">Ongkos</h1>
 
- @include('partials.navbar')
 
 <div class="container">
 
