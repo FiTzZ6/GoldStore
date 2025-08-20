@@ -188,7 +188,6 @@
             });
 
             // Tambah
-            // Tambah
             $('#formTambah').submit(function (e) {
                 e.preventDefault();
                 $.post("{{ route('uang_kas.store') }}", $(this).serialize(), function (res) {

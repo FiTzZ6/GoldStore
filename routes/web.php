@@ -68,9 +68,9 @@ Route::get('/utility/permintaan-pembelian', [UtilityController::class, 'perminta
 
 //SUPPLIER -datamaster
 Route::get('/UTAMA', [SupplierController::class, 'index'])->name('supplier');
-Route::post('/TAMBAH', [SupplierController::class, 'store'])->name('store');
-Route::put('/UPDATE/{id}', [SupplierController::class, 'update'])->name('update');
-Route::delete('/HAPUS/{id}', [SupplierController::class, 'destroy'])->name('destroy');
+Route::post('/tambah-supplier', [SupplierController::class, 'store'])->name('supplier.store');
+Route::put('/update-supplier/{kdsupplier}', [SupplierController::class, 'update'])->name('supplier.update');
+Route::delete('/hapus-supplier/{kdsupplier}', [SupplierController::class, 'destroy'])->name('supplier.destroy');
 
 //area-datamaster
 Route::get('/area-utama', [AreaController::class, 'index'])->name('area');
@@ -93,7 +93,12 @@ Route::prefix('uang-kas')->name('uang_kas.')->group(function () {
 
 Route::get('/baki-utama', [BakiBarangController::class, 'index'])->name('bakibarang');
 
-Route::get('/jenis-utama', [JenisBarangController::class, 'index'])->name('jenisbarang');
+
+//jenis_barang-datamaster
+Route::get('/jenis-barang', [JenisBarangController::class, 'index'])->name('jenisbarang');
+Route::post('/tambah-jenis', [JenisBarangController::class, 'store'])->name('jenis.store');
+Route::put('/update-jenis/{kdjenis}', [JenisBarangController::class, 'update'])->name('jenis.update');
+Route::delete('/hapus-jenis/{kdjenis}', [JenisBarangController::class, 'destroy'])->name('jenis.destroy');
 
 //kategori_barang-datamaster
 Route::get('/kategori-utama', [KategoriBarangController::class, 'index'])->name('kategoribarang');

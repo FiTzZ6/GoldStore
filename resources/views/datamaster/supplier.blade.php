@@ -3,7 +3,7 @@
 
 <head>
     <meta charset="UTF-8">
-    <link rel="stylesheet" href="{{ asset('css/datamaster/supplier.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/datamaster/kategori.css') }}">
     <link rel="stylesheet" href="https://cdn.datatables.net/1.13.5/css/jquery.dataTables.min.css">
     <link rel="stylesheet" href="https://cdn.datatables.net/buttons/2.4.1/css/buttons.dataTables.min.css">
     <link href="https://fonts.googleapis.com/css?family=Montserrat:400,800" rel="stylesheet">
@@ -13,198 +13,255 @@
 
 <body>
     @include('partials.navbar')
-    <div id="toast" class="toast"></div>
-    <div id="alertBox" class="alert"></div>
 
-    <h2>DATA SUPPLIER</h2>
     <div class="container">
+
+        {{-- Alert success/error --}}
+        @if (session('success'))
+            <div class="alert alert-success">
+                {{ session('success') }}
+            </div>
+        @endif
+
+        @if (session('error'))
+            <div class="alert alert-error">
+                {{ session('error') }}
+            </div>
+        @endif
+        <center>
+            <h2>DATA SUPPLIER</h2>
+        </center>
         <div class="top-bar">
             <div class="left-controls">
-                <button class="btn-add" onclick="openModal('create')">+ Tambah Supplier</button>
+                <select onchange="handleExport(this.value)">
+                    <option value="">Pilih Export</option>
+                    <option value="print">Export Print</option>
+                    <option value="pdf">Export PDF</option>
+                    <option value="csv">Export CSV</option>
+                    <option value="excel">Export Excel</option>
+                </select>
+                <button class="btn-primary" onclick="openModal('modalTambah')">+ Tambah Kategori</button>
+            </div>
+            <div style="display:flex; align-items:center; gap:6px;">
+                <div class="icon-group">
+                    <button title="Sorting" onclick="sortTable()"><i class="fas fa-sort"></i></button>
+                    <button title="Refresh" onclick="refreshPage()"><i class="fas fa-sync"></i></button>
+                    <button title="Tampilan List"><i class="fas fa-list"></i></button>
+                    <button title="Tampilan Grid"><i class="fas fa-th"></i></button>
+                </div>
+                <input type="text" placeholder="Search">
             </div>
         </div>
 
-    <table id="supplierTable">
-        <thead>
-            <tr>
-                <th>Kode Supplier</th>
-                <th>Nama Supplier</th>
-                <th>Alamat</th>
-                <th>Kontak</th>
-                <th>Email</th>
-                <th>Keterangan</th>
-                <th>Aksi</th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach($suppliers as $s)
-                <tr data-id="{{ $s->kdsupplier }}">
-                    <td>{{ $s->kdsupplier }}</td>
-                    <td>{{ $s->namasupplier }}</td>
-                    <td>{{ $s->alamat }}</td>
-                    <td>{{ $s->hp }}</td>
-                    <td>{{ $s->email }}</td>
-                    <td>{{ $s->ket }}</td>
-                    <td>
-                        <button class="btn-edit" onclick="openModal('edit', this)">Edit</button>
-                        <button class="btn-delete" onclick="deleteSupplier('{{ $s->kdsupplier }}')">Hapus</button>
-                    </td>
+        <table id="supplierTable">
+            <thead>
+                <tr>
+                    <th>Kode Supplier</th>
+                    <th>Nama Supplier</th>
+                    <th>Alamat</th>
+                    <th>Kontak</th>
+                    <th>Email</th>
+                    <th>Keterangan</th>
+                    <th>Aksi</th>
                 </tr>
-            @endforeach
-        </tbody>
-    </table>
+            </thead>
+            <tbody>
+                @foreach($suppliers as $s)
+                    <tr>
+                        <td>{{ $s->kdsupplier }}</td>
+                        <td>{{ $s->namasupplier }}</td>
+                        <td>{{ $s->alamat }}</td>
+                        <td>{{ $s->hp }}</td>
+                        <td>{{ $s->email }}</td>
+                        <td>{{ $s->ket }}</td>
+                        <td>
+                            <button class="btn-edit" onclick="openEditModal(
+                                        '{{ $s->kdsupplier }}',
+                                        '{{ $s->namasupplier }}',
+                                        '{{ $s->alamat }}',
+                                        '{{ $s->hp }}',
+                                        '{{ $s->email }}',
+                                        '{{ $s->ket }}'
+                                    )">Edit</button>
 
-    <!-- Modal Form -->
-    <div id="modalForm" class="modal">
+                            <button class="btn-delete" onclick="openDeleteModal('{{ $s->kdsupplier }}')">Hapus</button>
+                        </td>
+                    </tr>
+                @endforeach
+            </tbody>
+        </table>
+    </div>
+
+
+    {{-- Modal Tambah --}}
+    <div id="modalTambah" class="modal">
         <div class="modal-content">
-            <span class="close" onclick="closeModal()">&times;</span>
-            <h3 id="modalTitle">Tambah Supplier</h3>
-            <form id="supplierForm">
-                <input type="hidden" id="formType" value="create">
-
+            <span class="close" onclick="closeModal('modalTambah')">&times;</span>
+            <h2>Tambah Supplier</h2>
+            <form action="{{ route('supplier.store') }}" method="POST">
+                @csrf
                 <label>Kode Supplier</label>
-                <input type="text" id="kdsupplier" required>
+                <input type="text" name="kdsupplier" required>
 
                 <label>Nama Supplier</label>
-                <input type="text" id="namasupplier">
+                <input type="text" name="namasupplier">
 
                 <label>Alamat</label>
-                <textarea id="alamat"></textarea>
+                <textarea name="alamat"></textarea>
 
                 <label>Kontak (HP)</label>
-                <input type="text" id="hp">
+                <input type="text" name="hp">
 
                 <label>Email</label>
-                <input type="email" id="email">
+                <input type="email" name="email">
 
                 <label>Keterangan</label>
-                <textarea id="ket"></textarea>
+                <textarea name="ket"></textarea>
 
-                <button type="submit" style="background:#007bff;color:white;border:none;">Simpan</button>
+                <button type="submit" class="btn-primary">Simpan</button>
             </form>
         </div>
     </div>
+
+    {{-- Modal Edit --}}
+    <div id="modalEdit" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal('modalEdit')">&times;</span>
+            <h2>Edit Supplier</h2>
+            <form id="formEdit" method="POST">
+                @csrf
+                @method('PUT')
+
+                <label>Kode Supplier</label>
+                <input type="text" name="kdsupplier" id="editKdsupplier" required>
+
+                <label>Nama Supplier</label>
+                <input type="text" name="namasupplier" id="editNama">
+
+                <label>Alamat</label>
+                <textarea name="alamat" id="editAlamat"></textarea>
+
+                <label>Kontak (HP)</label>
+                <input type="text" name="hp" id="editHp">
+
+                <label>Email</label>
+                <input type="email" name="email" id="editEmail">
+
+                <label>Keterangan</label>
+                <textarea name="ket" id="editKet"></textarea>
+
+                <button type="submit" class="btn-primary">Update</button>
+            </form>
+        </div>
     </div>
 
-    <!-- JS -->
-    <script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
-    <script src="https://cdn.datatables.net/1.13.5/js/jquery.dataTables.min.js"></script>
-    <script src="https://cdn.datatables.net/buttons/2.4.1/js/dataTables.buttons.min.js"></script>
-    <script src="https://cdn.datatables.net/buttons/2.4.1/js/buttons.html5.min.js"></script>
-    <script src="https://cdn.datatables.net/buttons/2.4.1/js/buttons.print.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.7/pdfmake.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.7/vfs_fonts.js"></script>
+    {{-- Modal Hapus --}}
+    <div id="modalHapus" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal('modalHapus')">&times;</span>
+            <h2>Hapus Supplier</h2>
+            <form id="formHapus" method="POST">
+                @csrf
+                @method('DELETE')
+                <p>Apakah anda yakin ingin menghapus supplier ini?</p>
+                <button type="submit" class="btn-primary">Ya, Hapus</button>
+            </form>
+        </div>
+    </div>
+
 
     <script>
-        let modal = document.getElementById('modalForm');
-        let formType = document.getElementById('formType');
-        let editId = null;
-
-        function openModal(type, btn = null) {
-            formType.value = type;
-            if (type === 'create') {
-                document.getElementById('modalTitle').innerText = 'Tambah Supplier';
-                document.getElementById('supplierForm').reset();
-                editId = null;
-                document.getElementById('kdsupplier').readOnly = false;
-            } else {
-                document.getElementById('modalTitle').innerText = 'Edit Supplier';
-                let row = btn.closest('tr');
-                editId = row.dataset.id;
-                let cells = row.querySelectorAll('td');
-                document.getElementById('kdsupplier').value = cells[0].innerText;
-                document.getElementById('namasupplier').value = cells[1].innerText;
-                document.getElementById('alamat').value = cells[2].innerText;
-                document.getElementById('hp').value = cells[3].innerText;
-                document.getElementById('email').value = cells[4].innerText;
-                document.getElementById('ket').value = cells[5].innerText;
-                document.getElementById('kdsupplier').readOnly = true;
-            }
-            modal.style.display = 'block';
+        function openModal(id) {
+            document.getElementById(id).classList.add('show');
         }
 
-        function closeModal() {
-            modal.style.display = 'none';
+        function closeModal(id) {
+            document.getElementById(id).classList.remove('show');
         }
 
-        document.getElementById('supplierForm').addEventListener('submit', function(e) {
-            e.preventDefault();
-            let data = {
-                kdsupplier: document.getElementById('kdsupplier').value,
-                namasupplier: document.getElementById('namasupplier').value,
-                alamat: document.getElementById('alamat').value,
-                hp: document.getElementById('hp').value,
-                email: document.getElementById('email').value,
-                ket: document.getElementById('ket').value
-            };
+        function openEditModal(kdsupplier, nama, alamat, hp, email, ket) {
+            let modal = document.getElementById('modalEdit');
+            modal.classList.add('show');
 
-            let url = '';
-            let method = '';
-            if (formType.value === 'create') {
-                url = '/TAMBAH';
-                method = 'POST';
-            } else {
-                url = '/UPDATE/' + editId;
-                method = 'PUT';
-            }
+            document.getElementById('formEdit').action = "/update-supplier/" + kdsupplier;
 
-            fetch(url, {
-                method: method,
-                headers: {
-                    'Content-Type': 'application/json',
-                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content
-                },
-                body: JSON.stringify(data)
-            })
-            .then(res => res.json())
-            .then(res => {
-                if (res.success) {
-                    closeModal();
-                    showAlert(formType.value === 'create' ? 'Data kamu sudah ditambahkan!' : 'Data kamu sudah diedit!', formType.value);
-                    setTimeout(() => location.reload(), 1200);
-                }
+            document.getElementById('editKdsupplier').value = kdsupplier;
+            document.getElementById('editNama').value = nama;
+            document.getElementById('editAlamat').value = alamat;
+            document.getElementById('editHp').value = hp;
+            document.getElementById('editEmail').value = email;
+            document.getElementById('editKet').value = ket;
+        }
+
+        function openDeleteModal(kdsupplier) {
+            let modal = document.getElementById('modalHapus');
+            modal.classList.add('show');
+            document.getElementById('formHapus').action = "/hapus-supplier/" + kdsupplier;
+        }
+
+        // Search filter
+        document.querySelector("input[placeholder='Search']").addEventListener("keyup", function () {
+            let value = this.value.toLowerCase();
+            document.querySelectorAll("table tbody tr").forEach(function (row) {
+                row.style.display = row.innerText.toLowerCase().includes(value) ? "" : "none";
             });
         });
 
-        function deleteSupplier(id) {
-            if (confirm('Yakin hapus supplier ini?')) {
-                fetch('/HAPUS/' + id, {
-                    method: 'DELETE',
-                    headers: {
-                        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content
-                    }
-                })
-                .then(res => res.json())
-                .then(res => {
-                    if (res.success) {
-                        showAlert('Data kamu sudah dihapus!', 'delete');
-                        setTimeout(() => location.reload(), 1200);
-                    }
-                });
-            }
-        }
+        // Fungsi export ke CSV
+        function exportCSV() {
+            let table = document.querySelector("table");
+            let rows = table.querySelectorAll("tr");
+            let csv = [];
 
-        function showAlert(message, type = 'success') {
-            let alertBox = document.getElementById('alertBox');
-            alertBox.textContent = message;
-            alertBox.className = 'alert ' + type + ' show';
-            setTimeout(() => {
-                alertBox.classList.remove('show');
-            }, 3000);
-        }
-
-        $(document).ready(function() {
-            $('#supplierTable').DataTable({
-                dom: 'Bfrtip',
-                buttons: [
-                    'excelHtml5', 'csvHtml5', 'pdfHtml5', 'print'
-                ],
-                columnDefs: [
-                    { orderable: false, targets: -1 } // kolom aksi tidak bisa sort
-                ]
+            rows.forEach(row => {
+                let cols = row.querySelectorAll("td, th");
+                let rowData = [];
+                cols.forEach(col => rowData.push(col.innerText));
+                csv.push(rowData.join(","));
             });
-        });
+
+            let csvContent = "data:text/csv;charset=utf-8," + csv.join("\n");
+            let link = document.createElement("a");
+            link.setAttribute("href", csvContent);
+            link.setAttribute("download", "kategori.csv");
+            link.click();
+        }
+
+        // Fungsi export ke Excel (sederhana)
+        function exportExcel() {
+            let table = document.querySelector("table").outerHTML;
+            let data = new Blob([table], { type: "application/vnd.ms-excel" });
+            let link = document.createElement("a");
+            link.href = URL.createObjectURL(data);
+            link.download = "kategori.xls";
+            link.click();
+        }
+
+        // Fungsi export ke PDF (pakai print)
+        function exportPDF() {
+            window.print();
+        }
+
+        // Fungsi refresh halaman
+        function refreshPage() {
+            location.reload();
+        }
+
+        // Fungsi sorting (contoh sorting alfabet kolom pertama)
+        function sortTable() {
+            let table = document.querySelector("table");
+            let rows = Array.from(table.rows).slice(1); // skip header
+            rows.sort((a, b) => a.cells[0].innerText.localeCompare(b.cells[0].innerText));
+            rows.forEach(row => table.appendChild(row));
+        }
+
+        function handleExport(value) {
+            if (value === "print") window.print();
+            if (value === "pdf") exportPDF();
+            if (value === "csv") exportCSV();
+            if (value === "excel") exportExcel();
+        }
     </script>
 </body>
+
 </html>

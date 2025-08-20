@@ -25,7 +25,7 @@ class SupplierController extends Controller
         ]);
 
         Supplier::create($validated);
-        return response()->json(['success' => true]);
+        return redirect()->route('supplier')->with('success', 'Supplier berhasil ditambahkan!');
     }
 
     public function update(Request $request, $id)
@@ -42,13 +42,13 @@ class SupplierController extends Controller
         ]);
 
         $supplier->update($validated);
-        return response()->json(['success' => true]);
+        return redirect()->route('supplier')->with('success', 'Supplier berhasil diperbarui!');
     }
 
     public function destroy($id)
     {
         $supplier = Supplier::findOrFail($id);
         $supplier->delete();
-        return response()->json(['success' => true]);
+        return redirect()->route('supplier')->with('success', 'Supplier berhasil dihapus!');
     }
 }

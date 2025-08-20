@@ -11,4 +11,9 @@ class KategoriBarang extends Model
    public $timestamps = false;
 
     protected $fillable = ['kdkategori','namakategori','hargapergr','jumlahkadar'];
+
+    public function jenisBarang()
+    {
+        return $this->hasMany(JenisBarang::class, 'kdkategori', 'kdkategori');
+    }
 }
