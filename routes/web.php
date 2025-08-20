@@ -95,7 +95,12 @@ Route::get('/baki-utama', [BakiBarangController::class, 'index'])->name('bakibar
 
 Route::get('/jenis-utama', [JenisBarangController::class, 'index'])->name('jenisbarang');
 
+//kategori_barang-datamaster
 Route::get('/kategori-utama', [KategoriBarangController::class, 'index'])->name('kategoribarang');
+Route::post('/tambah-kategori', [KategoriBarangController::class, 'store'])->name('kategori.store');
+Route::put('/update-kategori/{kdkategori}', [KategoriBarangController::class, 'update'])->name('kategori.update');
+Route::delete('/hapus-kategori/{kdkategori}', [KategoriBarangController::class, 'destroy'])->name('kategori.destroy');
+
 
 Route::get('/kondisi-utama', [KondisiBarangController::class, 'index'])->name('kondisibarang');
 
