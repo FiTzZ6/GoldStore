@@ -22,6 +22,28 @@
 
     <div class="container">
 
+         <div class="top-bar">
+            <div class="left-controls">
+                <select onchange="handleExport(this.value)">
+                    <option value="">Pilih Export</option>
+                    <option value="print">Export Print</option>
+                    <option value="pdf">Export PDF</option>
+                    <option value="csv">Export CSV</option>
+                    <option value="excel">Export Excel</option>
+                </select>
+                <button class="btn-primary" onclick="openModal('modalTambah')">+ Tambah Kategori</button>
+            </div>
+            <div style="display:flex; align-items:center; gap:6px;">
+                <div class="icon-group">
+                    <button title="Sorting" onclick="sortTable()"><i class="fas fa-sort"></i></button>
+                    <button title="Refresh" onclick="refreshPage()"><i class="fas fa-sync"></i></button>
+                    <button title="Tampilan List"><i class="fas fa-list"></i></button>
+                    <button title="Tampilan Grid"><i class="fas fa-th"></i></button>
+                </div>
+                <input type="text" placeholder="Search">
+            </div>
+        </div>
+
         <!-- Alert sukses -->
         @if(session('success'))
             <div style="padding:10px; background:#d4edda; color:#155724; margin-bottom:15px; border-radius:5px;">
@@ -29,13 +51,10 @@
             </div>
         @endif
 
-        <div class="top-bar">
-            <button class="btn-primary" onclick="openModal('modalTambah')">+ Tambah Area</button>
-        </div>
-
         <table id="tabelArea" class="display">
             <thead>
                 <tr>
+                    <th><input type="checkbox"></th>
                     <th>Kode Area</th>
                     <th>Nama Area</th>
                     <th>Aksi</th>
@@ -44,11 +63,12 @@
             <tbody>
                 @foreach($areas as $area)
                     <tr>
+                        <td><input type="checkbox"></td>
                         <td>{{ $area->kdarea }}</td>
                         <td>{{ $area->namaarea }}</td>
                         <td>
-                            <button onclick="editArea('{{ $area->kdarea }}', '{{ $area->namaarea }}')">Edit</button>
-                            <button onclick="hapusArea('{{ $area->kdarea }}')">Hapus</button>
+                            <button class="action-btn" onclick="editArea('{{ $area->kdarea }}', '{{ $area->namaarea }}')"><i class="fa-solid fa-pen-to-square"></i></button>
+                            <button class="action-btn" onclick="hapusArea('{{ $area->kdarea }}')"><i class="fas fa-trash"></i></button>
                         </td>
                     </tr>
                 @endforeach
@@ -116,17 +136,8 @@
         </div>
     </div>
 
-    <!-- jQuery & DataTables -->
-    <script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
-    <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
-    <script src="https://cdn.datatables.net/buttons/2.4.2/js/dataTables.buttons.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.7/pdfmake.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.7/vfs_fonts.js"></script>
-    <script src="https://cdn.datatables.net/buttons/2.4.2/js/buttons.html5.min.js"></script>
-    <script src="https://cdn.datatables.net/buttons/2.4.2/js/buttons.print.min.js"></script>
-
     <script>
+        
         $(document).ready(function () {
             $('#tabelArea').DataTable({
                 dom: 'Bfrtip',
@@ -150,6 +161,61 @@
             document.getElementById('formHapus').action = '/hapus-area/' + kd;
             openModal('modalHapus');
         }
+                // Fungsi export ke CSV
+        function exportCSV() {
+            let table = document.querySelector("table");
+            let rows = table.querySelectorAll("tr");
+            let csv = [];
+
+            rows.forEach(row => {
+                let cols = row.querySelectorAll("td, th");
+                let rowData = [];
+                cols.forEach(col => rowData.push(col.innerText));
+                csv.push(rowData.join(","));
+            });
+
+            let csvContent = "data:text/csv;charset=utf-8," + csv.join("\n");
+            let link = document.createElement("a");
+            link.setAttribute("href", csvContent);
+            link.setAttribute("download", "area.csv");
+            link.click();
+        }
+
+        // Fungsi export ke Excel (sederhana)
+        function exportExcel() {
+            let table = document.querySelector("table").outerHTML;
+            let data = new Blob([table], { type: "application/vnd.ms-excel" });
+            let link = document.createElement("a");
+            link.href = URL.createObjectURL(data);
+            link.download = "area.xls";
+            link.click();
+        }
+
+        // Fungsi export ke PDF (pakai print)
+        function exportPDF() {
+            window.print();
+        }
+
+        // Fungsi refresh halaman
+        function refreshPage() {
+            location.reload();
+        }
+
+        // Fungsi sorting (contoh sorting alfabet kolom pertama)
+        function sortTable() {
+            let table = document.querySelector("table");
+            let rows = Array.from(table.rows).slice(1); // skip header
+            rows.sort((a, b) => a.cells[0].innerText.localeCompare(b.cells[0].innerText));
+            rows.forEach(row => table.appendChild(row));
+        }
+
+        function handleExport(value) {
+            if (value === "print") window.print();
+            if (value === "pdf") exportPDF();
+            if (value === "csv") exportCSV();
+            if (value === "excel") exportExcel();
+        }
+        
     </script>
 </body>
 

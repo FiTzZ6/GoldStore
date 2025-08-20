@@ -1,50 +1,47 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="id">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="{{ asset('css/utility/permintaan_pembelian/index.css') }}">
-    <title>Permintaan Pembelian</title>
+    <link rel="stylesheet" href="{{ asset('css/utility/permintaan_pembelian/formulir_pp.css') }}">
+    <link href="https://fonts.googleapis.com/css?family=Montserrat:400,800" rel="stylesheet">
+    <title>Halaman Area</title>
 </head>
-<body>
-@include('partials.navbar')
+<body>  
+@include('partials.navbar')    
 
-<div class="container-pp">
-
-    <!-- Judul dan Tombol -->
-    <div class="header-pp">
-        <a href="{{ route('formulir_pp.index') }}" class="btn-primary">
-            <i class="fa fa-plus"></i> Formulir Permintaan Pembelian
-        </a>
-    </div>
+<h1 class="page-title">FORMULIR PP</h1>
 
 
-    <!-- Filter Export -->
-    <div class="filter-section">
-        <select class="select-export">
-            <option>Export Basic</option>
-            <option>Export Excel</option>
-            <option>Export PDF</option>
-        </select>
-        <div class="search-box">
+
+<div class="container">
+
+    <div class="top-bar">
+        <div class="left-controls">
+            <select>
+                <option>Export Basic</option>
+                <option>Export Basic</option>
+                
+            </select>
+            <button class="btn-primary">+ Tambah Area</button>
+        </div>
+        <div style="display:flex; align-items:center; gap:6px;">
+            <div class="icon-group">
+                <button title="Sorting"><i class="fas fa-sort"></i></button>
+                <button title="Refresh"><i class="fas fa-sync"></i></button>
+                <button title="Tampilan List"><i class="fas fa-list"></i></button>
+                <button title="Tampilan Grid"><i class="fas fa-th"></i></button>
+                <button title="Export"><i class="fas fa-file-export"></i></button>
+            </div>
             <input type="text" placeholder="Search">
         </div>
-        <div class="icon-group">
-            <button title="Sorting"><i class="fas fa-sort"></i></button>
-            <button title="Refresh"><i class="fas fa-sync"></i></button>
-            <button title="Tampilan List"><i class="fas fa-list"></i></button>
-            <button title="Tampilan Grid"><i class="fas fa-th"></i></button>
-            <button title="Export"><i class="fas fa-file-export"></i></button> 
-            </div>
     </div>
 
-    <!-- Tabel Data -->
-    <table class="table-pp">
+    <table>
         <thead>
             <tr>
                 <th>No</th>
                 <th>No. PP</th>
-                <th>KD Toko</th>
+                <th>Kode Toko</th>
                 <th>Tgl Permintaan</th>
                 <th>Tgl Dibutuhkan</th>
                 <th>Status</th>
@@ -52,33 +49,24 @@
             </tr>
         </thead>
         <tbody>
-            @forelse($data as $index => $item)
-                <tr>
-                    <td>{{ $index + 1 }}</td>
-                    <td>{{ $item->no_pp }}</td>
-                    <td>{{ $item->kd_toko }}</td>
-                    <td>{{ $item->tgl_permintaan }}</td>
-                    <td>{{ $item->tgl_dibutuhkan }}</td>
-                    <td>{{ $item->status }}</td>
-                    <td>
-                        <a href="#" class="btn-icon"><i class="fa fa-eye"></i></a>
-                        <a href="#" class="btn-icon"><i class="fa fa-edit"></i></a>
-                        <form action="{{ route('formulir_pp.destroy', $item->id) }}" method="POST" style="display:inline;">
-                            @csrf
-                            @method('DELETE')
-                            <button class="btn-icon" onclick="return confirm('Yakin ingin menghapus?')">
-                                <i class="fa fa-trash"></i>
-                            </button>
-                        </form>
-                    </td>
-                </tr>
-            @empty
-                <tr>
-                    <td colspan="7" class="no-data">No matching records found</td>
-                </tr>
-            @endforelse
+            <tr>
+                <td>1</td>
+                <td>PP001</td>
+                <td>Toko A</td>
+                <td>2023-01-01</td>
+                <td>2023-01-05</td>
+                <td>Pending</td>
+                <td>
+                    <button class="action-btn"><i class="fa-solid fa-pen-to-square"></i></button>
+                    <button class="action-btn"><i class="fas fa-trash"></i></button>
+                </td>
+            </tr>
         </tbody>
     </table>
+
+    <div class="footer">
+        SKIBIDI
+    </div>
 </div>
 </body>
 </html>
