@@ -74,9 +74,9 @@ Route::delete('/HAPUS/{id}', [SupplierController::class, 'destroy'])->name('dest
 
 //area-datamaster
 Route::get('/area-utama', [AreaController::class, 'index'])->name('area');
-Route::post('/tambah-area', [AreaController::class, 'store'])->name('store');
-Route::put('/update-area/{kdarea}', [AreaController::class, 'update'])->name('update');
-Route::delete('/hapus-area/{kdarea}', [AreaController::class, 'destroy'])->name('destroy');
+Route::post('/tambah-area', [AreaController::class, 'store'])->name('area.store');
+Route::put('/update-area/{kdarea}', [AreaController::class, 'update'])->name('area.update');
+Route::delete('/hapus-area/{kdarea}', [AreaController::class, 'destroy'])->name('area.destroy');
 
 //cabang-datamaster
 Route::get('/cabang-utama', [CabangController::class, 'index'])->name('cabang');

@@ -7,10 +7,11 @@ use Illuminate\Http\Request;
 
 class AreaController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $areas = Area::orderBy('kdarea')->get();
-        return view('datamaster.area', compact('areas'));
+        $perPage = $request->input('per_page', 10);
+        $areas = Area::paginate($perPage);
+        return view('datamaster.area', compact('areas', 'perPage'));
     }
 
     public function store(Request $request)

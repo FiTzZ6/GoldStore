@@ -44,6 +44,20 @@
             </div>
         </div>
 
+         <form method="GET" action="{{ route('area') }}">
+            <label for="per_page">Tampilkan:</label>
+            <select name="per_page" id="per_page" onchange="this.form.submit()">
+                <option value="10" {{ $perPage == 10 ? 'selected' : '' }}>10</option>
+                <option value="25" {{ $perPage == 25 ? 'selected' : '' }}>25</option>
+                <option value="30" {{ $perPage == 30 ? 'selected' : '' }}>30</option>
+                <option value="50" {{ $perPage == 50 ? 'selected' : '' }}>50</option>
+                <option value="75" {{ $perPage == 75 ? 'selected' : '' }}>75</option>
+                <option value="200" {{ $perPage == 200 ? 'selected' : '' }}>200</option>
+                <option value="{{ $areas->total() }}" {{ $perPage == $areas->total() ? 'selected' : '' }}>All
+                </option>
+            </select>
+        </form>
+
         <!-- Alert sukses -->
         @if(session('success'))
             <div style="padding:10px; background:#d4edda; color:#155724; margin-bottom:15px; border-radius:5px;">
@@ -92,7 +106,7 @@
                 </div>
             @endif
 
-            <form action="{{ route('store') }}" method="POST" id="formTambahArea">
+            <form action="{{ route('area.store') }}" method="POST" id="formTambahArea">
                 @csrf
                 <label>Kode Area</label>
                 <input type="text" name="kdarea" value="{{ old('kdarea') }}" required>
@@ -137,15 +151,6 @@
     </div>
 
     <script>
-        
-        $(document).ready(function () {
-            $('#tabelArea').DataTable({
-                dom: 'Bfrtip',
-                buttons: ['csv', 'excel', 'pdf', 'print'],
-                pageLength: 20,
-                lengthMenu: [[20, 25, 50, 75, 100], [20, 25, 50, 75, 100]],
-            });
-        });
 
         function openModal(id) { document.getElementById(id).style.display = 'block'; }
         function closeModal(id) { document.getElementById(id).style.display = 'none'; }
@@ -161,6 +166,13 @@
             document.getElementById('formHapus').action = '/hapus-area/' + kd;
             openModal('modalHapus');
         }
+
+         document.querySelector("input[placeholder='Search']").addEventListener("keyup", function () {
+            let value = this.value.toLowerCase();
+            document.querySelectorAll("table tbody tr").forEach(function (row) {
+                row.style.display = row.innerText.toLowerCase().includes(value) ? "" : "none";
+            });
+        });
                 // Fungsi export ke CSV
         function exportCSV() {
             let table = document.querySelector("table");
