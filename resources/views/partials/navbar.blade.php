@@ -152,7 +152,7 @@
                         <li><a href="#">Karyawan</a></li>
                         <li><a href="{{ route('kategoribarang') }}">Kategori Barang</a></li>
                         <li><a href="{{ route('jenisbarang') }}">Jenis Barang</a></li>
-                        <li><a href="{{ route('bakibarang') }}">Baki Barang</a></li>
+                        <li><a href="{{ route('bakibarang.index') }}">Baki Barang</a></li>
                         <li><a href="{{ route('kondisibarang') }}">Kondisi Barang</a></li>
                         <li><a href="{{ route('ongkos') }}">Ongkos</a></li>
                         <li><a href="{{ route('potongan') }}">Potongan</a></li>

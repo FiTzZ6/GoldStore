@@ -91,8 +91,11 @@ Route::prefix('uang-kas')->name('uang_kas.')->group(function () {
     Route::delete('/{id}', [KasController::class, 'destroy'])->name('destroy');
 });
 
-Route::get('/baki-utama', [BakiBarangController::class, 'index'])->name('bakibarang');
-
+//baki_barang-datamaster
+Route::get('/bakibarang', [BakiBarangController::class, 'index'])->name('bakibarang.index');
+Route::post('/bakibarang', [BakiBarangController::class, 'store'])->name('bakibarang.store');
+Route::post('/bakibarang/{id}', [BakiBarangController::class, 'update'])->name('bakibarang.update');
+Route::delete('/bakibarang/{id}', [BakiBarangController::class, 'destroy'])->name('bakibarang.destroy');
 
 //jenis_barang-datamaster
 Route::get('/jenis-barang', [JenisBarangController::class, 'index'])->name('jenisbarang');
