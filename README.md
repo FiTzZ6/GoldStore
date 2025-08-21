@@ -7,6 +7,19 @@
 <a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
 </p>
 
+yang perlu ada  di laravel anda ketika kalian ambil dari github ini adalah : 
+ - Composer install
+ - masukkan env nya
+ - php artisan storage:link
+
+atau kalian mau download file ini melalui github langsung :
+ - Git clone link(link repository ini) .git
+ - Composer install
+ - Masukin env
+ - php artisan storage:link
+
+dan perlu diperhatikan kami menngunakan ini di xampp\htdocs, jika ingin di jalankan
+
 ## About Laravel
 
 Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
