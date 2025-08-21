@@ -225,7 +225,6 @@
             if (value === "csv") exportCSV();
             if (value === "excel") exportExcel();
         }
-        
     </script>
 </body>
 

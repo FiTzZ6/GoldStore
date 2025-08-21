@@ -37,12 +37,12 @@ class BakiBarangController extends Controller
         return redirect()->route('bakibarang.index')->with('success', 'Baki berhasil ditambahkan!');
     }
 
-    public function update(Request $request, $id)
+    public function update(Request $request, $kdbaki)
     {
-        $baki = Baki::findOrFail($id);
+        $baki = Baki::where('kdbaki', $kdbaki)->firstOrFail();
         $baki->update($request->all());
         return redirect()->route('bakibarang.index')->with('success', 'Baki berhasil diupdate!');
-    }
+    }    
 
     public function destroy($id)
     {

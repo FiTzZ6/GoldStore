@@ -24,7 +24,7 @@
                     <option value="csv">Export CSV</option>
                     <option value="excel">Export Excel</option>
                 </select>
-                <button class="btn-primary" onclick="openModal('modalTambah')">+ Tambah Baki</button>
+                <button onclick="openModal('modalTambahBaki')" class="btn-primary">+ Tambah Baki</button>
             </div>
             <div style="display:flex; align-items:center; gap:6px;">
                 <div class="icon-group">
@@ -53,11 +53,17 @@
                 <td>{{ $item->namabaki }}</td>
                 <td>{{ $item->kdkategori }}</td>
                 <td>
-                    <button class="action-btn"><i class="fa-solid fa-pen-to-square"></i></button>
+                    <button class="action-btn"
+                        onclick="openEditModal('{{ $item->kdbaki }}','{{ $item->namabaki }}')">
+                        <i class="fa-solid fa-pen-to-square"></i>
+                    </button>
+
                     <form action="{{ route('bakibarang.destroy', $item->kdbaki) }}" method="POST" style="display:inline;">
                         @csrf
                         @method('DELETE')
-                        <button class="action-btn" onclick="return confirm('Yakin hapus?')"><i class="fas fa-trash"></i></button>
+                        <button class="action-btn" onclick="return confirm('Yakin hapus?')">
+                            <i class="fas fa-trash"></i>
+                        </button>
                     </form>
                 </td>
             </tr>
@@ -68,46 +74,76 @@
 
 
 <!-- Form Tambah Data -->
-    <div id="form-tambah" style="display:none; margin-top:20px;">
-        <form method="POST" action="{{ route('bakibarang.store') }}">
+    <div id="modalTambahBaki" class="modal" style="display:none;">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal('modalTambahBaki')">&times;</span>
+            <h2>Tambah Baki</h2>
+
+            @if ($errors->any())
+                <div style="background:#f8d7da; color:#721c24; padding:10px; margin-bottom:10px; border-radius:5px;">
+                    <ul style="margin:0; padding-left:20px;">
+                        @foreach ($errors->all() as $error)
+                            <li>{{ $error }}</li>
+                        @endforeach
+                    </ul>
+                </div>
+            @endif
+
+            <form method="POST" action="{{ route('bakibarang.store') }}">
+                @csrf
+                <div class="mb-3">
+                    <label>Kode Baki</label>
+                    <input type="text" name="kdbaki" required class="form-control">
+                </div>
+                
+                <div class="mb-3">
+                    <label>Nama Baki</label>
+                    <input type="text" name="namabaki" required class="form-control">
+                </div>
+
+                <div class="mb-3">
+                    <label>Kode Kategori</label>
+                    <input type="text" name="kdkategori" class="form-control">
+                </div>
+
+                <button type="submit" class="btn btn-primary">Simpan</button>
+            </form>
+        </div>
+    </div>
+
+    <div id="overlay" class="overlay"></div>
+    <!-- Modal Edit -->
+    <div id="modalEdit">
+        <h4>Edit Data Baki</h4>
+        <form id="formEdit" method="POST">
             @csrf
-            <label>Kode Baki</label>
-            <input type="text" name="kdbaki" required>
-            <label>Nama Baki</label>
-            <input type="text" name="namabaki" required>
-            <label>Kode Kategori</label>
-            <input type="text" name="kdkategori">
-            <button type="submit" class="btn-primary">Simpan</button>
+            @method('PUT')
+
+            <div class="mb-3">
+                <label>Kode Baki</label>
+                <input type="text" id="editkdbaki" name="kdbaki" class="form-control" readonly>
+            </div>
+
+            <div class="mb-3">
+                <label>Nama Baki</label>
+                <input type="text" id="editNamaBaki" name="namabaki" class="form-control">
+            </div>
+
+            <button type="submit" class="btn btn-primary">Simpan</button>
+            <button type="button" class="btn btn-secondary" onclick="closeEditModal()">Batal</button>
         </form>
     </div>
 
-
-<!-- Modal Edit -->
-    <div id="modalEdit" class="modal">
-        <div class="modal-content">
-            <span class="close" onclick="closeModal('modalEdit')">&times;</span>
-            <h2>Edit Baki</h2>
-            <form id="formEdit" method="POST">
-                @csrf
-                @method('PUT')
-                <label>Kode Baki</label>
-                <input type="text" name="kdbaki" id="editkdbaki" required>
-                <label>Nama Baki</label>
-                <input type="text" name="namabaki" id="editNamaBaki">
-                <button type="submit">Update</button>
-            </form>
-        </div>
-
-<!-- Modal Hapus -->
+    <!-- Modal Hapus -->
     <div id="modalHapus" class="modal">
         <div class="modal-content">
             <span class="close" onclick="closeModal('modalHapus')">&times;</span>
             <h2>Hapus Area</h2>
             <p>Yakin ingin menghapus area ini?</p>
-            <form id="formHapus" method="POST">
+            <form action="{{ route('bakibarang.destroy', $item->kdbaki) }}" method="POST" style="display:inline;">
                 @csrf
                 @method('DELETE')
-                <button type="submit">Hapus</button>
+                <button class="action-btn" onclick="return confirm('Yakin hapus?')"><i class="fas fa-trash"></i></button>
             </form>
         </div>
     </div>
@@ -167,8 +203,35 @@
             if (value === "csv") exportCSV();
             if (value === "excel") exportExcel();
         }
-        
-        </script>
+
+        function openEditModal(kdbaki, namabaki) {
+            document.getElementById('modalEdit').style.display = 'block';
+            document.getElementById('overlay').style.display = 'block';
+
+            document.getElementById('editkdbaki').value = kdbaki;
+            document.getElementById('editNamaBaki').value = namabaki;
+
+            document.getElementById('formEdit').action = "/bakibarang/" + kdbaki;
+        }
+
+        function closeEditModal() {
+            document.getElementById('modalEdit').style.display = 'none';
+            document.getElementById('overlay').style.display = 'none';
+        }
+
+        function openModal(id) {
+            document.getElementById(id).style.display = 'block';
+        }
+        function closeModal(id) {
+            document.getElementById(id).style.display = 'none';
+        }
+
+        document.querySelector("input[placeholder='Search']").addEventListener("keyup", function () {
+            let value = this.value.toLowerCase();
+            document.querySelectorAll("table tbody tr").forEach(function (row) {
+                row.style.display = row.innerText.toLowerCase().includes(value) ? "" : "none";
+            });
+        });
     </script>
 </body>
 </html>
