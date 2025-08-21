@@ -15,6 +15,8 @@
 <body>
     @include('partials.navbar')
 
+    <h1>DATA CABANG</h1>
+
     <div class="container">
 
         {{-- Alert success/error --}}
@@ -29,10 +31,6 @@
                 {{ session('error') }}
             </div>
         @endif
-
-        <center>
-            <h2>DATA CABANG</h2>
-        </center>
 
         <div class="top-bar">
             <div class="left-controls">
@@ -52,6 +50,7 @@
                 <input type="text" placeholder="Search">
             </div>
         </div>
+
 
         <table id="cabangTable">
             <thead>
@@ -77,15 +76,15 @@
                             @endif
                         </td>
                         <td>
-                            <button class="btn-edit" onclick="openEditModal(
+                            <button class="fa-solid fa-pen-to-square" onclick="openEditModal(
                                     '{{ $toko->kdtoko }}',
                                     '{{ $toko->namatoko }}',
                                     '{{ $toko->alamattoko }}',
                                     '{{ $toko->area }}',
                                     '{{ $toko->logo }}'
-                                )">Edit</button>
+                                )"></button>
 
-                            <button class="btn-delete" onclick="openDeleteModal('{{ $toko->kdtoko }}')">Hapus</button>
+                            <button class="fas fa-trash" onclick="openDeleteModal('{{ $toko->kdtoko }}')"></button>
                         </td>
                     </tr>
                 @endforeach

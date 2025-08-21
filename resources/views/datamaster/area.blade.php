@@ -37,8 +37,6 @@
                 <div class="icon-group">
                     <button title="Sorting" onclick="sortTable()"><i class="fas fa-sort"></i></button>
                     <button title="Refresh" onclick="refreshPage()"><i class="fas fa-sync"></i></button>
-                    <button title="Tampilan List"><i class="fas fa-list"></i></button>
-                    <button title="Tampilan Grid"><i class="fas fa-th"></i></button>
                 </div>
                 <input type="text" placeholder="Search">
             </div>

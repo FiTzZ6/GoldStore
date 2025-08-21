@@ -14,6 +14,8 @@
 <body>
     @include('partials.navbar')
 
+    <h1>DATA SUPPLIER</h1>
+
     <div class="container">
 
         {{-- Alert success/error --}}
@@ -28,9 +30,7 @@
                 {{ session('error') }}
             </div>
         @endif
-        <center>
-            <h2>DATA SUPPLIER</h2>
-        </center>
+
         <div class="top-bar">
             <div class="left-controls">
                 <select onchange="handleExport(this.value)">
@@ -46,8 +46,6 @@
                 <div class="icon-group">
                     <button title="Sorting" onclick="sortTable()"><i class="fas fa-sort"></i></button>
                     <button title="Refresh" onclick="refreshPage()"><i class="fas fa-sync"></i></button>
-                    <button title="Tampilan List"><i class="fas fa-list"></i></button>
-                    <button title="Tampilan Grid"><i class="fas fa-th"></i></button>
                 </div>
                 <input type="text" placeholder="Search">
             </div>
@@ -82,9 +80,9 @@
                                         '{{ $s->hp }}',
                                         '{{ $s->email }}',
                                         '{{ $s->ket }}'
-                                    )">Edit</button>
+                                    )"><i class="fa-solid fa-pen-to-square"></i></button>
 
-                            <button class="btn-delete" onclick="openDeleteModal('{{ $s->kdsupplier }}')">Hapus</button>
+                                <button class="fas fa-trash" onclick="openDeleteModal('{{ $s->kdsupplier }}')"></button>
                         </td>
                     </tr>
                 @endforeach
