@@ -2,14 +2,8 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Auth\LoginController;
-use App\Http\Controllers\BarangController;
 use App\Http\Controllers\LaporanController;
-use App\Http\Controllers\PrintpdfController;
 use App\Http\Controllers\UtilityController;
-use App\Http\Controllers\DataController;
-use App\Http\Controllers\PesananController;
-use App\Http\Controllers\ServisController;
-use App\Http\Controllers\BeliController;
 use App\Http\Controllers\JualController;
 use App\Http\Controllers\uang_kas\KasController;
 use App\Http\Controllers\SupplierController;
@@ -21,6 +15,7 @@ use App\Http\Controllers\KategoriBarangController;
 use App\Http\Controllers\KondisiBarangController;
 use App\Http\Controllers\OngkosController;
 use App\Http\Controllers\PotonganController;
+use App\Http\Controllers\BackupController;
 
 Route::get('/login', [LoginController::class, 'index'])->name('login');
 Route::post('/login', [LoginController::class, 'masuk'])->name('login.masuk');
@@ -29,6 +24,9 @@ Route::post('/register', [LoginController::class, 'daftarakun'])->name('register
 Route::get('/register', [LoginController::class, 'formregister'])->name('register');
 Route::post('/register', [LoginController::class, 'daftarakun'])->name('register.submit');
 Route::get('/logout', [LoginController::class, 'logout'])->name('logout');
+Route::get('/profile', function () {
+    return view('utility.akun.profile');
+})->name('utility.akun.profile');
 
 Route::get('/jual', [JualController::class, 'index'])->name('jual.index');
 
@@ -117,6 +115,10 @@ Route::get('/ongkos-utama', [OngkosController::class, 'index'])->name('ongkos');
 Route::get('/potongan-utama', [PotonganController::class, 'index'])->name('potongan');
 
 
+//backup_data-utility
+Route::get('/backup', [BackupController::class, 'index'])->name('backup');
+Route::post('/backup', [BackupController::class, 'backup'])->name('backup.run');
+Route::post('/restore', [BackupController::class, 'restore'])->name('restore.run');
 
 
 Route::get('/', function () {

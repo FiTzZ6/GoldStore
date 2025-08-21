@@ -349,7 +349,7 @@
                             @if(session('typeuser') == 1)
                                 <li><a href="{{ route('utility.akun.table_akun') }}">Akun</a></li>
                             @endif
-                            <li><a href="#">Profil</a></li>
+                            <li><a href="{{ route('utility.akun.profile') }}">Profil</a></li>
                         </ul>
                     </li>
 
@@ -368,7 +368,7 @@
                     @if(session('typeuser') == 1)
                         <li><a href="{{ route('utility.company.company_profile') }}">Profil Perusahaan</a></li>
                     @endif
-                    <li><a href="#">Backup Data</a></li>
+                    <li><a href="{{ route('backup') }}">Backup Data</a></li>
                     <li><a href="#">Dokumen</a></li>
                 </ul>
             </li>
