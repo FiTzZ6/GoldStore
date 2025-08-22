@@ -1,0 +1,85 @@
+body {
+      font-family: Arial, sans-serif;
+      background: #f4f6f9;
+      padding: 20px;
+    }
+
+    .filter-container {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 15px;
+      flex-wrap: wrap;
+    }
+
+    .filter-container label {
+      font-weight: bold;
+      margin-right: 5px;
+    }
+
+    .filter-container input[type="date"],
+    .filter-container select,
+    .filter-container input[type="text"] {
+      padding: 6px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+    }
+
+    .filter-container button {
+      background: #007bff;
+      color: white;
+      border: none;
+      padding: 6px 12px;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+
+    .filter-container button:hover {
+      background: #0056b3;
+    }
+
+    .table-controls {
+      margin: 10px 0;
+    }
+
+    .table-controls button {
+      margin-right: 5px;
+      padding: 6px 12px;
+      border: 1px solid #aaa;
+      border-radius: 4px;
+      background: #f9f9f9;
+      cursor: pointer;
+    }
+
+    .table-controls button:hover {
+      background: #e9e9e9;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 10px;
+      background: white;
+    }
+
+    table th, table td {
+      border: 1px solid #ddd;
+      padding: 8px;
+      text-align: center;
+    }
+
+    table th {
+      background: #f2f2f2;
+    }
+
+    table input[type="text"] {
+      width: 95%;
+      padding: 4px;
+      font-size: 14px;
+    }
+
+    .no-data {
+      text-align: center;
+      color: #888;
+      padding: 15px;
+    }

@@ -1,0 +1,23 @@
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f2f4f7;
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            max-width: 500px;
+            margin: 40px auto;
+            background: #e0d9d9;
+            border-radius: 6px;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+        }
+        .search-box {
+            width: 100%;      /* atur lebar (misal 100%, 300px, dll) */
+            height: 40px;     /* atur tinggi */
+            padding: 8px 12px;
+            border: 1px solid #aaa;
+            border-radius: 4px;
+            font-size: 16px;  /* atur ukuran font */
+            box-sizing: border-box;
+        }

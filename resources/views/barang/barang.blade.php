@@ -1,90 +1,73 @@
-@extends('layouts.app') {{-- Ganti dengan layout Anda jika berbeda --}}
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <title>Filter Data Barang</title>
+    <link rel="stylesheet" href="{{ asset('css/bootstrap.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/barang/databarang.css') }}">
+</head>
+<body>
 
-@section('content')
-<div style="margin-left:10px;margin-right:20px;">
+  <!-- Filter -->
+  <div class="filter-container">
+    <label>FILTER</label>
+    <input type="date">
+    <select>
+      <option>Semua Cabang</option>
+      <option>Cabang 1</option>
+      <option>Cabang 2</option>
+    </select>
+    <select>
+      <option>Semua Baki</option>
+      <option>Baki 1</option>
+      <option>Baki 2</option>
+    </select>
+    <select>
+      <option>Semua Supplier</option>
+      <option>Supplier A</option>
+      <option>Supplier B</option>
+    </select>
+    <button>Filter</button>
+    <label style="margin-left:auto;">Search:</label>
+    <input type="text" placeholder="Search...">
+  </div>
 
-    @if (session('insert'))
-        <div class="alert alert-success alert-st-one" role="alert" id="alertsuccess">
-            <i class="fa fa-check edu-checked-pro admin-check-pro admin-check-pro-none" aria-hidden="true"></i>
-            <p class="message-mg-rt message-alert-none"><strong>Added! </strong> {{ session('insert') }}</p>
-        </div>
-    @elseif (session('msgdelete'))
-        <div class="alert alert-danger alert-mg-b alert-st-four" role="alert" id="alertsuccess">
-            <i class="fa fa-window-close edu-danger-error admin-check-pro" aria-hidden="true"></i>
-            <i class="fa fa-times edu-danger-error admin-check-pro" aria-hidden="true"></i>
-            <p class="message-mg-rt"><strong>Deleted! </strong> {{ session('msgdelete') }}</p>
-        </div>
-    @elseif (session('update'))
-        <div class="alert alert-info alert-st-two" role="alert">
-            <i class="fa fa-info-circle edu-inform admin-check-pro admin-check-pro-none" aria-hidden="true"></i>
-            <p class="message-mg-rt message-alert-none"><strong>Updated! </strong> {{ session('update') }}</p>
-        </div>
-    @endif
+  <!-- Tombol kontrol tabel -->
+  <div class="table-controls">
+    <button>Show 10 rows</button>
+    <button>Copy</button>
+    <button>CSV</button>
+    <button>Excel</button>
+    <button>PDF</button>
+    <button>Print</button>
+  </div>
 
-    <div class="col-lg-12" style="margin-bottom: 20px;">
-        <form id="form-filter">
-            <div class="col-lg-1">
-                <label>FILTER </label>
-            </div>
+  <!-- Tabel -->
+  <table>
+    <thead>
+      <tr>
+        <th>Nama Barang</th>
+        <th>Barcode</th>
+        <th>KD Baki</th>
+        <th>Berat</th>
+        <th>Kadar</th>
+        <th>Action</th>
+      </tr>
+      <tr>
+        <th><input type="text" placeholder="Search Nama Barang"></th>
+        <th><input type="text" placeholder="Search Barcode"></th>
+        <th><input type="text" placeholder="Search KD Baki"></th>
+        <th><input type="text" placeholder="Search Berat"></th>
+        <th><input type="text" placeholder="Search Kadar"></th>
+        <th><input type="text" placeholder="Search Action"></th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td colspan="6" class="no-data">No data available in table</td>
+      </tr>
+    </tbody>
+  </table>
 
-            @if ($sesstoko === 'HLD')
-                <div class="col-lg-2">
-                    <input type="date" name="tglinput" id="tglinput" class="form-control-sm" placeholder="Tanggal Input">
-                </div>
-            @endif
-
-            <div class="col-lg-2">
-                {!! $form_cabang !!}
-            </div>
-
-            <div class="col-lg-2">
-                <select id="baki" name="baki" class="chosen-select">
-                    <option value="">Semua Baki</option>
-                    @foreach ($baki as $bk)
-                        <option value="{{ $bk->kdbaki }}">{{ $bk->kdbaki }} - {{ $bk->namabaki }}</option>
-                    @endforeach
-                </select>
-            </div>
-
-            <div class="col-lg-2">
-                <select id="supplier" name="supplier" class="chosen-select">
-                    <option value="">Semua Supplier</option>
-                    @foreach ($supplier as $sup)
-                        <option value="{{ $sup->kdsupplier }}">{{ $sup->kdsupplier }} - {{ $sup->namasupplier }}</option>
-                    @endforeach
-                </select>
-            </div>
-
-            <div class="col-lg-1">
-                <button type="button" id="btn-filter" class="btn btn-primary">Filter</button>
-            </div>
-        </form>
-    </div>
-
-    <div class="sparkline13-list">
-        <div class="sparkline13-hd">
-            <div class="main-sparkline13-hd">
-                <div class="sparkline13-graph" style="margin-top:10px;">
-                    <div class="datatable-dashv1-list custom-datatable-overright">
-                        <table id="table_id" class="display compact" cellspacing="0" width="100%">
-                            <thead>
-                                <tr>
-                                    <th>Nama Barang</th>
-                                    <th>Barcode</th>
-                                    <th>KD Baki</th>
-                                    <th>Berat</th>
-                                    <th>Kadar</th>
-                                    <th>Action</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                {{-- Data akan dimuat dengan AJAX atau @foreach --}}
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
-@endsection
+</body>
+</html>
