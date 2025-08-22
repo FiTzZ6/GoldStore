@@ -18,6 +18,7 @@ use App\Http\Controllers\PotonganController;
 use App\Http\Controllers\BackupController;
 use App\Http\Controllers\ParameterKasController;
 use App\Http\Controllers\StaffController;
+use App\Http\Controllers\PelangganController;
 
 Route::get('/login', [LoginController::class, 'index'])->name('login');
 Route::post('/login', [LoginController::class, 'masuk'])->name('login.masuk');
@@ -140,7 +141,11 @@ Route::post('/staff-store', [StaffController::class, 'store'])->name('staff.stor
 Route::put('/staff-update/{kdstaff}', [StaffController::class, 'update'])->name('staff.update');
 Route::delete('/staff-destroy/{id}', [StaffController::class, 'destroy'])->name('staff.destroy');
 
-
+//pelanggan-datamaster
+Route::get('/pelanggan', [PelangganController::class, 'index'])->name('pelanggan');
+Route::post('/pelanggan-store', [PelangganController::class, 'store'])->name('pelanggan.store');
+Route::put('/pelanggan/{id}', [PelangganController::class, 'update'])->name('pelanggan.update');
+Route::delete('/pelanggan/{id}', [PelangganController::class, 'destroy'])->name('pelanggan.destroy');
 
 //backup_data-utility
 Route::get('/backup', [BackupController::class, 'index'])->name('backup');

@@ -160,7 +160,7 @@
                         <li><a href="{{ route('staff') }}">Staff</a></li>
                         <li><a href="#">Merchandise</a></li>
                     @endif
-                    <li><a href="#">Pelanggan</a></li>
+                    <li><a href="{{ route('pelanggan') }}">Pelanggan</a></li>
                     <li><a href="#">Cari Pelanggan</a></li>
 
                 </ul>

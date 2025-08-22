@@ -41,15 +41,22 @@ h1 {
     border-radius: 4px;
 }
 
-.btn-primary {
-    background-color: #53a2f7;
+.btn-tb {
+    background-color: #27b5ce;
+    color: white;
+    border: none;
+    cursor: pointer;
+}
+
+.btn-pm {
+    background-color: #4a4ce6;
     color: white;
     border: none;
     cursor: pointer;
 }
 
 .btn-primary:hover {
-    background-color: #007bff;
+    background-color: #1e00ff;
 }
 
 .icon-btn {
