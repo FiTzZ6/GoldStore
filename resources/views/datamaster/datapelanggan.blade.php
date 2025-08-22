@@ -24,7 +24,7 @@
                 <option value="excel">Export Excel</option>
             </select>
             <button class="btn-tb" onclick="openModal('modalTambah')">+ Tambah Pelanggan</button>
-            <button class="btn-pm"><i class="fas fa-cogs"></i> Pengaturan Member</button>
+            <button class="btn-pm" onclick="openModal('modalMembership')"><i class="fas fa-cogs"></i> Pengaturan Member</button>
         </div>
         <div style="display:flex; align-items:center; gap:6px;">
             <div class="icon-group">
@@ -122,6 +122,28 @@
                 <input type="number" name="poin" id="edit-poin">
 
                 <button type="submit" class="btn-tb">Simpan</button>
+            </form>
+        </div>
+    </div>
+
+    <div id="modalMembership" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal('modalMembership')">&times;</span>
+            <h2>Pengaturan Poin Membership</h2>
+            <form id="formMembership" method="POST" action="{{ route('membership.update') }}">
+                @csrf
+                @method('PUT')
+
+                <label for="berat">Berat (gr)</label>
+                <input type="number" step="0.01" name="berat" id="berat" value="{{ $membership->berat ?? '' }}" required>
+
+                <label for="poin">Poin</label>
+                <input type="number" name="poin" id="poin" value="{{ $membership->poin ?? '' }}" required>
+
+                <div style="margin-top: 15px; text-align:right;">
+                    <button type="button" class="btn-close" onclick="closeModal('modalMembership')">Close</button>
+                    <button type="submit" class="btn-tb">Simpan</button>
+                </div>
             </form>
         </div>
     </div>

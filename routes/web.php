@@ -19,6 +19,8 @@ use App\Http\Controllers\BackupController;
 use App\Http\Controllers\ParameterKasController;
 use App\Http\Controllers\StaffController;
 use App\Http\Controllers\PelangganController;
+use App\Http\Controllers\CariPelangganController;
+
 
 Route::get('/login', [LoginController::class, 'index'])->name('login');
 Route::post('/login', [LoginController::class, 'masuk'])->name('login.masuk');
@@ -145,7 +147,11 @@ Route::delete('/staff-destroy/{id}', [StaffController::class, 'destroy'])->name(
 Route::get('/pelanggan', [PelangganController::class, 'index'])->name('pelanggan');
 Route::post('/pelanggan-store', [PelangganController::class, 'store'])->name('pelanggan.store');
 Route::put('/pelanggan/{id}', [PelangganController::class, 'update'])->name('pelanggan.update');
+Route::put('/membership/update', [PelangganController::class, 'updateMembership'])->name('membership.update');
 Route::delete('/pelanggan/{id}', [PelangganController::class, 'destroy'])->name('pelanggan.destroy');
+
+Route::get('/caripelanggan', [CariPelangganController::class, 'index'])->name('caripelanggan');
+Route::get('/caripelanggan/search', [CariPelangganController::class, 'search'])->name('caripelanggan.search');
 
 //backup_data-utility
 Route::get('/backup', [BackupController::class, 'index'])->name('backup');

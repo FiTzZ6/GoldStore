@@ -1,23 +1,56 @@
         body {
             font-family: Arial, sans-serif;
-            background-color: #f2f4f7;
+            background: linear-gradient(to right, #fac0c0, #c8d3ff);
             margin: 0;
             padding: 0;
         }
         .container {
-            max-width: 500px;
-            margin: 40px auto;
-            background: #e0d9d9;
-            border-radius: 6px;
-            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+            max-width: 600px;
+            margin: 100px auto;
+            background: #fff;
+            border-radius: 10px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
             padding: 20px;
+            text-align: center;
+        }
+        h1 {
+            margin-bottom: 20px;
+            color: #333;
         }
         .search-box {
-            width: 100%;      /* atur lebar (misal 100%, 300px, dll) */
-            height: 40px;     /* atur tinggi */
-            padding: 8px 12px;
-            border: 1px solid #aaa;
-            border-radius: 4px;
-            font-size: 16px;  /* atur ukuran font */
-            box-sizing: border-box;
+            width: 94%;
+            height: 45px;
+            padding: 10px 15px;
+            border: 2px solid #0077b6;
+            border-radius: 25px;
+            font-size: 16px;
+            outline: none;
+            transition: 0.3s;
         }
+        .search-box:focus {
+            border-color: #00b4d8;
+            box-shadow: 0 0 8px rgba(0, 180, 216, 0.4);
+        }
+        .results {
+            margin-top: 20px;
+            text-align: left;
+        }
+        .card {
+            background: #f8f9fa;
+            padding: 15px;
+            margin-bottom: 10px;
+            border-radius: 8px;
+            transition: transform 0.2s;
+        }
+        .card:hover {
+            transform: scale(1.02);
+            background: #eaf4fc;
+        }
+        .card h3 {
+            margin: 0;
+            color: #0077b6;
+        }
+        .card p {
+            margin: 5px 0 0;
+            font-size: 14px;
+            color: #555;

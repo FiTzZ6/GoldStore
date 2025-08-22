@@ -161,7 +161,7 @@
                         <li><a href="#">Merchandise</a></li>
                     @endif
                     <li><a href="{{ route('pelanggan') }}">Pelanggan</a></li>
-                    <li><a href="#">Cari Pelanggan</a></li>
+                    <li><a href="{{ route('caripelanggan') }}">Cari Pelanggan</a></li>
 
                 </ul>
             </li>
