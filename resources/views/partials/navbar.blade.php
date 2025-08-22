@@ -156,8 +156,8 @@
                         <li><a href="{{ route('kondisibarang') }}">Kondisi Barang</a></li>
                         <li><a href="{{ route('ongkos') }}">Ongkos</a></li>
                         <li><a href="{{ route('potongan') }}">Potongan</a></li>
-                        <li><a href="#">Parameter Kas</a></li>
-                        <li><a href="#">Staff</a></li>
+                        <li><a href="{{ route('parameterkas') }}">Parameter Kas</a></li>
+                        <li><a href="{{ route('staff') }}">Staff</a></li>
                         <li><a href="#">Merchandise</a></li>
                     @endif
                     <li><a href="#">Pelanggan</a></li>

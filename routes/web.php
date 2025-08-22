@@ -16,6 +16,8 @@ use App\Http\Controllers\KondisiBarangController;
 use App\Http\Controllers\OngkosController;
 use App\Http\Controllers\PotonganController;
 use App\Http\Controllers\BackupController;
+use App\Http\Controllers\ParameterKasController;
+use App\Http\Controllers\StaffController;
 
 Route::get('/login', [LoginController::class, 'index'])->name('login');
 Route::post('/login', [LoginController::class, 'masuk'])->name('login.masuk');
@@ -124,6 +126,20 @@ Route::get('/potongan-utama', [PotonganController::class, 'index'])->name('poton
 Route::post('/potongan', [PotonganController::class, 'store'])->name('potongan.store');
 Route::put('/potongan/{id}', [PotonganController::class, 'update'])->name('potongan.update');
 Route::delete('/potongan/{id}', [PotonganController::class, 'destroy'])->name('potongan.destroy');
+
+
+//parameterkas-datamaster
+Route::get('/parameter-kas', [ParameterKasController::class, 'index'])->name('parameterkas');
+Route::post('/parameter-kas', [ParameterKasController::class, 'store'])->name('parameterkas.store');
+Route::put('/parameter-kas/{id}', [ParameterKasController::class, 'update'])->name('parameterkas.update');
+Route::delete('/parameter-kas/{id}', [ParameterKasController::class, 'destroy'])->name('parameterkas.destroy');
+
+//staff-datamaster
+Route::get('/staff', [StaffController::class, 'index'])->name('staff');
+Route::post('/staff-store', [StaffController::class, 'store'])->name('staff.store');
+Route::put('/staff-update/{kdstaff}', [StaffController::class, 'update'])->name('staff.update');
+Route::delete('/staff-destroy/{id}', [StaffController::class, 'destroy'])->name('staff.destroy');
+
 
 
 //backup_data-utility

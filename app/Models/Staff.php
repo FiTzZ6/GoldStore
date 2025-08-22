@@ -4,18 +4,17 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class ParameterKas extends Model
+class Staff extends Model
 {
-    protected $table = 'parameterkas';
-    protected $primaryKey = 'kdparameterkas';
+    protected $table = 'staff';
+    protected $primaryKey = 'kdstaff';
     public $incrementing = false;
-    protected $keyType = 'string';
-
-    public $timestamps = false; // ⬅️ tambahkan ini
+    public $timestamps = false;
 
     protected $fillable = [
-        'kdparameterkas',
-        'parameterkas',
+        'kdstaff',
+        'nama',
+        'posisi',
         'kdtoko',
     ];
 

@@ -18,4 +18,9 @@ class Cabang extends Model
         'area',
         'logo'
     ];
+
+    public function parameterkas()
+    {
+        return $this->hasMany(ParameterKas::class, 'kdtoko', 'kdtoko');
+    }
 }
