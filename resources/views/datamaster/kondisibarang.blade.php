@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="id">
+
 <head>
     <meta charset="UTF-8">
     <link rel="stylesheet" href="{{ asset('css/datamaster/bakibarang.css') }}">
@@ -13,39 +14,39 @@
 
     <script src="https://kit.fontawesome.com/a076d05399.js"></script>
 </head>
-<body>  
-@include('partials.navbar')    
-<h1 class="page-title">KONDISI BARANG</h1>
+
+<body>
+    @include('partials.navbar') <h1 class="page-title">KONDISI BARANG</h1>
 
 
-<div class="container">
+    <div class="container">
 
-    <div class="top-bar">
-        <div class="left-controls">
-            <select onchange="handleExport(this.value)">
-                <option value="">Pilih Export</option>
-                <option value="print">Export Print</option>
-                <option value="pdf">Export PDF</option>
-                <option value="csv">Export CSV</option>
-                <option value="excel">Export Excel</option>
-            </select>
+        <div class="top-bar">
+            <div class="left-controls">
+                <select onchange="handleExport(this.value)">
+                    <option value="">Pilih Export</option>
+                    <option value="print">Export Print</option>
+                    <option value="pdf">Export PDF</option>
+                    <option value="csv">Export CSV</option>
+                    <option value="excel">Export Excel</option>
+                </select>
 
-            <button class="btn-primary">+ Tambah Kondisi</button>
-        </div>
-        <div style="display:flex; align-items:center; gap:6px;">
-            <div class="icon-group">
-                <button title="Sorting"><i class="fas fa-sort"></i></button>
-                <button title="Refresh"><i class="fas fa-sync"></i></button>
+                <button class="btn-primary" onclick="openModal('modalTambah')">+ Tambah Kondisi</button>
             </div>
-            <input type="text" placeholder="Search">
+            <div style="display:flex; align-items:center; gap:6px;">
+                <div class="icon-group">
+                    <button title="Sorting" onclick="sortTable()"><i class="fas fa-sort"></i></button>
+                    <button title="Refresh"onclick="refreshPage()"><i class="fas fa-sync"></i></button>
+                </div>
+                <input type="text" placeholder="Search">
+            </div>
         </div>
-    </div>
 
-    @if(session('success'))
+        @if(session('success'))
             <div style="padding:10px; background:#d4edda; color:#155724; margin-bottom:15px; border-radius:5px;">
                 {{ session('success') }}
             </div>
-    @endif
+        @endif
 
         <table id="tabelKondisi" class="display">
             <thead>
@@ -57,50 +58,96 @@
                 </tr>
             </thead>
             <tbody>
-                <td><input type="checkbox"></td>
-                <td>1</td>
-                <td>Baik</td>
-                <td>
-                    <button class="action-btn"><i class="fa-solid fa-pen-to-square"></i></button>
-                    <button class="action-btn"><i class="fas fa-trash"></i></button>
-                </td>
-            </tr>
-        </tbody>
-    </table>
+                @foreach($kondisi as $index => $row)
+                    <tr>
+                        <td><input type="checkbox"></td>
+                        <td>{{ $index + 1 }}</td>
+                        <td>{{ $row->kondisibarang }}</td>
+                        <td>
+                            <!-- Tombol Edit -->
+                            <button class="action-btn"
+                                onclick="openEdit({{ $row->kdkondisi }}, '{{ $row->kondisibarang }}')">
+                                <i class="fa-solid fa-pen-to-square"></i>
+                            </button>
 
+                            <!-- Tombol Hapus -->
+                            <form action="{{ route('kondisi.destroy', $row->kdkondisi) }}" method="POST"
+                                style="display:inline;">
+                                @csrf
+                                @method('DELETE')
+                                <button class="action-btn" onclick="return confirm('Yakin ingin hapus?')">
+                                    <i class="fas fa-trash"></i>
+                                </button>
+                            </form>
+                        </td>
+                    </tr>
+                @endforeach
+            </tbody>
+        </table>
 
-     <!-- Modal Edit -->
-    <div id="modalEdit" class="modal">
-        <div class="modal-content">
-            <span class="close" onclick="closeModal('modalEdit')">&times;</span>
-            <h2>Edit Area</h2>
-            <form id="formEdit" method="POST">
-                @csrf
-                @method('PUT')
-                <label>Kode Area</label>
-                <input type="text" name="kdarea" id="editkdarea" required>
-                <label>Nama Area</label>
-                <input type="text" name="namaarea" id="editNamaArea">
-                <button type="submit">Update</button>
-            </form>
+        <!-- Modal Tambah -->
+        <div id="modalTambah" class="modal">
+            <div class="modal-content">
+                <span class="close" onclick="closeModal('modalTambah')">&times;</span>
+                <h2>Tambah Kondisi</h2>
+                <form action="{{ route('kondisi.store') }}" method="POST">
+                    @csrf
+                    <label>Nama Kondisi</label>
+                    <input type="text" name="kondisibarang" required>
+                    <button type="submit">Simpan</button>
+                </form>
+            </div>
         </div>
-    </div>
 
-    <!-- Modal Hapus -->
-    <div id="modalHapus" class="modal">
-        <div class="modal-content">
-            <span class="close" onclick="closeModal('modalHapus')">&times;</span>
-            <h2>Hapus Area</h2>
-            <p>Yakin ingin menghapus area ini?</p>
-            <form id="formHapus" method="POST">
-                @csrf
-                @method('DELETE')
-                <button type="submit">Hapus</button>
-            </form>
+        <!-- Modal Edit -->
+        <div id="modalEdit" class="modal">
+            <div class="modal-content">
+                <span class="close" onclick="closeModal('modalEdit')">&times;</span>
+                <h2>Edit Kondisi</h2>
+                <form id="formEdit" method="POST">
+                    @csrf
+                    @method('PUT')
+                    <label>Kondisi</label>
+                    <input type="text" name="kondisibarang" id="editkondisi">
+                    <button type="submit">Update</button>
+                </form>
+            </div>
+        </div>
+
+        <!-- Modal Hapus -->
+        <div id="modalHapus" class="modal">
+            <div class="modal-content">
+                <span class="close" onclick="closeModal('modalHapus')">&times;</span>
+                <h2>Hapus Area</h2>
+                <p>Yakin ingin menghapus area ini?</p>
+                <form id="formHapus" method="POST">
+                    @csrf
+                    @method('DELETE')
+                    <button type="submit">Hapus</button>
+                </form>
+            </div>
+        </div>
+
+
+        <div class="footer">
+            SKIBIDI
         </div>
     </div>
 
     <script>
+        function openModal(id) {
+            document.getElementById(id).style.display = "block";
+        }
+
+        function closeModal(id) {
+            document.getElementById(id).style.display = "none";
+        }
+        function openEdit(id, nama) {
+            document.getElementById("formEdit").action = "/kondisi-update/" + id;
+            document.getElementById("editkondisi").value = nama;
+            openModal("modalEdit");
+        }
+
         // Fungsi export ke CSV
         function exportCSV() {
             let table = document.querySelector("table");
@@ -155,12 +202,16 @@
             if (value === "csv") exportCSV();
             if (value === "excel") exportExcel();
         }
-        
+
+        document.querySelector("input[placeholder='Search']").addEventListener("keyup", function () {
+            let value = this.value.toLowerCase();
+            document.querySelectorAll("table tbody tr").forEach(function (row) {
+                row.style.display = row.innerText.toLowerCase().includes(value) ? "" : "none";
+            });
+        });
+
     </script>
 
-    <div class="footer">
-        SKIBIDI
-    </div>
-</div>
 </body>
+
 </html>

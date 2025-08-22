@@ -107,18 +107,29 @@ Route::post('/tambah-kategori', [KategoriBarangController::class, 'store'])->nam
 Route::put('/update-kategori/{kdkategori}', [KategoriBarangController::class, 'update'])->name('kategori.update');
 Route::delete('/hapus-kategori/{kdkategori}', [KategoriBarangController::class, 'destroy'])->name('kategori.destroy');
 
-
+//kondisi-datamaster
 Route::get('/kondisi-utama', [KondisiBarangController::class, 'index'])->name('kondisibarang');
+Route::post('/kondisi-store', [KondisiBarangController::class, 'store'])->name('kondisi.store');
+Route::put('/kondisi-update/{id}', [KondisiBarangController::class, 'update'])->name('kondisi.update');
+Route::delete('/kondisi-destroy/{id}', [KondisiBarangController::class, 'destroy'])->name('kondisi.destroy');
 
+//Ongkos-datamaster
 Route::get('/ongkos-utama', [OngkosController::class, 'index'])->name('ongkos');
+Route::post('/ongkos-store', [OngkosController::class, 'store'])->name('ongkos.store');
+Route::put('/ongkos-update/{id}', [OngkosController::class, 'update'])->name('ongkos.update');
+Route::delete('/ongkos-destroy/{id}', [OngkosController::class, 'destroy'])->name('ongkos.destroy');
 
+//Potongan-datamaster
 Route::get('/potongan-utama', [PotonganController::class, 'index'])->name('potongan');
+Route::post('/potongan', [PotonganController::class, 'store'])->name('potongan.store');
+Route::put('/potongan/{id}', [PotonganController::class, 'update'])->name('potongan.update');
+Route::delete('/potongan/{id}', [PotonganController::class, 'destroy'])->name('potongan.destroy');
 
 
 //backup_data-utility
 Route::get('/backup', [BackupController::class, 'index'])->name('backup');
-Route::post('/backup', [BackupController::class, 'backup'])->name('backup.run');
-Route::post('/restore', [BackupController::class, 'restore'])->name('restore.run');
+// Route::post('/backup', [BackupController::class, 'backup'])->name('backup.run');
+// Route::post('/restore', [BackupController::class, 'restore'])->name('restore.run');
 
 
 Route::get('/', function () {
