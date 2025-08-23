@@ -3,7 +3,7 @@
 
 <head>
     <meta charset="UTF-8">
-    <link rel="stylesheet" href="{{ asset('css/datamaster/kategori.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/barang/databarang.css') }}">
     <link rel="stylesheet" href="https://cdn.datatables.net/1.13.5/css/jquery.dataTables.min.css">
     <link rel="stylesheet" href="https://cdn.datatables.net/buttons/2.4.1/css/buttons.dataTables.min.css">
     <link href="https://fonts.googleapis.com/css?family=Montserrat:400,800" rel="stylesheet">
@@ -119,90 +119,206 @@
     </div>
 
     {{-- Modal Tambah --}}
-<div id="modalTambah" class="modal">
-    <div class="modal-content">
-        <span class="close" onclick="closeModal('modalTambah')">&times;</span>
-        <h2>Tambah Barang</h2>
-        <form action="{{ route('barang.store') }}" method="POST" enctype="multipart/form-data">
-            @csrf
-            <label>Nama Barang</label>
-            <input type="text" name="namabarang" required>
+    <div id="modalTambah" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal('modalTambah')">&times;</span>
+            <h2>Tambah Barang</h2>
+            <form action="{{ route('barang.store') }}" method="POST" enctype="multipart/form-data">
+                @csrf
+                <label>Nama Barang</label>
+                <input type="text" name="namabarang" required>
 
-            <label>Kategori</label>
-            <select name="kdkategori" required>
-                <option value="">-- Pilih Kategori --</option>
-                @foreach($kategori as $k)
-                    <option value="{{ $k->kdkategori }}">{{ $k->namakategori }}</option>
-                @endforeach
-            </select>
+                <label>Kategori</label>
+                <select name="kdkategori" required>
+                    <option value="">-- Pilih Kategori --</option>
+                    @foreach($kategori as $k)
+                        <option value="{{ $k->kdkategori }}">{{ $k->namakategori }}</option>
+                    @endforeach
+                </select>
 
-            <label>Jenis</label>
-            <select name="kdjenis" required>
-                <option value="">-- Pilih Jenis --</option>
-                @foreach($jenis as $j)
-                    <option value="{{ $j->kdjenis }}">{{ $j->namajenis }}</option>
-                @endforeach
-            </select>
+                <label>Jenis</label>
+                <select name="kdjenis" required>
+                    <option value="">-- Pilih Jenis --</option>
+                    @foreach($jenis as $j)
+                        <option value="{{ $j->kdjenis }}">{{ $j->namajenis }}</option>
+                    @endforeach
+                </select>
 
-            <label>Baki</label>
-            <select name="kdbaki" required>
-                <option value="">-- Pilih Baki --</option>
-                @foreach($baki as $b)
-                    <option value="{{ $b->kdbaki }}">{{ $b->namabaki }}</option>
-                @endforeach
-            </select>
+                <label>Baki</label>
+                <select name="kdbaki" required>
+                    <option value="">-- Pilih Baki --</option>
+                    @foreach($baki as $b)
+                        <option value="{{ $b->kdbaki }}">{{ $b->namabaki }}</option>
+                    @endforeach
+                </select>
 
-            <label>Foto</label>
-            <input type="file" name="photo">
+                <label>Foto</label>
+                <input type="file" name="photo">
 
-            <button type="submit" class="btn-primary">Simpan</button>
-        </form>
+                <label>Kode Toko</label required>
+                <select name="kdtoko">
+                    <option value="">-- Pilih toko --</option>
+                    @foreach($toko as $t)
+                        <option value="{{ $t->kdtoko }}">{{ $t->namatoko }}</option>
+                    @endforeach
+                </select>
+
+                <label>Berat</label>
+                <input type="number" step="0.001" name="berat">
+
+                <label>Kadar</label>
+                <input type="number" step="0.001" name="kadar">
+
+                <label>Harga Beli</label>
+                <input type="number" step="0.001" name="hargabeli">
+
+                <label>Status</label>
+                <select name="kdstatus">
+                    <option value="">-- Pilih status --</option>
+                    @foreach($status as $s)
+                        <option value="{{ $s->kdstatus }}">{{ $s->status }}</option>
+                    @endforeach
+                </select>
+
+                <label>Supplier</label>
+                <select  name="kdsupplier">
+                    <option value="">-- Pilih supplier --</option>
+                    @foreach($supplier as $su)
+                        <option value="{{ $su->kdsupplier }}">{{ $su->namasupplier }}</option>
+                    @endforeach
+                </select>
+
+                <label>Atribut</label>
+                <input type="text" name="atribut">
+
+                <label>Harga Atribut</label>
+                <input type="number" step="0.001" name="hargaatribut">
+
+                <label>Berat Asli</label>
+                <input type="number" step="0.001" name="beratasli">
+
+                <label>Berat Bandrol</label>
+                <input type="number" step="0.001" name="beratbandrol">
+
+                <label>Kode Intern</label>
+                <select type="text" name="kdintern"><option value="">-- Pilih intern --</option>
+                    @foreach($intern as $int)
+                        <option value="{{ $int->barcode }}">{{ $int->tipebarang }}</option>
+                    @endforeach
+                </select>
+
+                <label>Photo Type</label>
+                <input type="text" name="photo_type">
+
+                <label>Camera Type</label>
+                <input type="text" name="camera_type">
+
+                <button type="submit" class="btn-primary">Simpan</button>
+            </form>
+        </div>
     </div>
-</div>
 
-{{-- Modal Edit --}}
-<div id="modalEdit" class="modal">
-    <div class="modal-content">
-        <span class="close" onclick="closeModal('modalEdit')">&times;</span>
-        <h2>Edit Barang</h2>
-        <form id="formEdit" method="POST" enctype="multipart/form-data">
-            @csrf
-            @method('PUT')
+    {{-- Modal Edit --}}
+    <div id="modalEdit" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal('modalEdit')">&times;</span>
+            <h2>Edit Barang</h2>
+            <form id="formEdit" method="POST" enctype="multipart/form-data">
+                @csrf
+                @method('PUT')
 
-            <label>Nama Barang</label>
-            <input type="text" name="namabarang" id="editNama" required>
+                                <label>Nama Barang</label>
+                <input type="text" name="namabarang" required>
 
-            <label>Kategori</label>
-            <select name="kdkategori" id="editKategori" required>
-                <option value="">-- Pilih Kategori --</option>
-                @foreach($kategori as $k)
-                    <option value="{{ $k->kdkategori }}">{{ $k->namakategori }}</option>
-                @endforeach
-            </select>
+                <label>Kategori</label>
+                <select name="kdkategori" required>
+                    <option value="">-- Pilih Kategori --</option>
+                    @foreach($kategori as $k)
+                        <option value="{{ $k->kdkategori }}">{{ $k->namakategori }}</option>
+                    @endforeach
+                </select>
 
-            <label>Jenis</label>
-            <select name="kdjenis" id="editJenis" required>
-                <option value="">-- Pilih Jenis --</option>
-                @foreach($jenis as $j)
-                    <option value="{{ $j->kdjenis }}">{{ $j->namajenis }}</option>
-                @endforeach
-            </select>
+                <label>Jenis</label>
+                <select name="kdjenis" required>
+                    <option value="">-- Pilih Jenis --</option>
+                    @foreach($jenis as $j)
+                        <option value="{{ $j->kdjenis }}">{{ $j->namajenis }}</option>
+                    @endforeach
+                </select>
 
-            <label>Baki</label>
-            <select name="kdbaki" id="editBaki" required>
-                <option value="">-- Pilih Baki --</option>
-                @foreach($baki as $b)
-                    <option value="{{ $b->kdbaki }}">{{ $b->namabaki }}</option>
-                @endforeach
-            </select>
+                <label>Baki</label>
+                <select name="kdbaki" required>
+                    <option value="">-- Pilih Baki --</option>
+                    @foreach($baki as $b)
+                        <option value="{{ $b->kdbaki }}">{{ $b->namabaki }}</option>
+                    @endforeach
+                </select>
 
-            <label>Foto</label>
-            <input type="file" name="photo">
+                <label>Foto</label>
+                <input type="file" name="photo">
 
-            <button type="submit" class="btn-primary">Update</button>
-        </form>
+                <label>Kode Toko</label required>
+                <select name="kdtoko">
+                    <option value="">-- Pilih toko --</option>
+                    @foreach($toko as $t)
+                        <option value="{{ $t->kdtoko }}">{{ $t->namatoko }}</option>
+                    @endforeach
+                </select>
+
+                <label>Berat</label>
+                <input type="number" step="0.001" name="berat">
+
+                <label>Kadar</label>
+                <input type="number" step="0.001" name="kadar">
+
+                <label>Harga Beli</label>
+                <input type="number" step="0.001" name="hargabeli">
+
+                <label>Status</label>
+                <select name="kdstatus">
+                    <option value="">-- Pilih status --</option>
+                    @foreach($status as $s)
+                        <option value="{{ $s->kdstatus }}">{{ $s->status }}</option>
+                    @endforeach
+                </select>
+
+                <label>Supplier</label>
+                <select  name="kdsupplier">
+                    <option value="">-- Pilih supplier --</option>
+                    @foreach($supplier as $su)
+                        <option value="{{ $su->kdsupplier }}">{{ $su->namasupplier }}</option>
+                    @endforeach
+                </select>
+
+                <label>Atribut</label>
+                <input type="text" name="atribut">
+
+                <label>Harga Atribut</label>
+                <input type="number" step="0.001" name="hargaatribut">
+
+                <label>Berat Asli</label>
+                <input type="number" step="0.001" name="beratasli">
+
+                <label>Berat Bandrol</label>
+                <input type="number" step="0.001" name="beratbandrol">
+
+                <label>Kode Intern</label>
+                <select  name="kdintern"><option value="">-- Pilih intern --</option>
+                    @foreach($intern as $int)
+                        <option value="{{ $int->barcode }}">{{ $int->tipebarang }}</option>
+                    @endforeach
+                </select>
+
+                <label>Photo Type</label>
+                <input type="text" name="photo_type">
+
+                <label>Camera Type</label>
+                <input type="text" name="camera_type">
+
+                <button type="submit" class="btn-primary">Update</button>
+            </form>
+        </div>
     </div>
-</div>
 
 
     {{-- Modal Hapus --}}

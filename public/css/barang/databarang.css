@@ -129,23 +129,14 @@ table th {
 /* === Modal Style === */
 .modal {
   position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
+  inset: 0;
   background: rgba(0, 0, 0, 0.5);
   display: flex;
-  /* penting: flex aktif biar center */
   justify-content: center;
-  /* horizontal center */
   align-items: center;
-  /* vertical center */
   z-index: 9999;
-
   visibility: hidden;
-  /* sembunyikan */
   opacity: 0;
-  /* biar fade */
   transition: visibility 0s, opacity 0.3s ease;
 }
 
@@ -156,16 +147,17 @@ table th {
 
 .modal-content {
   background: #fff;
-  padding: 25px;
+  padding: 25px 30px;
   border-radius: 12px;
-  width: 420px;
-  max-width: 90%;
+  width: 700px; /* lebih lebar biar cukup 2 kolom */
+  max-width: 95%;
+  max-height: 90vh;
+  overflow-y: auto;
   box-shadow: 0 6px 20px rgba(0, 0, 0, 0.2);
   animation: scaleIn 0.25s ease;
   font-family: 'Montserrat', sans-serif;
   position: relative;
 }
-
 .close {
   position: absolute;
   top: 12px;
@@ -179,10 +171,9 @@ table th {
 .close:hover {
   color: #e74c3c;
 }
-
 .modal-content h2 {
-  margin-bottom: 15px;
-  font-size: 20px;
+  margin-bottom: 20px;
+  font-size: 22px;
   font-weight: 600;
   color: #333;
   text-align: center;
@@ -232,33 +223,52 @@ table th {
   border: 1px solid #f5c6cb;
 }
 
-/* Tambahan style untuk form grid */
-.form-grid {
+/* Form Grid */
+.modal-content form {
   display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 12px 20px;
+  grid-template-columns: 1fr 1fr; /* dua kolom */
+  gap: 15px 25px;
 }
 
-.form-grid label {
-  display: block;
-  font-size: 13px;
+.modal-content label {
+  font-size: 14px;
   font-weight: 500;
-  margin-bottom: 4px;
+  color: #444;
+  margin-bottom: 6px;
+  display: block;
 }
 
-.form-grid input,
-.form-grid select {
+.modal-content input,
+.modal-content select {
   width: 100%;
-  padding: 8px 10px;
+  padding: 9px 11px;
   border: 1px solid #ccc;
   border-radius: 8px;
-  font-size: 13px;
+  outline: none;
+  font-size: 14px;
+  transition: border 0.2s, box-shadow 0.2s;
 }
 
-/* Scroll modal kalau terlalu tinggi */
-.modal-content {
-  max-height: 85vh;
-  overflow-y: auto;
+.modal-content input:focus,
+.modal-content select:focus {
+  border-color: #3498db;
+  box-shadow: 0 0 5px rgba(52, 152, 219, 0.4);
+}
+
+/* Supaya tombol submit full row */
+.modal-content button[type="submit"] {
+  grid-column: span 2;
+  margin-top: 15px;
+  padding: 10px;
+  font-size: 15px;
+  background-color: #53a2f7;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+}
+.modal-content button[type="submit"]:hover {
+  background-color: #007bff;
 }
 
 
@@ -275,11 +285,6 @@ table th {
 }
 
 @keyframes scaleIn {
-  from {
-    transform: scale(0.9);
-  }
-
-  to {
-    transform: scale(1);
-  }
+  from { transform: scale(0.9); }
+  to { transform: scale(1); }
 }
