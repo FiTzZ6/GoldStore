@@ -2,10 +2,15 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Auth\LoginController;
+
 use App\Http\Controllers\LaporanController;
+
 use App\Http\Controllers\UtilityController;
+
 use App\Http\Controllers\JualController;
+
 use App\Http\Controllers\uang_kas\KasController;
+
 use App\Http\Controllers\SupplierController;
 use App\Http\Controllers\AreaController;
 use App\Http\Controllers\CabangController;
@@ -21,6 +26,7 @@ use App\Http\Controllers\StaffController;
 use App\Http\Controllers\PelangganController;
 use App\Http\Controllers\CariPelangganController;
 
+use App\Http\Controllers\BarangStokController;
 
 Route::get('/login', [LoginController::class, 'index'])->name('login');
 Route::post('/login', [LoginController::class, 'masuk'])->name('login.masuk');
@@ -152,6 +158,17 @@ Route::delete('/pelanggan/{id}', [PelangganController::class, 'destroy'])->name(
 
 Route::get('/caripelanggan', [CariPelangganController::class, 'index'])->name('caripelanggan');
 Route::get('/caripelanggan/search', [CariPelangganController::class, 'search'])->name('caripelanggan.search');
+
+
+
+
+//dataBarang--Barang
+Route::get('/StokBarang', [BarangStokController::class, 'index'])->name('barangStok');
+Route::post('/StokBarang', [BarangStokController::class, 'store'])->name('barang.store');
+Route::put('/StokBarang/{id}', [BarangStokController::class, 'update'])->name('barang.update');
+Route::delete('/StokBarang/{id}', [BarangStokController::class, 'destroy'])->name('barang.destroy');
+
+
 
 //backup_data-utility
 Route::get('/backup', [BackupController::class, 'index'])->name('backup');

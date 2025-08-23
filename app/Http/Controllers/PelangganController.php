@@ -3,9 +3,6 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Artisan;
-use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Storage;
 use App\Models\Pelanggan;
 use App\Models\Membership;
 
@@ -19,14 +16,35 @@ class PelangganController extends Controller
 
     public function store(Request $request)
     {
+        // cari pelanggan terakhir
+        $lastPelanggan = Pelanggan::orderBy('id', 'desc')->first();
+
+        if ($lastPelanggan) {
+            // ambil angka di akhir kdpelanggan (contoh: SAMBAS1210300032 -> 1210300032)
+            preg_match('/(\d+)$/', $lastPelanggan->kdpelanggan, $matches);
+            $lastNumber = $matches[1] ?? 0;
+            $newNumber = $lastNumber + 1;
+        } else {
+            $newNumber = 1210300001; // angka awal kalau belum ada pelanggan
+        }
+
+        // gabungkan prefix SAMBAS + nomor urut
+        $newKode = 'SAMBAS' . $newNumber;
+
+        // validasi input lain
         $request->validate([
-            'kdpelanggan' => 'required|unique:pelanggan',
             'namapelanggan' => 'required',
             'alamatpelanggan' => 'nullable',
             'notelp' => 'nullable',
         ]);
 
-        Pelanggan::create($request->all());
+        Pelanggan::create([
+            'kdpelanggan' => $newKode,
+            'namapelanggan' => $request->namapelanggan,
+            'alamatpelanggan' => $request->alamatpelanggan,
+            'notelp' => $request->notelp,
+            'poin' => 0,
+        ]);
 
         return redirect()->route('pelanggan')->with('success', 'Pelanggan berhasil ditambahkan');
     }
@@ -37,8 +55,8 @@ class PelangganController extends Controller
         $pelanggan->update([
             'namapelanggan' => $request->namapelanggan,
             'alamatpelanggan' => $request->alamatpelanggan,
-            'notelp'        => $request->notelp,
-            'poin'          => $request->poin,
+            'notelp' => $request->notelp,
+            'poin' => $request->poin,
         ]);
 
         return redirect()->back()->with('success', 'Data pelanggan berhasil diperbarui!');
@@ -47,16 +65,16 @@ class PelangganController extends Controller
     public function updateMembership(Request $request)
     {
         $request->validate([
-            'gr'   => 'required|numeric|min:0.1',
+            'gr' => 'required|numeric|min:0.1',
             'poin' => 'required|integer|min:1',
         ]);
 
         $membership = Membership::first();
 
         if ($membership) {
-            $membership->update($request->only('gr','poin'));
+            $membership->update($request->only('gr', 'poin'));
         } else {
-            Membership::create($request->only('gr','poin'));
+            Membership::create($request->only('gr', 'poin'));
         }
 
         return redirect()->back()->with('success', 'Pengaturan Membership berhasil disimpan!');

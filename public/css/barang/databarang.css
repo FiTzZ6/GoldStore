@@ -1,85 +1,285 @@
 body {
-      font-family: Arial, sans-serif;
-      background: #f4f6f9;
-      padding: 20px;
-    }
+  font-family: Arial, sans-serif;
+  background-color: #f2f4f7;
+  margin: 0;
+  padding: 0;
+}
 
-    .filter-container {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      margin-bottom: 15px;
-      flex-wrap: wrap;
-    }
+.container {
+  max-width: 1400px;
+  margin: 40px auto;
+  background: #fff;
+  border-radius: 6px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+  padding: 20px;
+}
 
-    .filter-container label {
-      font-weight: bold;
-      margin-right: 5px;
-    }
+h1 {
+  text-align: center;
+  margin-bottom: 20px;
+}
 
-    .filter-container input[type="date"],
-    .filter-container select,
-    .filter-container input[type="text"] {
-      padding: 6px;
-      border: 1px solid #ccc;
-      border-radius: 4px;
-    }
+.top-bar {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 15px;
+}
 
-    .filter-container button {
-      background: #007bff;
-      color: white;
-      border: none;
-      padding: 6px 12px;
-      border-radius: 4px;
-      cursor: pointer;
-    }
 
-    .filter-container button:hover {
-      background: #0056b3;
-    }
+.left-controls {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
 
-    .table-controls {
-      margin: 10px 0;
-    }
+.left-controls select,
+.left-controls button,
+.left-controls input[type="text"] {
+  padding: 6px 10px;
+  font-size: 14px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
 
-    .table-controls button {
-      margin-right: 5px;
-      padding: 6px 12px;
-      border: 1px solid #aaa;
-      border-radius: 4px;
-      background: #f9f9f9;
-      cursor: pointer;
-    }
+.btn-primary {
+  background-color: #53a2f7;
+  color: white;
+  border: none;
+  cursor: pointer;
+}
 
-    .table-controls button:hover {
-      background: #e9e9e9;
-    }
+.btn-primary:hover {
+  background-color: #007bff;
+}
 
-    table {
-      width: 100%;
-      border-collapse: collapse;
-      margin-top: 10px;
-      background: white;
-    }
+.icon-btn {
+  border: 1px solid #ccc;
+  background: white;
+  padding: 5px 8px;
+  border-radius: 3px;
+  cursor: pointer;
+}
 
-    table th, table td {
-      border: 1px solid #ddd;
-      padding: 8px;
-      text-align: center;
-    }
+.icon-btn:hover {
+  background: #f0f0f0;
+}
 
-    table th {
-      background: #f2f2f2;
-    }
+.icon-group {
+  display: flex;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  overflow: hidden;
+}
 
-    table input[type="text"] {
-      width: 95%;
-      padding: 4px;
-      font-size: 14px;
-    }
+.icon-group button {
+  border: none;
+  border-right: 1px solid #ccc;
+  background: white;
+  cursor: pointer;
+  padding: 6px 10px;
+}
 
-    .no-data {
-      text-align: center;
-      color: #888;
-      padding: 15px;
-    }
+.icon-group button:last-child {
+  border-right: none;
+}
+
+.icon-group button:hover {
+  background: #f0f0f0;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 10px;
+}
+
+table thead {
+  background-color: #f5f5f5;
+}
+
+table th,
+table td {
+  padding: 10px;
+  border: 1px solid #ddd;
+  text-align: left;
+}
+
+table th {
+  font-weight: bold;
+}
+
+.action-btn {
+  background-color: #f0f0f0;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  padding: 5px 8px;
+  cursor: pointer;
+  margin-right: 5px;
+}
+
+.action-btn:hover {
+  background-color: #e0e0e0;
+}
+
+.footer {
+  font-size: 14px;
+  margin-top: 10px;
+}
+
+/* === Modal Style === */
+.modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  /* penting: flex aktif biar center */
+  justify-content: center;
+  /* horizontal center */
+  align-items: center;
+  /* vertical center */
+  z-index: 9999;
+
+  visibility: hidden;
+  /* sembunyikan */
+  opacity: 0;
+  /* biar fade */
+  transition: visibility 0s, opacity 0.3s ease;
+}
+
+.modal.show {
+  visibility: visible;
+  opacity: 1;
+}
+
+.modal-content {
+  background: #fff;
+  padding: 25px;
+  border-radius: 12px;
+  width: 420px;
+  max-width: 90%;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.2);
+  animation: scaleIn 0.25s ease;
+  font-family: 'Montserrat', sans-serif;
+  position: relative;
+}
+
+.close {
+  position: absolute;
+  top: 12px;
+  right: 16px;
+  cursor: pointer;
+  font-size: 22px;
+  color: #555;
+  transition: 0.2s;
+}
+
+.close:hover {
+  color: #e74c3c;
+}
+
+.modal-content h2 {
+  margin-bottom: 15px;
+  font-size: 20px;
+  font-weight: 600;
+  color: #333;
+  text-align: center;
+}
+
+/* Input & Button */
+.modal-content label {
+  font-size: 14px;
+  font-weight: 500;
+  display: block;
+  margin: 8px 0 4px;
+  color: #444;
+}
+
+.modal-content input {
+  width: 100%;
+  padding: 10px 12px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  outline: none;
+  transition: border 0.2s, box-shadow 0.2s;
+}
+
+.modal-content input:focus {
+  border-color: #3498db;
+  box-shadow: 0 0 5px rgba(52, 152, 219, 0.4);
+}
+
+/* Alert */
+.alert {
+  padding: 12px 18px;
+  border-radius: 8px;
+  margin: 10px 0;
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.alert-success {
+  background: #d4edda;
+  color: #155724;
+  border: 1px solid #c3e6cb;
+}
+
+.alert-error {
+  background: #f8d7da;
+  color: #721c24;
+  border: 1px solid #f5c6cb;
+}
+
+/* Tambahan style untuk form grid */
+.form-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px 20px;
+}
+
+.form-grid label {
+  display: block;
+  font-size: 13px;
+  font-weight: 500;
+  margin-bottom: 4px;
+}
+
+.form-grid input,
+.form-grid select {
+  width: 100%;
+  padding: 8px 10px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  font-size: 13px;
+}
+
+/* Scroll modal kalau terlalu tinggi */
+.modal-content {
+  max-height: 85vh;
+  overflow-y: auto;
+}
+
+
+
+/* Animasi */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes scaleIn {
+  from {
+    transform: scale(0.9);
+  }
+
+  to {
+    transform: scale(1);
+  }
+}

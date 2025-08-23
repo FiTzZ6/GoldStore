@@ -10,6 +10,7 @@ class Pelanggan extends Model
     use HasFactory;
 
     protected $table = 'pelanggan'; // sesuaikan dengan nama tabel
+    public $timestamps = false; // <---- tambahkan ini
     protected $fillable = [
         'kdpelanggan', 
         'namapelanggan', 
