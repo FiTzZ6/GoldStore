@@ -173,8 +173,8 @@
                     <li class="has-submenu"><a href="#">Data Barang</a>
                         <ul class="dropdown-menu-1">
                                 <li><a href="{{ route('barangStok') }}">Barang Stok</a></li>
-                                <li><a href="#">Barang Terjual</a></li>
-                                <li><a href="#">Barang DiHapus</a></li>
+                                <li><a href="{{ route('BarangTerjual') }}">Barang Terjual</a></li>
+                                <li><a href="{{ route('barangterhapus') }}">Barang DiHapus</a></li>
                         </ul>
                     </li>
                     <li><a href="#">Terima Barang</a></li>

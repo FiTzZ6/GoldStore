@@ -27,6 +27,8 @@ use App\Http\Controllers\PelangganController;
 use App\Http\Controllers\CariPelangganController;
 
 use App\Http\Controllers\BarangStokController;
+use App\Http\Controllers\BarangTerjualController;
+use App\Http\Controllers\BarangTerhapusController;
 
 Route::get('/login', [LoginController::class, 'index'])->name('login');
 Route::post('/login', [LoginController::class, 'masuk'])->name('login.masuk');
@@ -160,14 +162,19 @@ Route::get('/caripelanggan', [CariPelangganController::class, 'index'])->name('c
 Route::get('/caripelanggan/search', [CariPelangganController::class, 'search'])->name('caripelanggan.search');
 
 
-
-
 //dataBarang--Barang
 Route::get('/StokBarang', [BarangStokController::class, 'index'])->name('barangStok');
 Route::post('/StokBarang', [BarangStokController::class, 'store'])->name('barang.store');
 Route::put('/StokBarang/{id}', [BarangStokController::class, 'update'])->name('barang.update');
 Route::delete('/StokBarang/{id}', [BarangStokController::class, 'destroy'])->name('barang.destroy');
 
+
+//BarangTerjual-barang
+Route::get('/BarangTerjual', [BarangTerjualController::class, 'index'])->name('BarangTerjual');
+
+
+//BarangTerhapus-Barang
+Route::get('/BarangTerhapus', [BarangTerhapusController::class, 'index'])->name('barangterhapus');
 
 
 //backup_data-utility
