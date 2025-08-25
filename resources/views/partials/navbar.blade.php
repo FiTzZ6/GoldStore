@@ -231,8 +231,8 @@
             <li>
                 <a href="#"><i class="fas fa-cart-arrow-down"></i> Beli</a>
                 <ul>
-                    <li><a href="#">Transaksi Pembelian</a></li>
-                    <li><a href="#">Batal Pembelian</a></li>
+                    <li><a href="{{ route('transaksibeli') }}">Transaksi Pembelian</a></li>
+                    <li><a href="{{ route('batalbeli') }}">Batal Pembelian</a></li>
                     <li><a href="#">Riwayat Pembelian</a></li>
                     <li><a href="#">Riwayat Batal beli</a></li>
                     <li><a href="#">Selisih Beli & Batal</a></li>

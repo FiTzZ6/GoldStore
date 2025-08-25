@@ -25,10 +25,11 @@ use App\Http\Controllers\ParameterKasController;
 use App\Http\Controllers\StaffController;
 use App\Http\Controllers\PelangganController;
 use App\Http\Controllers\CariPelangganController;
-
 use App\Http\Controllers\BarangStokController;
 use App\Http\Controllers\BarangTerjualController;
 use App\Http\Controllers\BarangTerhapusController;
+use App\Http\Controllers\TransaksiBeliController;
+use App\Http\Controllers\BatalBeliController;
 
 Route::get('/login', [LoginController::class, 'index'])->name('login');
 Route::post('/login', [LoginController::class, 'masuk'])->name('login.masuk');
@@ -175,6 +176,13 @@ Route::get('/BarangTerjual', [BarangTerjualController::class, 'index'])->name('B
 
 //BarangTerhapus-Barang
 Route::get('/BarangTerhapus', [BarangTerhapusController::class, 'index'])->name('barangterhapus');
+
+//BeliTransasksi-Beli
+Route::get('/TransaksiBeli', [TransaksiBeliController::class, 'index'])->name('transaksibeli');
+
+//BeliBatal-Beli
+Route::get('/BatalBeli', [BatalBeliController::class, 'index'])->name('batalbeli');
+
 
 
 //backup_data-utility
