@@ -149,7 +149,6 @@
                         <li><a href="{{ route('area') }}">Area</a></li>
                         <li><a href="{{ route('cabang') }}">Cabang</a></li>
                         <li><a href="{{ route('supplier') }}">Supplier</a></li>
-                        <li><a href="#">Karyawan</a></li>
                         <li><a href="{{ route('kategoribarang') }}">Kategori Barang</a></li>
                         <li><a href="{{ route('jenisbarang') }}">Jenis Barang</a></li>
                         <li><a href="{{ route('bakibarang.index') }}">Baki Barang</a></li>
