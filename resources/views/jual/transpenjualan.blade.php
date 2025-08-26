@@ -8,16 +8,18 @@
 
 </head>
 <body>
+@include('partials.navbar')
     <div class="container">
-        <header>
+
+        <div class="top-bar">
             <h1>TRANSAKSI PENJUALAN</h1>
             <div class="date">Tanggal: <span id="current-date"></span></div>
             <div class="invoice-input">
                 <label for="invoice-no">No. Faktur:</label>
                 <input type="text" id="invoice-no" value="FJ-1250507-0001" readonly>
             </div>
-        </header>
-        
+        </div>
+
         <div class="main-content">
             <div class="left-panel">
                 <div class="form-group">

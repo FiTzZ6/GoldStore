@@ -190,6 +190,7 @@ body {
     padding: 10px 20px;
     font-size: 14px;
     font-family: Arial, sans-serif;
+    z-index: 1000;
 }
 
 .navbar span {

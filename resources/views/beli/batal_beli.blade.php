@@ -11,15 +11,15 @@
     <div class="header">
         <div class="left">
             <label>No.Faktur</label>
-            <input type="text" value="BB-HLD2508-0001" readonly>
+            <input type="text">
         </div>
         <div class="center">
-            <h3>TRANSAKSI BATAL BELI</h3>
+            <h3>Transaksi Batal Beli</h3>
             <p>SAMBAS HOLDING</p>
         </div>
         <div class="right">
             <label>Toko</label>
-            <input type="text" value="HLD" readonly>
+            <input type="text">
         </div>
     </div>
 

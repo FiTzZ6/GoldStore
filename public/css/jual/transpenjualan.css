@@ -8,24 +8,23 @@
         body {
             background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
             min-height: 100vh;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            padding: 20px;
+            margin: 0;
+            padding: 0;
         }
         
         .container {
             width: 100%;
-            max-width: 1400px;
+            max-width: 1200px;
             background: white;
             border-radius: 12px;
             box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
             overflow: hidden;
             display: flex;
             flex-direction: column;
+            margin: 40px auto;
         }
         
-        header {
+        .top-bar {
             background: #2c3e50;
             color: white;
             padding: 20px;
@@ -33,7 +32,7 @@
             position: relative;
         }
         
-        header h1 {
+        .container h1 {
             font-size: 24px;
             margin-bottom: 5px;
         }

@@ -14,7 +14,7 @@
             <input type="text" value="FB-1250807-0001" readonly>
         </div>
         <div class="center">
-            <h3>TRANSAKSI PEMBELIAN UMUM</h3>
+            <h3>Transaksi Pembelian Umum</h3>
             <p>SAMBAS HOLDING</p>
         </div>
         <div class="right">

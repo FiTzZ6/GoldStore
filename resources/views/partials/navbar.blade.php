@@ -217,11 +217,11 @@
             <li>
                 <a href="#"><i class="fas fa-cash-register"></i> Jual</a>
                 <ul>
-                    <li><a href="#">Transaksi Penjualan</a></li>
-                    <li><a href="#">Batal Penjualan</a></li>
+                    <li><a href="{{ route('transpenjualan') }}">Transaksi Penjualan</a></li>
+                    <li><a href="{{ route('bataljual') }}">Batal Penjualan</a></li>
                     <li><a href="#">Riwayat Penjualan</a></li>
-                    <li><a href="#">Riwayat Batal jual</a></li>
-                    <li><a href="#">Selisih Jual & Batal</a></li>
+                    <li><a href="{{ route('riwayatbataljual') }}">Riwayat Batal jual</a></li>
+                    <li><a href="{{ route('selisihjual') }}">Selisih Jual & Batal</a></li>
 
                 </ul>
             </li>
@@ -232,8 +232,8 @@
                 <ul>
                     <li><a href="{{ route('transaksibeli') }}">Transaksi Pembelian</a></li>
                     <li><a href="{{ route('batalbeli') }}">Batal Pembelian</a></li>
-                    <li><a href="#">Riwayat Pembelian</a></li>
-                    <li><a href="#">Riwayat Batal beli</a></li>
+                    <li><a href="{{ route('riwayatbeli') }}">Riwayat Pembelian</a></li>
+                    <li><a href="{{ route('riwayatbatalbeli') }}">Riwayat Batal beli</a></li>
                     <li><a href="#">Selisih Beli & Batal</a></li>
                 </ul>
             </li>
@@ -264,7 +264,7 @@
             <!-- navbar uang kas  -->
             @if(session('typeuser') == 1)
                 <li>
-                    <a href="#"><i class="fa-solid fa-sack-dollar"></i>Uang Kas</a>
+                    <a href="#"><i class="fa-solid fa-sack-dollar"></i> Uang Kas</a>
                     <ul>
                         <li><a href="{{ route('uang_kas.index') }}">Daftar Keluar Masuk KAS</a></li>
                     </ul>

@@ -8,8 +8,9 @@
 
     </head>
 <body>
+    @include('partials.navbar')
     <div class="container">
-        <header>
+        <div class="top-bar">
             <div class="logo-area">
                 <div class="logo">SH</div>
                 <div class="company-info">
@@ -21,7 +22,7 @@
                 <i class="fas fa-file-invoice"></i>
                 No. Faktor: <span id="invoice-number">BJ-HLD-25081-0001</span>
             </div>
-        </header>
+        </div>
         
         <div class="title">
             <h2>FORMULIR PEMBATALAN PENJUALAN</h2>

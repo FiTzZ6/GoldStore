@@ -32,6 +32,12 @@ use App\Http\Controllers\BarangTerhapusController;
 use App\Http\Controllers\TerimaBarangController;
 use App\Http\Controllers\TransaksiBeliController;
 use App\Http\Controllers\BatalBeliController;
+use App\Http\Controllers\BatalJualController;
+use App\Http\Controllers\RiwayatBatalJualController;
+use App\Http\Controllers\TransaksiJualController;
+use App\Http\Controllers\SelisihJualController;
+use App\Http\Controllers\RiwayatBeliController;
+use App\Http\Controllers\RiwayatBatalBeliController;
 
 Route::get('/login', [LoginController::class, 'index'])->name('login');
 Route::post('/login', [LoginController::class, 'masuk'])->name('login.masuk');
@@ -188,6 +194,24 @@ Route::get('/TransaksiBeli', [TransaksiBeliController::class, 'index'])->name('t
 
 //BeliBatal-Beli
 Route::get('/BatalBeli', [BatalBeliController::class, 'index'])->name('batalbeli');
+
+//BeliRiwayat-Beli
+Route::get('/RiwayatBeli', [RiwayatBeliController::class, 'index'])->name('riwayatbeli');
+
+//BeliRiwayat-Batal-Beli
+Route::get('/RiwayatBatalBeli', [RiwayatBatalBeliController::class, 'index'])->name('riwayatbatalbeli');
+
+//JualBatal-jual
+Route::get('/BatalJual', [BatalJualController::class, 'index'])->name('bataljual');
+
+//JualRiwayat-Batal-jual
+Route::get('/RiweayatBatalJual', [RiwayatBatalJualController::class, 'index'])->name('riwayatbataljual');
+
+//JualTransaksi-jual
+Route::get('/TransaksiJual', [TransaksiJualController::class, 'index'])->name('transpenjualan');
+
+//JualSelisih-jual
+Route::get('/SelisihJual', [SelisihJualController::class, 'index'])->name('selisihjual');
 
 
 

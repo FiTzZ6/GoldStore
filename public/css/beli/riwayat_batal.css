@@ -1,0 +1,356 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Poppins', sans-serif;
+    background-color: #f8f9fa;
+    color: #333;
+    line-height: 1.6;
+    margin-bottom: 25px;
+}
+
+.container {
+    max-width: 1400px;
+    margin: 20px auto;
+    background: white;
+    padding: 20px;
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.05);
+    border-radius: 6px;
+}
+
+.header {
+    background: linear-gradient(135deg, #2c3e50 0%, #434343 100%);
+    color: white;
+    padding: 20px;
+    border-radius: 15px 15px 0 0;
+    margin-bottom: 25px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+/* Header Top: Judul di tengah */
+.header-top {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding-bottom: 15px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.header h1 {
+    font-weight: 600;
+    font-size: 1.8rem;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin: 0;
+}
+
+/* Header Bottom: Kontrol export di kiri, search/sorting di kanan */
+.header-bottom {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 15px;
+}
+
+.left-controls {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.left-controls select {
+    padding: 8px 12px;
+    font-size: 14px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    background-color: white;
+    cursor: pointer;
+    min-width: 150px;
+}
+
+.right-controls {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.right-controls input[type="text"] {
+    padding: 8px 12px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    font-size: 14px;
+    width: 200px;
+}
+
+.icon-group {
+    display: flex;
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    border-radius: 6px;
+    overflow: hidden;
+    background: rgba(255, 255, 255, 0.1);
+}
+
+.icon-group button {
+    border: none;
+    border-right: 1px solid rgba(255, 255, 255, 0.3);
+    background: transparent;
+    color: white;
+    cursor: pointer;
+    padding: 8px 12px;
+    transition: all 0.3s ease;
+}
+
+.icon-group button:last-child {
+    border-right: none;
+}
+
+.icon-group button:hover {
+    background: rgba(255, 255, 255, 0.2);
+}
+
+.content {
+    overflow-x: auto;
+}
+
+.table-container {
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+    margin-bottom: 20px;
+    border: 1px solid #e9ecef;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    background: white;
+}
+
+th, td {
+    padding: 12px 15px;
+    text-align: left;
+    border-bottom: 1px solid #e9ecef;
+}
+
+th {
+    background: linear-gradient(135deg, #495057 0%, #343a40 100%);
+    color: white;
+    font-weight: 500;
+    position: sticky;
+    top: 0;
+    font-size: 0.9rem;
+}
+
+tr:nth-child(even) {
+    background-color: #f8f9fa;
+}
+
+tr:hover {
+    background-color: #e9ecef;
+}
+
+.status-badge {
+    padding: 6px 12px;
+    border-radius: 20px;
+    font-size: 0.8rem;
+    font-weight: 500;
+    display: inline-block;
+    text-align: center;
+    min-width: 70px;
+}
+
+.status-badge.good {
+    background: #e6f7ee;
+    color: #00a65a;
+    border: 1px solid #00a65a;
+}
+
+.status-badge.damaged {
+    background: #fce8e6;
+    color: #dc3545;
+    border: 1px solid #dc3545;
+}
+
+.action-btn {
+    background: transparent;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    padding: 6px 10px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    margin-right: 5px;
+}
+
+.action-btn:hover {
+    background: #f8f9fa;
+    transform: translateY(-2px);
+}
+
+.action-btn:first-child {
+    color: #007bff;
+    border-color: #007bff;
+}
+
+.action-btn:last-child {
+    color: #dc3545;
+    border-color: #dc3545;
+}
+
+.pagination {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px 0;
+    margin-top: 10px;
+}
+
+.showing-info {
+    color: #6c757d;
+    font-size: 0.9rem;
+}
+
+.pagination-controls {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.page-btn {
+    background: #f8f9fa;
+    border: 1px solid #dee2e6;
+    padding: 6px 12px;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+}
+
+.page-btn:hover:not(.disabled) {
+    background: #e9ecef;
+}
+
+.page-btn.disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
+.current-page {
+    font-weight: 500;
+    padding: 0 10px;
+}
+
+/* Responsive design */
+@media (max-width: 1200px) {
+    .table-container {
+        overflow-x: auto;
+    }
+    
+    table {
+        min-width: 1000px;
+    }
+}
+
+@media (max-width: 992px) {
+    .header-bottom {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 15px;
+    }
+    
+    .left-controls, .right-controls {
+        justify-content: center;
+        width: 100%;
+    }
+    
+    .right-controls {
+        flex-direction: column;
+    }
+    
+    .right-controls input[type="text"] {
+        width: 100%;
+    }
+}
+
+@media (max-width: 768px) {
+    .container {
+        margin: 20px auto;
+        padding: 15px;
+    }
+    
+    .header {
+        padding: 15px;
+        border-radius: 10px 10px 0 0;
+    }
+    
+    .header h1 {
+        font-size: 1.5rem;
+    }
+    
+    .header-bottom {
+        flex-direction: column;
+    }
+    
+    .left-controls, .right-controls {
+        flex-direction: column;
+        gap: 10px;
+    }
+    
+    .left-controls select {
+        width: 100%;
+    }
+    
+    .pagination {
+        flex-direction: column;
+        gap: 15px;
+    }
+}
+
+@media (max-width: 480px) {
+    .container {
+        padding: 10px;
+        margin: 10px auto;
+    }
+    
+    .header {
+        padding: 12px;
+    }
+    
+    .header h1 {
+        font-size: 1.3rem;
+    }
+    
+    th, td {
+        padding: 8px 10px;
+        font-size: 0.85rem;
+    }
+    
+    .status-badge {
+        padding: 4px 8px;
+        font-size: 0.75rem;
+        min-width: 60px;
+    }
+    
+    .action-btn {
+        padding: 4px 8px;
+        font-size: 0.8rem;
+    }
+    
+    .icon-group {
+        width: 100%;
+        justify-content: center;
+    }
+    
+    .icon-group button {
+        flex: 1;
+        text-align: center;
+    }
+}

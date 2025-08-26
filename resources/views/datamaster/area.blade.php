@@ -33,13 +33,11 @@
                 </select>
                 <button class="btn-primary" onclick="openModal('modalTambah')">+ Tambah Kategori</button>
             </div>
-            <div style="display:flex; align-items:center; gap:6px;">
-                <div class="icon-group">
-                    <button title="Sorting" onclick="sortTable()"><i class="fas fa-sort"></i></button>
-                    <button title="Refresh" onclick="refreshPage()"><i class="fas fa-sync"></i></button>
-                </div>
-                <input type="text" placeholder="Search">
+            <div class="icon-group">
+                <button title="Sorting" onclick="sortTable()"><i class="fas fa-sort"></i></button>
+                <button title="Refresh" onclick="refreshPage()"><i class="fas fa-sync"></i></button>
             </div>
+            <input type="text" placeholder="Search">
         </div>
 
          <form method="GET" action="{{ route('area') }}">

@@ -47,7 +47,7 @@
                         }, 7000); // hilang otomatis 3 detik
                     </script>
         @endif
-
+        
         <table class="table table-bordered">
             <thead>
                 <tr>

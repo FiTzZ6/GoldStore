@@ -10,7 +10,7 @@
 </head>
 
 <body>
-
+@include('partials.navbar')
     <h1>RIWAYAT BATAL BELI</h1>
 
     <div class="container">
@@ -69,8 +69,8 @@
                         <td></td>
                         <td></td>
                         <td>
-                            <button class="action-btn" onclick="editArea('{{ $area->kdarea }}', '{{ $area->namaarea }}')"><i class="fa-solid fa-pen-to-square"></i></button>
-                            <button class="action-btn" onclick="hapusArea('{{ $area->kdarea }}')"><i class="fas fa-trash"></i></button>
+                            <button class="action-btn"></button><i class="fa-solid fa-pen-to-square"></i></button>
+                            <button class="action-btn"><i class="fas fa-trash"></i></button>
                         </td>
                     </tr>
             </tbody>
