@@ -1,5 +1,6 @@
 <?php
 
+
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Auth\LoginController;
 
@@ -28,6 +29,7 @@ use App\Http\Controllers\CariPelangganController;
 use App\Http\Controllers\BarangStokController;
 use App\Http\Controllers\BarangTerjualController;
 use App\Http\Controllers\BarangTerhapusController;
+use App\Http\Controllers\TerimaBarangController;
 use App\Http\Controllers\TransaksiBeliController;
 use App\Http\Controllers\BatalBeliController;
 
@@ -176,6 +178,10 @@ Route::get('/BarangTerjual', [BarangTerjualController::class, 'index'])->name('B
 
 //BarangTerhapus-Barang
 Route::get('/BarangTerhapus', [BarangTerhapusController::class, 'index'])->name('barangterhapus');
+
+
+//BarangTerima-Barang
+Route::get('/terimabarang', [TerimaBarangController::class, 'index'])->name('terimabarang');
 
 //BeliTransasksi-Beli
 Route::get('/TransaksiBeli', [TransaksiBeliController::class, 'index'])->name('transaksibeli');

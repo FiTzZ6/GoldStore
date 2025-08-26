@@ -177,7 +177,7 @@
                                 <li><a href="{{ route('barangterhapus') }}">Barang DiHapus</a></li>
                         </ul>
                     </li>
-                    <li><a href="#">Terima Barang</a></li>
+                    <li><a href="{{ route('terimabarang') }}">Terima Barang</a></li>
                     <li class="has-submenu">
                         <a href="#">Cuci Sepuh<span style="float: right;"></span></a>
                         <ul class="dropdown-menu-1">
