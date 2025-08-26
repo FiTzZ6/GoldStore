@@ -73,6 +73,7 @@
                     <th>Kategori</th>
                     <th>Jenis</th>
                     <th>Baki</th>
+                    <th>Stok</th>
                     <th>Foto</th>
                     <th>Barcode</th>
                     @if(session('typeuser') == 1)
@@ -87,6 +88,7 @@
                         <td>{{ $b->KategoriBarang->namakategori ?? '-' }}</td>
                         <td>{{ $b->JenisBarang->namajenis ?? '-' }}</td>
                         <td>{{ $b->baki->namabaki ?? '-' }}</td>
+                        <td>{{ $b->stok }}</td>
                         <td>
                             @if($b->photo_url)
                                 <img src="{{ $b->photo_url }}" width="60" style="cursor:pointer;"
@@ -102,10 +104,30 @@
                         </td>
                         @if(session('typeuser') == 1)
                             <td>
-                                <button
-                                    onclick="openEditModal('{{ $b->kdbarang }}','{{ $b->namabarang }}','{{ $b->kdjenis }}','{{ $b->kdbaki }}','{{ $b->kdkategori }}')">
+                                <button onclick="openEditModal(
+                                                    '{{ $b->kdbarang }}',
+                                                    '{{ $b->namabarang }}',
+                                                    '{{ $b->kdjenis }}',
+                                                    '{{ $b->kdbaki }}',
+                                                    '{{ $b->kdkategori }}',
+                                                    '{{ $b->kdtoko }}',
+                                                    '{{ $b->berat }}',
+                                                    '{{ $b->kadar }}',
+                                                    '{{ $b->hargabeli }}',
+                                                    '{{ $b->kdstatus }}',
+                                                    '{{ $b->kdsupplier }}',
+                                                    '{{ $b->atribut }}',
+                                                    '{{ $b->hargaatribut }}',
+                                                    '{{ $b->beratasli }}',
+                                                    '{{ $b->beratbandrol }}',
+                                                    '{{ $b->kdintern }}',
+                                                    '{{ $b->stok }}',
+                                                    '{{ $b->photo_type }}',
+                                                    '{{ $b->camera_type }}'
+                                                )">
                                     Edit
                                 </button>
+
                                 <button onclick="openDeleteModal('{{ $b->kdbarang }}')">Hapus</button>
                             </td>
                         @endif
@@ -181,7 +203,7 @@
                 </select>
 
                 <label>Supplier</label>
-                <select  name="kdsupplier">
+                <select name="kdsupplier">
                     <option value="">-- Pilih supplier --</option>
                     @foreach($supplier as $su)
                         <option value="{{ $su->kdsupplier }}">{{ $su->namasupplier }}</option>
@@ -201,11 +223,15 @@
                 <input type="number" step="0.001" name="beratbandrol">
 
                 <label>Kode Intern</label>
-                <select type="text" name="kdintern"><option value="">-- Pilih intern --</option>
+                <select type="text" name="kdintern">
+                    <option value="">-- Pilih intern --</option>
                     @foreach($intern as $int)
                         <option value="{{ $int->barcode }}">{{ $int->tipebarang }}</option>
                     @endforeach
                 </select>
+
+                <label>Quantity</label>
+                <input type="number" name="stok">
 
                 <label>Photo Type</label>
                 <input type="text" name="photo_type">
@@ -227,11 +253,11 @@
                 @csrf
                 @method('PUT')
 
-                                <label>Nama Barang</label>
-                <input type="text" name="namabarang" required>
+                <label>Nama Barang</label>
+                <input type="text" id="editNama" name="namabarang" required>
 
                 <label>Kategori</label>
-                <select name="kdkategori" required>
+                <select id="editKategori" name="kdkategori" required>
                     <option value="">-- Pilih Kategori --</option>
                     @foreach($kategori as $k)
                         <option value="{{ $k->kdkategori }}">{{ $k->namakategori }}</option>
@@ -239,7 +265,7 @@
                 </select>
 
                 <label>Jenis</label>
-                <select name="kdjenis" required>
+                <select id="editJenis" name="kdjenis" required>
                     <option value="">-- Pilih Jenis --</option>
                     @foreach($jenis as $j)
                         <option value="{{ $j->kdjenis }}">{{ $j->namajenis }}</option>
@@ -247,7 +273,7 @@
                 </select>
 
                 <label>Baki</label>
-                <select name="kdbaki" required>
+                <select id="editBaki" name="kdbaki" required>
                     <option value="">-- Pilih Baki --</option>
                     @foreach($baki as $b)
                         <option value="{{ $b->kdbaki }}">{{ $b->namabaki }}</option>
@@ -255,10 +281,10 @@
                 </select>
 
                 <label>Foto</label>
-                <input type="file" name="photo">
+                <input type="file" id="editPhoto" name="photo">
 
-                <label>Kode Toko</label required>
-                <select name="kdtoko">
+                <label>Kode Toko</label>
+                <select id="editToko" name="kdtoko">
                     <option value="">-- Pilih toko --</option>
                     @foreach($toko as $t)
                         <option value="{{ $t->kdtoko }}">{{ $t->namatoko }}</option>
@@ -266,16 +292,16 @@
                 </select>
 
                 <label>Berat</label>
-                <input type="number" step="0.001" name="berat">
+                <input type="number" id="editBerat" step="0.001" name="berat">
 
                 <label>Kadar</label>
-                <input type="number" step="0.001" name="kadar">
+                <input type="number" id="editKadar" step="0.001" name="kadar">
 
                 <label>Harga Beli</label>
-                <input type="number" step="0.001" name="hargabeli">
+                <input type="number" id="editHargaBeli" step="0.001" name="hargabeli">
 
                 <label>Status</label>
-                <select name="kdstatus">
+                <select id="editStatus" name="kdstatus">
                     <option value="">-- Pilih status --</option>
                     @foreach($status as $s)
                         <option value="{{ $s->kdstatus }}">{{ $s->status }}</option>
@@ -283,7 +309,7 @@
                 </select>
 
                 <label>Supplier</label>
-                <select  name="kdsupplier">
+                <select id="editSupplier" name="kdsupplier">
                     <option value="">-- Pilih supplier --</option>
                     @foreach($supplier as $su)
                         <option value="{{ $su->kdsupplier }}">{{ $su->namasupplier }}</option>
@@ -291,32 +317,37 @@
                 </select>
 
                 <label>Atribut</label>
-                <input type="text" name="atribut">
+                <input type="text" id="editAtribut" name="atribut">
 
                 <label>Harga Atribut</label>
-                <input type="number" step="0.001" name="hargaatribut">
+                <input type="number" id="editHargaAtribut" step="0.001" name="hargaatribut">
 
                 <label>Berat Asli</label>
-                <input type="number" step="0.001" name="beratasli">
+                <input type="number" id="editBeratAsli" step="0.001" name="beratasli">
 
                 <label>Berat Bandrol</label>
-                <input type="number" step="0.001" name="beratbandrol">
+                <input type="number" id="editBeratBandrol" step="0.001" name="beratbandrol">
 
                 <label>Kode Intern</label>
-                <select  name="kdintern"><option value="">-- Pilih intern --</option>
+                <select id="editIntern" name="kdintern">
+                    <option value="">-- Pilih intern --</option>
                     @foreach($intern as $int)
                         <option value="{{ $int->barcode }}">{{ $int->tipebarang }}</option>
                     @endforeach
                 </select>
 
+                <label>Quantity</label>
+                <input type="number" id="editStok" name="stok">
+
                 <label>Photo Type</label>
-                <input type="text" name="photo_type">
+                <input type="text" id="editPhotoType" name="photo_type">
 
                 <label>Camera Type</label>
-                <input type="text" name="camera_type">
+                <input type="text" id="editCameraType" name="camera_type">
 
                 <button type="submit" class="btn-primary">Update</button>
             </form>
+
         </div>
     </div>
 
@@ -350,14 +381,31 @@
         function openModal(id) { document.getElementById(id).classList.add('show'); }
         function closeModal(id) { document.getElementById(id).classList.remove('show'); }
 
-        function openEditModal(id, nama, jenis, baki, kategori) {
+        function openEditModal(id, nama, jenis, baki, kategori, toko, berat, kadar, hargabeli, status, supplier, atribut, hargaatribut, beratasli, beratbandrol, kdintern, stok, photo_type, camera_type) {
             document.getElementById('modalEdit').classList.add('show');
+            document.getElementById('formEdit').action = '/StokBarang/' + id;
+
+            // Isi field
             document.getElementById('editNama').value = nama;
             document.getElementById('editJenis').value = jenis;
             document.getElementById('editBaki').value = baki;
             document.getElementById('editKategori').value = kategori;
-            document.getElementById('formEdit').action = '/StokBarang/' + id;
+            document.getElementById('editToko').value = toko || '';
+            document.getElementById('editBerat').value = berat || '';
+            document.getElementById('editKadar').value = kadar || '';
+            document.getElementById('editHargaBeli').value = hargabeli || '';
+            document.getElementById('editStatus').value = status || '';
+            document.getElementById('editSupplier').value = supplier || '';
+            document.getElementById('editAtribut').value = atribut || '';
+            document.getElementById('editHargaAtribut').value = hargaatribut || '';
+            document.getElementById('editBeratAsli').value = beratasli || '';
+            document.getElementById('editBeratBandrol').value = beratbandrol || '';
+            document.getElementById('editIntern').value = kdintern || '';
+            document.getElementById('editStok').value = stok || '';
+            document.getElementById('editPhotoType').value = photo_type || '';
+            document.getElementById('editCameraType').value = camera_type || '';
         }
+
         function openDeleteModal(id) {
             document.getElementById('modalHapus').classList.add('show');
             document.getElementById('formHapus').action = '/StokBarang/' + id;

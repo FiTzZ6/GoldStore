@@ -16,7 +16,7 @@ class Barang extends Model
         'berat', 'kadar', 'hargabeli', 'photo', 'kdstatus', 'kdsupplier',
         'atribut', 'hargaatribut', 'beratasli', 'beratbandrol', 'kdintern',
         'inputby', 'inputdate', 'editby', 'editdate',
-        'deletedby', 'deleteddate', 'statusdelete', 'barcode_pict', 'photo_type', 'camera_type'
+        'deletedby', 'deleteddate', 'statusdelete', 'barcode_pict', 'photo_type', 'camera_type','stok'
     ];
 
      public function getBarcodeUrlAttribute() {
