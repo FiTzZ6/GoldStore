@@ -2,10 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Supplier;
-use Illuminate\Http\Request;
-
-class TransaksijualController extends Controller
+class TransaksiJualController extends Controller
 {
     public function index()
     {

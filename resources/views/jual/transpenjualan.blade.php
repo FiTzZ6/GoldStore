@@ -23,8 +23,8 @@
         <div class="main-content">
             <div class="left-panel">
                 <div class="form-group">
-                    <label for="staff-code">Kode Staff</label>
-                    <input type="text" id="staff-code" placeholder="Masukkan kode staff">
+                    <label for="staff-code">Nama Staff</label>
+                    <input type="text" id="staff-code" placeholder="Masukkan Nama Staff">
                 </div>
                 
                 <div class="form-group">
@@ -45,6 +45,7 @@
                 <div class="divider"></div>
                 
                 <h3>Daftar Produk</h3>
+                <input type="text" placeholder="Search" id="searchInput">
                 <div class="product-list">
                     <div class="product-item" data-code="BRG-001" data-name="Produk Sample 1" data-price="50000" data-fee="5000">
                         <div class="product-name">Produk Sample 1</div>

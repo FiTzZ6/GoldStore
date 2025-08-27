@@ -1,6 +1,7 @@
 <?php
 
 
+
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Auth\LoginController;
 
@@ -38,6 +39,11 @@ use App\Http\Controllers\TransaksiJualController;
 use App\Http\Controllers\SelisihJualController;
 use App\Http\Controllers\RiwayatBeliController;
 use App\Http\Controllers\RiwayatBatalBeliController;
+
+use App\Http\Controllers\DaftarPesananController;
+
+
+
 
 Route::get('/login', [LoginController::class, 'index'])->name('login');
 Route::post('/login', [LoginController::class, 'masuk'])->name('login.masuk');
@@ -212,6 +218,9 @@ Route::get('/TransaksiJual', [TransaksiJualController::class, 'index'])->name('t
 
 //JualSelisih-jual
 Route::get('/SelisihJual', [SelisihJualController::class, 'index'])->name('selisihjual');
+
+//daftarPesanan- pesan
+Route::get('/daftarPesanan', [DaftarPesananController::class, 'index'])->name('daftarpesanan');
 
 
 

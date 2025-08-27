@@ -246,7 +246,7 @@
                     @if(session('typeuser') == 6)
                         <li><a href="#">Transakasi Pesanan</a></li>
                     @endif
-                    <li><a href="#">Daftar Pesanan</a></li>
+                    <li><a href="{{ route('daftarpesanan') }}">Daftar Pesanan</a></li>
                 </ul>
             </li>
 

@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Daftar Pesanan</title>
-    <link rel="stylesheet" href="{{ asset('css/style.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/pesanan/daftarpesanan.css') }}">
 </head>
 <body>
     {{-- Navbar --}}
@@ -35,33 +35,24 @@
                 </tr>
             </thead>
             <tbody>
-                @forelse($pesanan as $item)
+               
                 <tr>
                     <td><input type="checkbox"></td>
-                    <td>{{ $item->id }}</td>
-                    <td>{{ $item->tgl_pesan }}</td>
-                    <td>{{ $item->tgl_ambil }}</td>
-                    <td>{{ $item->nama_pemesan }}</td>
-                    <td>{{ $item->alamat_pemesan }}</td>
-                    <td>{{ $item->telp_pemesan }}</td>
-                    <td>{{ $item->staff }}</td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
                     <td>
                         <a href="#" class="btn btn-sm btn-primary">Edit</a>
                         <a href="#" class="btn btn-sm btn-danger">Hapus</a>
                     </td>
                 </tr>
-                @empty
-                <tr>
-                    <td colspan="9" style="text-align:center;">No matching records found</td>
-                </tr>
-                @endforelse
+                
             </tbody>
         </table>
     </main>
-
-    {{-- Footer --}}
-    <footer>
-        <p>&copy; {{ date('Y') }} - GoldStore</p>
-    </footer>
 </body>
 </html>
