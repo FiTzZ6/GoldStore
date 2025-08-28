@@ -6,7 +6,7 @@
     <link rel="stylesheet" href="{{ asset('css/datamaster/cabang.css') }}">
     <link href="https://fonts.googleapis.com/css?family=Montserrat:400,800" rel="stylesheet">
     <script src="https://kit.fontawesome.com/a076d05399.js"></script>
-    <title>Halaman Area</title>
+    <title>Halaman Data Pelanggan</title>
 </head>
 
 <body>

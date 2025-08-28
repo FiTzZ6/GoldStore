@@ -125,6 +125,7 @@ class BarangStokController extends Controller
             'inputby' => session('username') ?? 'admin',
             'inputdate' => now(),
         ]);
+        
 
         return back()->with('success', 'Barang berhasil ditambahkan');
     }

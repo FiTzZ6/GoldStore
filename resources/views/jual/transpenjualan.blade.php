@@ -24,19 +24,33 @@
             <div class="left-panel">
                 <div class="form-group">
                     <label for="staff-code">Nama Staff</label>
-                    <input type="text" id="staff-code" placeholder="Masukkan Nama Staff">
+                    <input type="text" id="staff-code" placeholder="Masukkan Nama Staff" list="list_staff">
+                    <datalist id="list_staff">
+                        @foreach($staff as $karyawan)
+                            <option value="{{ $karyawan->nama }}" >
+                            </option>
+                        @endforeach
+                    </datalist>
                 </div>
                 
                 <div class="form-group">
                     <label for="customer-name">Nama Pelanggan</label>
-                    <input type="text" id="customer-name" placeholder="Masukkan nama pelanggan">
+                    <input type="text" id="customer-name" placeholder="Masukkan nama pelanggan" list="list_nama">
+                    <datalist id="list_nama">
+                        @foreach($pelanggan as $orang)
+                            <option value="{{ $orang->namapelanggan }}" 
+                                    data-address="{{ $orang->alamatpelanggan }}" 
+                                    data-phone="{{ $orang->notelp }}">
+                            </option>
+                        @endforeach
+                    </datalist>
                 </div>
-                
+
                 <div class="form-group">
                     <label for="customer-address">Alamat Pelanggan</label>
                     <textarea id="customer-address" rows="2" placeholder="Masukkan alamat pelanggan"></textarea>
                 </div>
-                
+
                 <div class="form-group">
                     <label for="customer-phone">No. Telepon</label>
                     <input type="text" id="customer-phone" placeholder="Masukkan nomor telepon pelanggan">
@@ -45,7 +59,7 @@
                 <div class="divider"></div>
                 
                 <h3>Daftar Produk</h3>
-                <input type="text" placeholder="Search" id="searchInput">
+                <!-- <input type="text" placeholder="Search" id="searchInput"> -->
                 <div class="product-list">
                     <div class="product-item" data-code="BRG-001" data-name="Produk Sample 1" data-price="50000" data-fee="5000">
                         <div class="product-name">Produk Sample 1</div>
@@ -255,6 +269,25 @@
             });
         }
         
+        // Fungsi Isi auto data transaksi penjualan
+        const nameInput = document.getElementById('customer-name');
+        const addressInput = document.getElementById('customer-address');
+        const phoneInput = document.getElementById('customer-phone');
+        const dataList = document.getElementById('list_nama');
+
+        nameInput.addEventListener('input', function() {
+            const val = this.value;
+            const option = [...dataList.options].find(o => o.value === val);
+            
+            if (option) {
+                addressInput.value = option.dataset.address || '';
+                phoneInput.value = option.dataset.phone || '';
+            } else {
+                addressInput.value = '';
+                phoneInput.value = '';
+            }
+        });
+
         // Function to update item quantity
         function updateQuantity(index, change) {
             currentInvoice.items[index].quantity += change;

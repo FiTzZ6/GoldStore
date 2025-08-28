@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Daftar Pesanan</title>
-    <link rel="stylesheet" href="{{ asset('css/pesanan/daftarpesanan.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/datamaster/kondisi.css') }}">
 </head>
 <body>
     {{-- Navbar --}}

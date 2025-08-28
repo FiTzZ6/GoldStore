@@ -243,9 +243,7 @@
             <li>
                 <a href="#"><i class="fas fa-clipboard-list"></i> Pesanan</a>
                 <ul>
-                    @if(session('typeuser') == 6)
                         <li><a href="#">Transakasi Pesanan</a></li>
-                    @endif
                     <li><a href="{{ route('daftarpesanan') }}">Daftar Pesanan</a></li>
                 </ul>
             </li>

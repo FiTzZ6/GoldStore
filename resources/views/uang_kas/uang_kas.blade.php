@@ -73,8 +73,6 @@
 
 
     <!-- Modal Tambah -->
-    <!-- Modal Tambah -->
-    <!-- Modal Tambah -->
     <div id="modalTambah" class="modal-overlay" style="display:none;">
         <div class="modal-box">
             <h3>Tambah Kas</h3>
