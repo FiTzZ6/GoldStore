@@ -3,140 +3,316 @@ body {
     font-family: 'Montserrat', sans-serif;
     margin: 0;
     padding: 0;
-    background-color: #f8f9fa;
+    background: linear-gradient(135deg, #f5f7fa 0%, #e4e8f0 100%);
     color: #333;
+    min-height: 100vh;
 }
 
 /* ====== Form Container ====== */
 .form-container {
     background-color: #fff;
-    padding: 30px;
-    height: auto;
+    padding: 40px;
     width: 90%;
     max-width: 1000px;
-    margin: 30px auto;
-    border-radius: 12px;
-    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
+    margin: 40px auto;
+    border-radius: 16px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.5);
+    backdrop-filter: blur(10px);
 }
 
 /* ====== Grid Layout ====== */
 .form-grid {
     display: flex;
     justify-content: space-between;
-    gap: 40px;
+    gap: 50px;
     flex-wrap: wrap;
 }
 
 /* Kolom kiri */
 .form-left {
     flex: 1;
+    min-width: 300px;
 }
 
 /* Kolom kanan */
 .form-right {
     flex: 0.8;
     text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }
 
 /* ====== Form Group ====== */
 .form-group {
-    margin-bottom: 18px;
+    margin-bottom: 24px;
+    position: relative;
 }
 
 label {
     display: block;
     font-weight: 600;
-    margin-bottom: 6px;
-    color: #444;
+    margin-bottom: 8px;
+    color: #2c3e50;
+    font-size: 14px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
 }
 
-input[type="text"], 
-input[type="file"] {
+input[type="text"] {
     width: 100%;
-    padding: 10px 12px;
-    border: 1px solid #ced4da;
-    border-radius: 6px;
-    font-size: 14px;
+    padding: 14px 16px;
+    border: 1px solid #e1e5eb;
+    border-radius: 8px;
+    font-size: 15px;
     box-sizing: border-box;
     transition: all 0.3s ease;
+    background: #f8f9fa;
+    color: #495057;
+    font-family: 'Montserrat', sans-serif;
 }
 
 input[type="text"]:focus {
-    border-color: #007bff;
-    box-shadow: 0 0 6px rgba(0, 123, 255, 0.25);
+    border-color: #4e73df;
+    box-shadow: 0 0 0 3px rgba(78, 115, 223, 0.15);
     outline: none;
+    background: #fff;
+    transform: translateY(-2px);
 }
 
 /* ====== Logo Preview ====== */
 .logo-preview {
-    margin-bottom: 15px;
+    margin-bottom: 20px;
+    margin-right: -35px;
+    padding: 15px;
+    border-radius: 12px;
+    background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+    border: 2px dashed #dee2e6;
+    width: 100%;
+    max-width: 300px;
 }
 
 .logo-preview img {
-    max-width: 150px;
+    max-width: 100%;
     border-radius: 8px;
-    border: 1px solid #ddd;
-    padding: 5px;
+    border: 1px solid #e9ecef;
+    padding: 8px;
     background: #fff;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+    transition: transform 0.3s ease;
+}
+
+.logo-preview img:hover {
+    transform: scale(1.03);
 }
 
 /* ====== File Upload ====== */
+.file-upload {
+    position: relative;
+    width: 100%;
+    max-width: 200px;
+    margin: 0 auto;
+    margin-right: 90px;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.file-upload label {
+    display: block;
+    margin-bottom: 8px;
+    text-align: center;
+    font-weight: 600;
+    color: #2c3e50;
+    font-size: 14px;
+}
+
+/* Input file yang asli - disembunyikan */
 .file-upload input[type="file"] {
-    padding: 5px;
+    position: absolute;
+    left: 0;
+    top: 0;
+    opacity: 0;
+    width: 100%;
+    height: 100%;
+    cursor: pointer;
+    z-index: 2;
+}
+
+/* Tombol custom yang terlihat */
+.file-upload::after {
+    content: 'Pilih File';
+    display: inline-block;
+    background: #4e73df;
+    color: white;
+    padding: 12px 20px;
+    border-radius: 6px;
+    font-weight: 600;
+    font-size: 14px;
+    text-align: center;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.file-upload:hover::after {
+    background: #3a56c4;
+}
+
+/* Text informasi file */
+.file-info {
+    display: block;
+    text-align: center;
+    margin-top: 10px;
+    font-size: 12px;
+    color: #6c757d;
+    width: 100%;
+}
+
+/* Untuk menunjukkan nama file yang dipilih */
+.file-name {
+    display: block;
+    margin-top: 8px;
+    font-size: 13px;
+    color: #495057;
+    word-break: break-word;
+    text-align: center;
 }
 
 /* ====== Buttons ====== */
 .form-actions {
-    margin-top: 20px;
-    text-align: right;
+    margin-top: 30px;
+    margin-right: 370px;
+    padding-top: 25px;
+    border-top: 1px solid #e9ecef;
 }
 
 .btn {
-    padding: 10px 20px;
-    font-size: 14px;
-    border-radius: 6px;
+    padding: 14px 28px;
+    font-size: 15px;
+    border-radius: 8px;
     border: none;
     cursor: pointer;
     font-weight: 600;
-    transition: background 0.3s ease, transform 0.2s ease;
+    transition: all 0.3s ease;
+    font-family: 'Montserrat', sans-serif;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
 }
 
 .btn-cancel {
-    background-color: #6c757d;
+    background: linear-gradient(135deg, #6c757d 0%, #5a6268 100%);
     color: white;
-    margin-right: 10px;
+    margin-right: 15px;
 }
 
 .btn-cancel:hover {
-    background-color: #5a6268;
-    transform: scale(1.02);
+    background: linear-gradient(135deg, #5a6268 0%, #495057 100%);
+    transform: translateY(-3px);
+    box-shadow: 0 6px 15px rgba(108, 117, 125, 0.3);
 }
 
 .btn-save {
-    background-color: #28a745;
+    background: linear-gradient(135deg, #36b9cc 0%, #2a96a5 100%);
     color: white;
 }
 
 .btn-save:hover {
-    background-color: #218838;
-    transform: scale(1.02);
+    background: linear-gradient(135deg, #2a96a5 0%, #1f7a86 100%);
+    transform: translateY(-3px);
+    box-shadow: 0 6px 15px rgba(54, 185, 204, 0.3);
+}
+
+/* ====== Animasi dan Efek Tambahan ====== */
+.form-group input[type="text"] {
+    position: relative;
+    z-index: 1;
+}
+
+.form-group input[type="text"]:focus + .focus-border {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 2px;
+    background: linear-gradient(90deg, #4e73df, #36b9cc);
+    z-index: 2;
+    animation: borderAnimation 0.5s forwards;
+}
+
+@keyframes borderAnimation {
+    from { width: 0; }
+    to { width: 100%; }
 }
 
 /* ====== Responsive ====== */
 @media (max-width: 768px) {
+    .form-container {
+        padding: 25px;
+        margin: 20px auto;
+    }
+    
     .form-grid {
         flex-direction: column;
+        gap: 30px;
     }
+    
     .form-actions {
         text-align: center;
     }
+    
+    .btn {
+        width: 100%;
+        margin-bottom: 10px;
+    }
+    
+    .btn-cancel {
+        margin-right: 0;
+    }
+    
+    .logo-preview {
+        max-width: 150px;
+    }
+}
+
+@media (max-width: 480px) {
+    .form-container {
+        padding: 20px;
+        margin: 15px auto;
+    }
+    
+    input[type="text"] {
+        padding: 12px;
+    }
+    
+    .btn {
+        padding: 12px 20px;
+    }
+}
+
+/* ====== Efek Hover pada Form Groups ====== */
+.form-group:hover label {
+    color: #4e73df;
+}
+
+/* ====== Placeholder Styling ====== */
+input[type="text"]::placeholder {
+    color: #adb5bd;
+    font-style: italic;
 }
 
 /* ====== Kamera Preview ====== */
 #my_camera, #hasil {
     width: 250px;
     height: 150px;
-    border: 1px solid #333;
-    margin: 0 auto 5px;
+    border: 2px solid #e9ecef;
+    border-radius: 8px;
+    margin: 0 auto 15px;
     display: block;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+    background: #f8f9fa;
 }

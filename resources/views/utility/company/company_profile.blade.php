@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <link rel="stylesheet" href="{{ asset('css/utility/company/company_profile.css') }}">
-    <link href="https://fonts.googleapis.com/css?family=Montserrat:400,800" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Montserrat:400,600,700&display=swap" rel="stylesheet">
     <title>Halaman Utility</title>
 </head>
 <body>
@@ -51,6 +51,34 @@
             </div>
         </form>
     </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const fileInput = document.getElementById('file-upload');
+            const fileNameDisplay = document.createElement('span');
+            fileNameDisplay.className = 'file-name';
+            
+            // Cari tempat yang tepat untuk menampilkan nama file
+            const fileUploadContainer = fileInput.parentElement;
+            const fileInfo = fileUploadContainer.querySelector('.file-info');
+            
+            // Sisipkan elemen untuk menampilkan nama file setelah info
+            if (fileInfo) {
+                fileInfo.parentNode.insertBefore(fileNameDisplay, fileInfo.nextSibling);
+            } else {
+                fileUploadContainer.appendChild(fileNameDisplay);
+            }
+            
+            // Event listener untuk perubahan file
+            fileInput.addEventListener('change', function() {
+                if (this.files && this.files.length > 0) {
+                    fileNameDisplay.textContent = this.files[0].name;
+                } else {
+                    fileNameDisplay.textContent = '';
+                }
+            });
+        });
+    </script>
 </body>
 </html>
 
