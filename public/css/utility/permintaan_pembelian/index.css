@@ -1,3 +1,10 @@
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f2f4f7;
+    margin: 0;
+    padding: 0;
+}
+
 .container-pp {
     max-width: 1400px;
     margin: 40px auto;
@@ -5,6 +12,11 @@
     border-radius: 6px;
     box-shadow: 0 2px 6px rgba(0,0,0,0.1);
     padding: 20px;
+}
+
+h1 {
+    text-align: center;
+    margin-bottom: 20px;
 }
 
 .header-pp {
@@ -34,6 +46,7 @@
     border: 1px solid #ccc;
     border-radius: 4px;
     overflow: hidden;
+    margin-right: -935px;
 }
 
 .icon-group button {
@@ -71,8 +84,8 @@
 
 .right-tools {
     display: flex;
-    align-items: center;
-    gap: 10px; /* jarak antara ikon dan search */
+    align-items: center; 
+    gap: 10px;
 }
 
 .search-box input {

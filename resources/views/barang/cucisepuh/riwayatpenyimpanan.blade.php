@@ -9,6 +9,7 @@
 </head>
 
 <body>
+@include('partials.navbar')
     <div class="container">
         <div class="header">
             <h1>Riwayat Penyimpanan Mutu</h1>

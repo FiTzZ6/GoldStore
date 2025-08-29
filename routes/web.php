@@ -39,8 +39,18 @@ use App\Http\Controllers\TransaksiJualController;
 use App\Http\Controllers\SelisihJualController;
 use App\Http\Controllers\RiwayatBeliController;
 use App\Http\Controllers\RiwayatBatalBeliController;
-
 use App\Http\Controllers\DaftarPesananController;
+use App\Http\Controllers\FormPenyimpananController;
+use App\Http\Controllers\RiwayatCuciController;
+use App\Http\Controllers\RiwayatPenyimpananController;
+use App\Http\Controllers\FormRongsokController;
+use App\Http\Controllers\RiwayatRongsokController;
+use App\Http\Controllers\FormKetidaksesuaianController;
+use App\Http\Controllers\RiwayatKetidaksesuaianController;
+use App\Http\Controllers\SelisihBeliController;
+// use App\Http\Controllers\;
+// use App\Http\Controllers\;
+// use App\Http\Controllers\;
 
 
 
@@ -195,6 +205,28 @@ Route::get('/BarangTerhapus', [BarangTerhapusController::class, 'index'])->name(
 //BarangTerima-Barang
 Route::get('/terimabarang', [TerimaBarangController::class, 'index'])->name('terimabarang');
 
+
+//BarangCuciSepuh-FormPenyimpanan
+Route::get('/FormPenyimpanan', [FormPenyimpananController::class, 'index'])->name('formpenyimpanan');
+
+//BarangCuciSepuh-RiwayatCuci
+Route::get('/RiwayatCuci', [RiwayatCuciController::class, 'index'])->name('riwayatcuci');
+
+//BarangCuciSepuh-RiwayatPenyimpanan
+Route::get('/RiwayatPenyimpanan', [RiwayatPenyimpananController::class, 'index'])->name('riwayatpenyimpanan');
+
+//BarangRongsok-FormRongsok
+Route::get('/FormRongsok', [FormRongsokController::class, 'index'])->name('formrongsok');
+
+//BarangRongsok-RiwayatRongsok
+Route::get('/RiwayatRongsok', [RiwayatRongsokController::class, 'index'])->name('riwayatrongsok');
+
+//BarangRongsok-FormKetidaksesuaian
+Route::get('/FormKetidaksesuaian', [FormKetidaksesuaianController::class, 'index'])->name('formketidaksesuaian');
+
+//BarangRongsok-RiwayatKetidaksesuaian
+Route::get('/RiwayatKetidaksesuaian', [RiwayatKetidaksesuaianController::class, 'index'])->name('riwayatketidaksesuaian');
+
 //BeliTransasksi-Beli
 Route::get('/TransaksiBeli', [TransaksiBeliController::class, 'index'])->name('transaksibeli');
 
@@ -206,6 +238,9 @@ Route::get('/RiwayatBeli', [RiwayatBeliController::class, 'index'])->name('riway
 
 //BeliRiwayat-Batal-Beli
 Route::get('/RiwayatBatalBeli', [RiwayatBatalBeliController::class, 'index'])->name('riwayatbatalbeli');
+
+//BeliSelisih-Batal-Beli
+Route::get('/SelisihBeli', [SelisihBeliController::class, 'index'])->name('selisihbelibatal');
 
 //JualBatal-jual
 Route::get('/BatalJual', [BatalJualController::class, 'index'])->name('bataljual');

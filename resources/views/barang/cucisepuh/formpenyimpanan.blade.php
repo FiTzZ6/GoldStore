@@ -6,6 +6,7 @@
     <link rel="stylesheet" href="{{ asset('css/barang/cucisepuh/formpenyimpanan.css') }}">
 </head>
 <body>
+@include('partials.navbar')
     <div class="container">
         
         <div class="main-content">

@@ -181,10 +181,10 @@
                         <a href="#">Cuci Sepuh<span style="float: right;"></span></a>
                         <ul class="dropdown-menu-1">
                             <li><a href="#">Formulir Cuci Sepuh</a></li>
-                            <li><a href="#">Riwayat Cuci Sepuh</a></li>
+                            <li><a href="{{ route('riwayatcuci') }}">Riwayat Cuci Sepuh</a></li>
                             @if(session('typeuser') == 1)
-                                <li><a href="#">Formulir Penyimpanan Mutu</a></li>
-                                <li><a href="#">Riwayat Penyimpanan Mutu</a></li>
+                                <li><a href="{{ route('formpenyimpanan') }}">Formulir Penyimpanan Mutu</a></li>
+                                <li><a href="{{ route('riwayatpenyimpanan') }}">Riwayat Penyimpanan Mutu</a></li>
                             @endif
                         </ul>
                     </li>
@@ -192,11 +192,11 @@
                         <a href="#">Rongsok <span style="float: right;"></span></a>
                         <ul class="dropdown-menu-1">
                             @if(session('typeuser') == 1)
-                                <li><a href="#">Formulir Rongsok</a></li>
-                                <li><a href="#">Riwayat Rongsok</a></li>
+                                <li><a href="{{ route('formrongsok') }}">Formulir Rongsok</a></li>
+                                <li><a href="{{ route('riwayatrongsok') }}">Riwayat Rongsok</a></li>
                             @endif
-                            <li><a href="#">Formulir Ketidaksesuaian</a></li>
-                            <li><a href="#">Riwayat Ketidaksesuaian</a></li>
+                            <li><a href="{{ route('formketidaksesuaian') }}">Formulir Ketidaksesuaian</a></li>
+                            <li><a href="{{ route('riwayatketidaksesuaian') }}">Riwayat Ketidaksesuaian</a></li>
                         </ul>
                     </li>
                     <li class="has-submenu">
@@ -234,7 +234,7 @@
                     <li><a href="{{ route('batalbeli') }}">Batal Pembelian</a></li>
                     <li><a href="{{ route('riwayatbeli') }}">Riwayat Pembelian</a></li>
                     <li><a href="{{ route('riwayatbatalbeli') }}">Riwayat Batal beli</a></li>
-                    <li><a href="#">Selisih Beli & Batal</a></li>
+                    <li><a href="{{ route('selisihbelibatal') }}">Selisih Beli & Batal</a></li>
                 </ul>
             </li>
 
