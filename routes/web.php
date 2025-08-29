@@ -48,6 +48,7 @@ use App\Http\Controllers\RiwayatRongsokController;
 use App\Http\Controllers\FormKetidaksesuaianController;
 use App\Http\Controllers\RiwayatKetidaksesuaianController;
 use App\Http\Controllers\SelisihBeliController;
+use App\Http\Controllers\StokJualController;
 // use App\Http\Controllers\;
 // use App\Http\Controllers\;
 // use App\Http\Controllers\;
@@ -253,6 +254,13 @@ Route::get('/TransaksiJual', [TransaksiJualController::class, 'index'])->name('t
 
 //JualSelisih-jual
 Route::get('/SelisihJual', [SelisihJualController::class, 'index'])->name('selisihjual');
+
+//stokjual-jual
+Route::get('/stokjual', [StokJualController::class, 'index'])->name('stokjual');
+Route::post('/stokjual', [StokJualController::class, 'store'])->name('stokjual.store');
+Route::put('/stokjual/{nofaktur}', [StokJualController::class, 'update'])->name('stokjual.update');
+Route::delete('/stokjual/{nofaktur}', [StokJualController::class, 'destroy'])->name('stokjual.destroy');
+
 
 //daftarPesanan- pesan
 Route::get('/daftarPesanan', [DaftarPesananController::class, 'index'])->name('daftarpesanan');
