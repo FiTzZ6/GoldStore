@@ -251,6 +251,7 @@ Route::get('/RiweayatBatalJual', [RiwayatBatalJualController::class, 'index'])->
 
 //JualTransaksi-jual
 Route::get('/TransaksiJual', [TransaksiJualController::class, 'index'])->name('transpenjualan');
+Route::post('/transaksi/store', [TransaksiJualController::class, 'store'])->name('transpenjualan.store');
 
 //JualSelisih-jual
 Route::get('/SelisihJual', [SelisihJualController::class, 'index'])->name('selisihjual');
@@ -260,6 +261,7 @@ Route::get('/stokjual', [StokJualController::class, 'index'])->name('stokjual');
 Route::post('/stokjual', [StokJualController::class, 'store'])->name('stokjual.store');
 Route::put('/stokjual/{nofaktur}', [StokJualController::class, 'update'])->name('stokjual.update');
 Route::delete('/stokjual/{nofaktur}', [StokJualController::class, 'destroy'])->name('stokjual.destroy');
+
 
 
 //daftarPesanan- pesan
