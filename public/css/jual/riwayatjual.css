@@ -1,0 +1,239 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Poppins', sans-serif;
+    background-color: #f5f7fa;
+    color: #333;
+    line-height: 1.6;
+    margin-bottom: 70px;
+}
+
+.container {
+    max-width: 800px;
+    margin: 20px auto;
+    background: white;
+    min-height: calc(100vh - 60px); 
+    position: relative;
+    padding-bottom: 70px;
+}
+
+.header {
+    background: linear-gradient(135deg, #4a6491 0%, #3a5075 100%);
+    color: white;
+    padding: 20px;
+    text-align: center;
+    border-radius: 15px 15px 0 0;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.header h1 {
+    font-weight: 600;
+    margin-bottom: 15px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    font-size: 1.8rem;
+    margin: 0;
+}
+
+.date-filter {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    flex-wrap: wrap;
+    margin-top: 10px;
+}
+
+.date-filter input {
+    padding: 8px 12px;
+    border: none;
+    border-radius: 8px;
+    font-family: 'Poppins', sans-serif;
+    background: rgba(255, 255, 255, 0.9);
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.date-filter span {
+    font-size: 0.9rem;
+}
+
+.filter-btn {
+    background: white;
+    color: #6a11cb;
+    border: none;
+    padding: 8px 15px;
+    border-radius: 8px;
+    font-family: 'Poppins', sans-serif;
+    font-weight: 500;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    transition: all 0.3s ease;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.filter-btn:hover {
+    background: #f0f0f0;
+    transform: translateY(-2px);
+}
+
+.content {
+    padding: 20px;
+}
+
+.date-header {
+    margin: 20px 0 15px;
+    padding-bottom: 10px;
+    border-bottom: 2px solid #eee;
+}
+
+.date-header h2 {
+    font-size: 1.2rem;
+    color: #6a11cb;
+    font-weight: 500;
+}
+
+.transaction-list {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.transaction-card {
+    background: white;
+    border-radius: 12px;
+    padding: 15px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    border: 1px solid #eee;
+}
+
+.transaction-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.08);
+}
+
+.transaction-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 15px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid #f0f0f0;
+}
+
+.transaction-id {
+    font-size: 0.85rem;
+    color: #777;
+}
+
+.transaction-status {
+    font-size: 0.8rem;
+    padding: 4px 10px;
+    border-radius: 20px;
+    font-weight: 500;
+}
+
+.transaction-status.completed {
+    background: #e6f7ee;
+    color: #00a65a;
+}
+
+.transaction-details {
+    margin-bottom: 15px;
+}
+
+.item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.item-info h3 {
+    font-size: 1rem;
+    font-weight: 500;
+    margin-bottom: 5px;
+    color: #333;
+}
+
+.item-info p {
+    font-size: 0.85rem;
+    color: #777;
+}
+
+.item-total {
+    font-weight: 600;
+    color: #6a11cb;
+}
+
+.transaction-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-top: 10px;
+    border-top: 1px solid #f0f0f0;
+}
+
+.transaction-total {
+    font-weight: 600;
+    color: #333;
+}
+
+.detail-btn {
+    background: transparent;
+    color: #6a11cb;
+    border: 1px solid #6a11cb;
+    padding: 6px 12px;
+    border-radius: 8px;
+    font-family: 'Poppins', sans-serif;
+    font-size: 0.85rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.detail-btn:hover {
+    background: #6a11cb;
+    color: white;
+}
+
+.transaction-customer {
+    font-size: 14px;
+    color: #555;
+    margin-left: 10px;
+    font-style: italic;
+}
+
+/* Responsive design */
+@media (max-width: 480px) {
+    .date-filter {
+        flex-direction: column;
+        gap: 8px;
+    }
+    
+    .date-filter input {
+        width: 100%;
+    }
+    
+    .transaction-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 8px;
+    }
+    
+    .transaction-footer {
+        flex-direction: column;
+        gap: 10px;
+        align-items: flex-start;
+    }
+    
+    .detail-btn {
+        align-self: flex-end;
+    }
+}

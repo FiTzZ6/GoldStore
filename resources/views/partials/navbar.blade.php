@@ -219,7 +219,7 @@
                 <ul>
                     <li><a href="{{ route('transpenjualan') }}">Transaksi Penjualan</a></li>
                     <li><a href="{{ route('bataljual') }}">Batal Penjualan</a></li>
-                    <li><a href="#">Riwayat Penjualan</a></li>
+                    <li><a href="{{ route('riwayatpenjualan') }}">Riwayat Penjualan</a></li>
                     <li><a href="{{ route('riwayatbataljual') }}">Riwayat Batal jual</a></li>
                     <li><a href="{{ route('selisihjual') }}">Selisih Jual & Batal</a></li>
                     <li><a href="{{ route('stokjual') }}">Stok Barang Jual</a></li>

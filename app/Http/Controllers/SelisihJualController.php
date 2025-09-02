@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Supplier;
 use Illuminate\Http\Request;
 
-class SelisihjualController extends Controller
+class SelisihJualController extends Controller
 {
     public function index()
     {

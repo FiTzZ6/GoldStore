@@ -1,7 +1,6 @@
 <?php
 
 
-
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Auth\LoginController;
 
@@ -49,6 +48,7 @@ use App\Http\Controllers\FormKetidaksesuaianController;
 use App\Http\Controllers\RiwayatKetidaksesuaianController;
 use App\Http\Controllers\SelisihBeliController;
 use App\Http\Controllers\StokJualController;
+use App\Http\Controllers\RiwayatPenjualanController;
 // use App\Http\Controllers\;
 // use App\Http\Controllers\;
 // use App\Http\Controllers\;
@@ -252,9 +252,17 @@ Route::get('/RiweayatBatalJual', [RiwayatBatalJualController::class, 'index'])->
 //JualTransaksi-jual
 Route::get('/TransaksiJual', [TransaksiJualController::class, 'index'])->name('transpenjualan');
 Route::post('/transaksi/store', [TransaksiJualController::class, 'store'])->name('transpenjualan.store');
+Route::get('/transaksi/{nofaktur}/struk', [TransaksiJualController::class, 'struk'])
+    ->name('transpenjualan.struk');
+Route::get('/transaksi/{nofaktur}/struk-pdf', [TransaksiJualController::class, 'strukPdf'])
+    ->name('transpenjualan.struk.pdf');
+
 
 //JualSelisih-jual
 Route::get('/SelisihJual', [SelisihJualController::class, 'index'])->name('selisihjual');
+
+//Riwayat-Penjualan-jual
+Route::get('/Riwayat-penjualan', [RiwayatPenjualanController::class, 'index'])->name('riwayatpenjualan');
 
 //stokjual-jual
 Route::get('/stokjual', [StokJualController::class, 'index'])->name('stokjual');

@@ -42,8 +42,9 @@
                 <div class="date">Tanggal: <span id="current-date"></span></div>
                 <div class="invoice-input">
                     <label for="invoice-no">No. Faktur:</label>
-                    <input type="text" id="invoice-no" value="FJ-1250507-0001" readonly>
+                    <input type="text" id="invoice-no" value="{{ $nofaktur }}" readonly>
                 </div>
+                <input type="hidden" id="form-nofaktur" name="nofaktur" value="{{ $nofaktur }}">
             </div>
 
             <div class="main-content">
@@ -101,7 +102,10 @@
                     <input type="hidden" name="pembayaran" id="form-pembayaran"> -->
 
                     <div class="invoice-header">
-                        <div class="invoice-no">No. Faktur: <span id="display-invoice">FJ-1250507-0001</span></div>
+                        <div class="invoice-input">
+                            <label for="invoice-no">No. Faktur:</label>
+                            <input type="text" id="invoice-no" value="{{ $nofaktur }}" readonly>
+                        </div>
                         <div class="items-count">Jumlah Barang: <span id="item-count">0</span></div>
                     </div>
 
@@ -150,10 +154,10 @@
                         <button type="submit" class="btn btn-success">
                             <i class="fas fa-credit-card"></i> BAYAR
                         </button>
-                        <button type="button" class="btn btn-warning" id="print-btn">
+                        <button type="button" class="btn btn-warning" >
                             <i class="fas fa-receipt"></i> Cetak Struk
                         </button>
-                        <button type="button" class="btn btn-danger" id="reset-btn">
+                        <button type="button" class="btn btn-danger" id="reset-btn" >
                             <i class="fas fa-redo"></i> RESET
                         </button>
                     </div>
