@@ -10,12 +10,12 @@
 </head>
 
 <body>
-@include('partials.navbar')
+    @include('partials.navbar')
     <h1>RIWAYAT BATAL BELI</h1>
 
     <div class="container">
 
-         <div class="top-bar">
+        <div class="top-bar">
             <div class="left-controls">
                 <select onchange="handleExport(this.value)">
                     <option value="">Pilih Export</option>
@@ -54,33 +54,38 @@
                 </tr>
             </thead>
             <tbody>
+                @foreach($riwayat as $item)
                     <tr>
                         <td><input type="checkbox"></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
+                        <td>{{ \Carbon\Carbon::parse($item->created_at)->format('d-m-Y') }}</td>
+                        <td>{{ $item->fakturbataljual }}</td>
+                        <td>{{ $item->fakturjual }}</td>
+                        <td>{{ $item->barcode }}</td>
+                        <td>{{ $item->namabarang }}</td>
+                        <td>{{ $item->berat }}</td>
+                        <td>{{ number_format($item->harga, 0, ',', '.') }}</td>
+                        <td>{{ number_format($item->ongkos, 0, ',', '.') }}</td>
+                        <td>{{ number_format(($item->harga * $item->quantity) + $item->ongkos, 0, ',', '.') }}</td>
+                        <td>{{ $item->namastaff }}</td>
+                        <td>{{ ucfirst($item->kondisi) }}</td>
+                        <td>{{ $item->keterangan }}</td>
                         <td>
-                            <button class="action-btn"></button><i class="fa-solid fa-pen-to-square"></i></button>
+                            <button class="action-btn"><i class="fa-solid fa-pen-to-square"></i></button>
                             <button class="action-btn"><i class="fas fa-trash"></i></button>
                         </td>
                     </tr>
+                @endforeach
             </tbody>
         </table>
+        <div class="pagination">
+            {{ $riwayat->links() }}
+        </div>
     </div>
 
- 
+
     <script>
 
-                // Fungsi export ke CSV
+        // Fungsi export ke CSV
         function exportCSV() {
             let table = document.querySelector("table");
             let rows = table.querySelectorAll("tr");

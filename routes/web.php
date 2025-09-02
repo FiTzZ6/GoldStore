@@ -245,6 +245,9 @@ Route::get('/SelisihBeli', [SelisihBeliController::class, 'index'])->name('selis
 
 //JualBatal-jual
 Route::get('/BatalJual', [BatalJualController::class, 'index'])->name('bataljual');
+Route::post('/BatalJual/store', [BatalJualController::class, 'store'])->name('bataljual.store');
+Route::get('/riwayat-bataljual', [BatalJualController::class, 'riwayat'])->name('riwayat.bataljual');
+Route::get('/get-barang/{barcode}', [BatalJualController::class, 'getBarangByBarcode']);
 
 //JualRiwayat-Batal-jual
 Route::get('/RiweayatBatalJual', [RiwayatBatalJualController::class, 'index'])->name('riwayatbataljual');
