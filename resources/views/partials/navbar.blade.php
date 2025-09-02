@@ -202,8 +202,8 @@
                     <li class="has-submenu">
                         <a href="#">Pindah Barang <span style="float: right;"></span></a>
                         <ul class="dropdown-menu-1">
-                            <li><a href="#">Pindah Baki</a></li>
-                            <li><a href="#">Riwayat Pindah Baki</a></li>
+                            <li><a href="{{ route('pindahbaki') }}">Pindah Baki</a></li>
+                            <li><a href="{{ route('riwayatpindahbarang') }}">Riwayat Pindah Baki</a></li>
                             <li><a href="#">Pindah Brangkas</a></li>
                             <li><a href="#">Riwayat Pindah Brangkas</a></li>
                         </ul>
@@ -244,7 +244,6 @@
             <li>
                 <a href="#"><i class="fas fa-clipboard-list"></i> Pesanan</a>
                 <ul>
-                        <li><a href="#">Transakasi Pesanan</a></li>
                     <li><a href="{{ route('daftarpesanan') }}">Daftar Pesanan</a></li>
                 </ul>
             </li>
@@ -254,8 +253,8 @@
             <li>
                 <a href="#"><i class="fas fa-tools"></i> Service</a>
                 <ul>
-                    <li><a href="#">Transaksi Service</a></li>
-                    <li><a href="#">Daftar Service</a></li>
+                    <li><a href="{{ route('transaksiservice') }}">Transaksi Service</a></li>
+                    <li><a href="{{ route('daftarservice') }}">Daftar Service</a></li>
                 </ul>
             </li>
 
@@ -317,7 +316,7 @@
                 <li>
                     <a href="#"><i class="fa-solid fa-building-columns"></i> Stok Opname</a>
                     <ul>
-                        <li><a href="#">Stok Opname Global</a></li>
+                        <li><a href="{{ route('stokopname') }}">Stok Opname Global</a></li>
                     </ul>
                 </li>
             @endif
@@ -354,7 +353,7 @@
                             <a href="#">Setting <span style="float: right;"></span></a>
                             <ul class="dropdown-menu-1">
                                 <li><a href="#">Printer BL</a></li>
-                                <li><a href="#">QR Direktur Oprasional</a></li>
+                                <li><a href="{{ route('qr_direktur') }}">QR Direktur Oprasional</a></li>
                             </ul>
                         </li>
                     @endif

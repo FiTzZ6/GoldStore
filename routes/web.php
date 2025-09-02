@@ -49,9 +49,12 @@ use App\Http\Controllers\RiwayatKetidaksesuaianController;
 use App\Http\Controllers\SelisihBeliController;
 use App\Http\Controllers\StokJualController;
 use App\Http\Controllers\RiwayatPenjualanController;
-// use App\Http\Controllers\;
-// use App\Http\Controllers\;
-// use App\Http\Controllers\;
+use App\Http\Controllers\PindahBakiController;
+use App\Http\Controllers\RiwayatPindahBarangController;
+use App\Http\Controllers\TransaksiServiceController;
+use App\Http\Controllers\DaftarServiceController;
+use App\Http\Controllers\StokOpnameController;
+use App\Http\Controllers\QRDirekturController;
 
 
 
@@ -228,6 +231,12 @@ Route::get('/FormKetidaksesuaian', [FormKetidaksesuaianController::class, 'index
 //BarangRongsok-RiwayatKetidaksesuaian
 Route::get('/RiwayatKetidaksesuaian', [RiwayatKetidaksesuaianController::class, 'index'])->name('riwayatketidaksesuaian');
 
+//PindahBarang-Pindah Baki
+Route::get('/PindahBaki', [PindahBakiController::class, 'index'])->name('pindahbaki');
+
+//PindahBarang-Riwayat Pindah Barang
+Route::get('/RiwayatPindahBarang', [RiwayatPindahBarangController::class, 'index'])->name('riwayatpindahbarang');
+
 //BeliTransasksi-Beli
 Route::get('/TransaksiBeli', [TransaksiBeliController::class, 'index'])->name('transaksibeli');
 
@@ -278,12 +287,22 @@ Route::delete('/stokjual/{nofaktur}', [StokJualController::class, 'destroy'])->n
 //daftarPesanan- pesan
 Route::get('/daftarPesanan', [DaftarPesananController::class, 'index'])->name('daftarpesanan');
 
+//Service-Transaksi Service
+Route::get('/TransaksiService', [TransaksiServiceController::class, 'index'])->name('transaksiservice');
 
+//Service-Daftar Service
+Route::get('/DaftarService', [DaftarServiceController::class, 'index'])->name('daftarservice');
+
+//StokOpname- Stok Opname Global
+Route::get('/stokopname', [StokOpnameController::class, 'index'])->name('stokopname');
 
 //backup_data-utility
 Route::get('/backup', [BackupController::class, 'index'])->name('backup');
 // Route::post('/backup', [BackupController::class, 'backup'])->name('backup.run');
 // Route::post('/restore', [BackupController::class, 'restore'])->name('restore.run');
+
+//UtilitySetting-QR Direktur
+Route::get('/setting-qr_direktur', [QRDirekturController::class, 'index'])->name('qr_direktur');
 
 
 Route::get('/', function () {

@@ -22,7 +22,7 @@ body {
 }
 
 .header {
-    background: linear-gradient(135deg, #4a6491 0%, #3a5075 100%);
+    background: linear-gradient(135deg, #2c3e50 0%, #424242 100%);
     color: white;
     padding: 20px;
     border-radius: 15px 15px 0 0;
@@ -141,7 +141,7 @@ th, td {
 }
 
 th {
-    background: linear-gradient(135deg, #4a6491 0%, #3a5075 100%);
+    background: linear-gradient(135deg, #2c3e50 0%, #424242 100%);
     color: white;
     font-weight: 500;
     position: sticky;
