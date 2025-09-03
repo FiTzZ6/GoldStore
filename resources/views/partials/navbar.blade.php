@@ -277,18 +277,18 @@
                     <li class="has-submenu">
                         <a href="#">Laporan Barang<span style="float: right;"></span></a>
                         <ul class="dropdown-menu">
-                            <li><a href="#">Stok Barang</a></li>
-                            <li><a href="#">Persedian Barang</a></li>
-                            <li><a href="#">Stok Kosong</a></li>
-                            <li><a href="#">Barang Cepat Laku</a></li>
-                            <li><a href="#">Barang Lambat Laku</a></li>
-                            <li><a href="#">Hapus Barang</a></li>
+                            <li><a href="{{ route('stokbarang') }}">Stok Barang</a></li>
+                            <li><a href="{{ route('persediaanbarang') }}">Persedian Barang</a></li>
+                            <li><a href="{{ route('stokkosong') }}">Stok Kosong</a></li>
+                            <li><a href="{{ route('barangcepatlaku') }}">Barang Cepat Laku</a></li>
+                            <li><a href="{{ route('baranglambatlaku') }}">Barang Lambat Laku</a></li>
+                            <li><a href="{{ route('hapusbarang') }}">Hapus Barang</a></li>
                         </ul>
                     </li>
                     <li class="has-submenu">
                         <a href="#">Laporan Pembelian<span style="float: right;"></span></a>
                         <ul class="dropdown-menu">
-                            <li><a href="#">Pembelian Umum</a></li>
+                            <li><a href="{{ route('pembelianumum') }}">Pembelian Umum</a></li>
                             <li><a href="#">Batal Beli Umum</a></li>
                         </ul>
                     </li>

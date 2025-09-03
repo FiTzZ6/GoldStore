@@ -55,6 +55,13 @@ use App\Http\Controllers\TransaksiServiceController;
 use App\Http\Controllers\DaftarServiceController;
 use App\Http\Controllers\StokOpnameController;
 use App\Http\Controllers\QRDirekturController;
+use App\Http\Controllers\BarangCepatLakuController;
+use App\Http\Controllers\BarangLambatLakuController;
+use App\Http\Controllers\HapusBarangController;
+use App\Http\Controllers\PembelianUmumController;
+use App\Http\Controllers\PersediaanBarangController;
+use App\Http\Controllers\StokBarangController;
+use App\Http\Controllers\StokKosongController;
 
 
 
@@ -295,6 +302,27 @@ Route::get('/TransaksiService', [TransaksiServiceController::class, 'index'])->n
 
 //Service-Daftar Service
 Route::get('/DaftarService', [DaftarServiceController::class, 'index'])->name('daftarservice');
+
+//LaporanBarang-StokBarang
+Route::get('/LaporanStokBarang', [StokBarangController::class, 'index'])->name('stokbarang');
+
+//LaporanBarang-StokKosong
+Route::get('/LaporanStokKosong', [StokKosongController::class, 'index'])->name('stokkosong');
+
+//LaporanBarang-PersediaanBarang
+Route::get('/LaporanPersediaanBarang', [PersediaanBarangController::class, 'index'])->name('persediaanbarang');
+
+//LaporanBarang-BarangCepatLaku
+Route::get('/LaporanBarangCepatLaku', [BarangCepatLakuController::class, 'index'])->name('barangcepatlaku');
+
+//LaporanBarang-BarangLambatLaku
+Route::get('/LaporanBarangLambatLaku', [BarangLambatLakuController::class, 'index'])->name('baranglambatlaku');
+
+//LaporanBarang-HapusBarang
+Route::get('/LaporanHapusBarang', [HapusBarangController::class, 'index'])->name('hapusbarang');
+
+//LaporanPembelian-PembelianUmum
+Route::get('/LaporanPembelianUmum', [PembelianUmumController::class, 'index'])->name('pembelianumum');
 
 //StokOpname- Stok Opname Global
 Route::get('/stokopname', [StokOpnameController::class, 'index'])->name('stokopname');
