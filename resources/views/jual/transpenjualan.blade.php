@@ -28,8 +28,7 @@
         <form action="{{ route('transpenjualan.store') }}" method="POST" id="formTransaksi">
             @csrf
             {{-- Hidden input untuk data transaksi --}}
-            {{-- Hidden input, ini yang dikirim ke Laravel --}}
-            <input type="hidden" id="form-nofaktur" name="nofaktur">
+            <input type="hidden" id="form-nofaktur" name="nofaktur" value="{{ $nofaktur }}">
             <input type="hidden" id="form-staff" name="namastaff">
             <input type="hidden" id="form-pelanggan" name="namapelanggan">
             <input type="hidden" id="form-nohp" name="nohp">
@@ -44,7 +43,7 @@
                     <label for="invoice-no">No. Faktur:</label>
                     <input type="text" id="invoice-no" value="{{ $nofaktur }}" readonly>
                 </div>
-                <input type="hidden" id="form-nofaktur" name="nofaktur" value="{{ $nofaktur }}">
+                {{-- ❌ Hidden input duplikat sudah dihapus --}}
             </div>
 
             <div class="main-content">
@@ -154,10 +153,10 @@
                         <button type="submit" class="btn btn-success">
                             <i class="fas fa-credit-card"></i> BAYAR
                         </button>
-                        <button type="button" class="btn btn-warning" >
+                        <button type="button" class="btn btn-warning" id="print-btn">
                             <i class="fas fa-receipt"></i> Cetak Struk
                         </button>
-                        <button type="button" class="btn btn-danger" id="reset-btn" >
+                        <button type="button" class="btn btn-danger" id="reset-btn">
                             <i class="fas fa-redo"></i> RESET
                         </button>
                     </div>
@@ -364,12 +363,15 @@
                 document.getElementById('form-nohp').value = document.getElementById('customer-phone').value;
                 document.getElementById('form-alamat').value = document.getElementById('customer-address').value;
 
-                // 🔹 samakan dengan name="payment"
                 document.getElementById('form-pembayaran').value =
                     document.querySelector('input[name="payment"]:checked')?.value || '';
 
+                // 🔹 penting! isi hidden input items
                 document.getElementById('form-items').value = JSON.stringify(currentInvoice.items);
+
+                console.log("DEBUG items sebelum submit:", document.getElementById('form-items').value);
             });
+
         });
     </script>
 
