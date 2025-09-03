@@ -239,6 +239,8 @@ Route::get('/RiwayatPindahBarang', [RiwayatPindahBarangController::class, 'index
 
 //BeliTransasksi-Beli
 Route::get('/TransaksiBeli', [TransaksiBeliController::class, 'index'])->name('transaksibeli');
+Route::post('/transaksi-beli', [TransaksiBeliController::class, 'store'])->name('transaksibeli.store');
+// Route::get('/TransaksiBeli/barang', [TransaksiBeliController::class, 'getBarang'])->name('transaksibeli.getbarang');
 
 //BeliBatal-Beli
 Route::get('/BatalBeli', [BatalBeliController::class, 'index'])->name('batalbeli');
@@ -272,6 +274,7 @@ Route::get('/transaksi/{nofaktur}/struk-pdf', [TransaksiJualController::class, '
 
 //JualSelisih-jual
 Route::get('/SelisihJual', [SelisihJualController::class, 'index'])->name('selisihjual');
+Route::delete('/selisih-jual/{id}', [SelisihJualController::class, 'destroy'])->name('selisihjual.destroy');
 
 //Riwayat-Penjualan-jual
 Route::get('/Riwayat-penjualan', [RiwayatPenjualanController::class, 'index'])->name('riwayatpenjualan');
