@@ -334,6 +334,7 @@ Route::get('/backup', [BackupController::class, 'index'])->name('backup');
 
 //UtilitySetting-QR Direktur
 Route::get('/setting-qr_direktur', [QRDirekturController::class, 'index'])->name('qr_direktur');
+Route::post('/setting-qr_direktur', [QRDirekturController::class, 'store'])->name('qr_direktur.store');
 
 
 Route::get('/', function () {

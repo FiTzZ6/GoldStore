@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="id">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -7,8 +8,10 @@
     <link rel="stylesheet" href="{{ asset('css/utility/setting/qr-direktur.css') }}">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
+
 <body>
-@include('partials.navbar')
+    @include('partials.navbar')
+
     <div class="container">
         <!-- Header -->
         <div class="header">
@@ -16,9 +19,26 @@
             <p>Kelola informasi dan QR code direktur operasional</p>
         </div>
 
+        <!-- Notifikasi -->
+        @if(session('success'))
+            <div class="alert alert-success">
+                <i class="fas fa-check-circle"></i> {{ session('success') }}
+            </div>
+        @endif
+        @if($errors->any())
+            <div class="alert alert-danger">
+                <ul>
+                    @foreach($errors->all() as $err)
+                        <li>{{ $err }}</li>
+                    @endforeach
+                </ul>
+            </div>
+        @endif
+
         <!-- Main Content -->
         <div class="content-card">
-            <form class="qr-form" id="direkturForm">
+            <form class="qr-form" id="direkturForm" method="POST" action="{{ route('qr_direktur.store') }}">
+                @csrf
                 <div class="form-container">
                     <!-- Informasi Direktur -->
                     <div class="info-section">
@@ -26,24 +46,17 @@
                             <i class="fas fa-user-tie"></i>
                             <h2>Informasi Direktur</h2>
                         </div>
-                        
+
                         <div class="form-group">
-                            <label for="namaDirektur">
-                                <i class="fas fa-signature"></i>
-                                Nama Direktur
-                            </label>
-                            <input type="text" id="namaDirektur" name="nama" class="form-control" 
-                                   value="Muhammad Sodik" placeholder="Masukkan nama direktur" required>
+                            <label for="namaDirektur">Nama Direktur</label>
+                            <input type="text" id="namaDirektur" name="nama" class="form-control"
+                                value="{{ old('nama', $direktur->nama ?? '') }}" required>
                         </div>
 
                         <div class="form-group">
-                            <label for="jabatan">
-                                <i class="fas fa-briefcase"></i>
-                                Jabatan
-                            </label>
-                            <input type="text" id="jabatan" name="jabatan" class="form-control" 
-                                   value="Direktur Operasional" readonly>
-                            <span class="readonly-note">Jabatan tidak dapat diubah</span>
+                            <label for="jabatan">Jabatan</label>
+                            <input type="text" id="jabatan" name="jabatan" class="form-control"
+                                value="{{ old('jabatan', $direktur->jabatan ?? 'Direktur Operasional') }}" readonly>
                         </div>
                     </div>
 
@@ -53,23 +66,19 @@
                             <i class="fas fa-qrcode"></i>
                             <h2>QR Code</h2>
                         </div>
-                        
+
                         <div class="qr-container">
-                            <div class="qr-display">
-                                <img src="assets/img/barcode/MuhammadSodik.png" 
-                                     alt="QR Code Direktur" class="qr-image" id="qrImage">
-                                <div class="qr-overlay" id="qrOverlay">
-                                    <i class="fas fa-sync fa-spin"></i>
-                                    <p>Memperbarui QR Code...</p>
+                            @if(!empty($direktur->qrcode) && file_exists(public_path($direktur->qrcode)))
+                                <div class="qr-display">
+                                    <img src="{{ asset($direktur->qrcode) }}" alt="QR Code Direktur" class="qr-image">
+                                    <p class="qr-description">QR Code aktif untuk {{ $direktur->nama }}</p>
                                 </div>
-                            </div>
-                            
-                            <div class="qr-info">
+                            @else
                                 <p class="qr-description">
                                     <i class="fas fa-info-circle"></i>
-                                    QR code akan otomatis diperbarui ketika nama direktur diubah
+                                    QR Code belum tersedia, silakan isi data lalu simpan.
                                 </p>
-                            </div>
+                            @endif
                         </div>
                     </div>
                 </div>
@@ -77,12 +86,10 @@
                 <!-- Action Buttons -->
                 <div class="action-buttons">
                     <button type="button" class="btn btn-secondary" onclick="confirmCancel()">
-                        <i class="fas fa-times"></i>
-                        CANCEL
+                        <i class="fas fa-times"></i> CANCEL
                     </button>
                     <button type="submit" class="btn btn-primary">
-                        <i class="fas fa-save"></i>
-                        SIMPAN
+                        <i class="fas fa-save"></i> SIMPAN
                     </button>
                 </div>
             </form>
@@ -101,12 +108,10 @@
                 </div>
                 <div class="modal-footer">
                     <button class="btn btn-outline" onclick="closeModal()">
-                        <i class="fas fa-arrow-left"></i>
-                        Kembali
+                        <i class="fas fa-arrow-left"></i> Kembali
                     </button>
                     <button class="btn btn-danger" onclick="confirmExit()">
-                        <i class="fas fa-check"></i>
-                        Ya, Keluar
+                        <i class="fas fa-check"></i> Ya, Keluar
                     </button>
                 </div>
             </div>
@@ -114,93 +119,24 @@
     </div>
 
     <script>
-        // Fungsi untuk menangani submit form
-        document.getElementById('direkturForm').addEventListener('submit', function(e) {
-            e.preventDefault();
-            saveData();
-        });
-
-        // Fungsi untuk menangani perubahan nama
-        document.getElementById('namaDirektur').addEventListener('input', function(e) {
-            updateQRPreview(e.target.value);
-        });
-
-        // Fungsi untuk memperbarui preview QR code
-        function updateQRPreview(nama) {
-            const qrImage = document.getElementById('qrImage');
-            const qrOverlay = document.getElementById('qrOverlay');
-            
-            if (nama.trim() === '') {
-                return;
-            }
-
-            // Tampilkan loading overlay
-            qrOverlay.style.display = 'flex';
-            
-            // Simulasi pembuatan QR code (dalam real implementation, 
-            // ini akan memanggil API atau generate QR code)
-            setTimeout(() => {
-                const formattedName = nama.replace(/\s+/g, '');
-                qrImage.src = `assets/img/barcode/${formattedName}.png?t=${new Date().getTime()}`;
-                qrImage.alt = `QR Code ${nama}`;
-                
-                // Sembunyikan loading overlay
-                qrOverlay.style.display = 'none';
-            }, 1000);
-        }
-
-        // Fungsi untuk menyimpan data
-        function saveData() {
-            const formData = new FormData(document.getElementById('direkturForm'));
-            const submitBtn = document.querySelector('button[type="submit"]');
-            
-            // Tampilkan loading state
-            submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Menyimpan...';
-            submitBtn.disabled = true;
-
-            // Simulasi proses penyimpanan
-            setTimeout(() => {
-                // Dalam implementasi nyata, ini akan mengirim data ke server
-                console.log('Data disimpan:', Object.fromEntries(formData));
-                
-                // Kembalikan state normal
-                submitBtn.innerHTML = '<i class="fas fa-save"></i> SIMPAN';
-                submitBtn.disabled = false;
-                
-                // Tampilkan notifikasi sukses
-                showNotification('Data berhasil disimpan!', 'success');
-            }, 1500);
-        }
-
-        // Fungsi untuk konfirmasi cancel
         function confirmCancel() {
             document.getElementById('confirmationModal').style.display = 'flex';
         }
 
-        // Fungsi untuk menutup modal
         function closeModal() {
             document.getElementById('confirmationModal').style.display = 'none';
         }
 
-        // Fungsi untuk konfirmasi keluar
         function confirmExit() {
-            window.location.href = 'dashboard.html';
+            window.location.href = "{{ route('qr_direktur') }}";
         }
 
-        // Fungsi untuk menampilkan notifikasi
-        function showNotification(message, type) {
-            // Implementasi notifikasi sederhana
-            alert(`${type === 'success' ? 'SUKSES' : 'ERROR'}: ${message}`);
-        }
+        document.addEventListener('DOMContentLoaded', () => {
+            const modal = document.getElementById('confirmationModal');
+            const namaInput = document.getElementById('namaDirektur');
+            if (namaInput) namaInput.focus();
 
-        // Inisialisasi
-        document.addEventListener('DOMContentLoaded', function() {
-            // Fokus ke input nama saat halaman dimuat
-            document.getElementById('namaDirektur').focus();
-            
-            // Close modal ketika klik di luar konten modal
-            window.addEventListener('click', function(e) {
-                const modal = document.getElementById('confirmationModal');
+            window.addEventListener('click', e => {
                 if (e.target === modal) {
                     closeModal();
                 }
@@ -208,4 +144,5 @@
         });
     </script>
 </body>
+
 </html>
