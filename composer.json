@@ -13,7 +13,8 @@
         "maatwebsite/excel": "^1.1",
         "mike42/escpos-php": "4.0",
         "milon/barcode": "^12.0",
-        "picqer/php-barcode-generator": "^2.4"
+        "picqer/php-barcode-generator": "^2.4",
+        "simplesoftwareio/simple-qrcode": "^4.2"
     },
     "require-dev": {
         "fakerphp/faker": "^1.9.1",

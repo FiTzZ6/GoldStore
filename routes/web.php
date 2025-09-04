@@ -55,6 +55,13 @@ use App\Http\Controllers\TransaksiServiceController;
 use App\Http\Controllers\DaftarServiceController;
 use App\Http\Controllers\StokOpnameController;
 use App\Http\Controllers\QRDirekturController;
+use App\Http\Controllers\BarangCepatLakuController;
+use App\Http\Controllers\BarangLambatLakuController;
+use App\Http\Controllers\HapusBarangController;
+use App\Http\Controllers\PembelianUmumController;
+use App\Http\Controllers\PersediaanBarangController;
+use App\Http\Controllers\StokBarangController;
+use App\Http\Controllers\StokKosongController;
 
 
 
@@ -241,9 +248,12 @@ Route::get('/RiwayatPindahBarang', [RiwayatPindahBarangController::class, 'index
 
 //BeliTransasksi-Beli
 Route::get('/TransaksiBeli', [TransaksiBeliController::class, 'index'])->name('transaksibeli');
+Route::post('/transaksi-beli', [TransaksiBeliController::class, 'store'])->name('transaksibeli.store');
+// Route::get('/TransaksiBeli/barang', [TransaksiBeliController::class, 'getBarang'])->name('transaksibeli.getbarang');
 
 //BeliBatal-Beli
 Route::get('/BatalBeli', [BatalBeliController::class, 'index'])->name('batalbeli');
+Route::post('/BatalBeli/store', [BatalBeliController::class, 'store'])->name('batalbeli.store');
 
 //BeliRiwayat-Beli
 Route::get('/RiwayatBeli', [RiwayatBeliController::class, 'index'])->name('riwayatbeli');
@@ -274,6 +284,7 @@ Route::get('/transaksi/{nofaktur}/struk-pdf', [TransaksiJualController::class, '
 
 //JualSelisih-jual
 Route::get('/SelisihJual', [SelisihJualController::class, 'index'])->name('selisihjual');
+Route::delete('/selisih-jual/{id}', [SelisihJualController::class, 'destroy'])->name('selisihjual.destroy');
 
 //Riwayat-Penjualan-jual
 Route::get('/Riwayat-penjualan', [RiwayatPenjualanController::class, 'index'])->name('riwayatpenjualan');
@@ -295,6 +306,27 @@ Route::get('/TransaksiService', [TransaksiServiceController::class, 'index'])->n
 //Service-Daftar Service
 Route::get('/DaftarService', [DaftarServiceController::class, 'index'])->name('daftarservice');
 
+//LaporanBarang-StokBarang
+Route::get('/LaporanStokBarang', [StokBarangController::class, 'index'])->name('stokbarang');
+
+//LaporanBarang-StokKosong
+Route::get('/LaporanStokKosong', [StokKosongController::class, 'index'])->name('stokkosong');
+
+//LaporanBarang-PersediaanBarang
+Route::get('/LaporanPersediaanBarang', [PersediaanBarangController::class, 'index'])->name('persediaanbarang');
+
+//LaporanBarang-BarangCepatLaku
+Route::get('/LaporanBarangCepatLaku', [BarangCepatLakuController::class, 'index'])->name('barangcepatlaku');
+
+//LaporanBarang-BarangLambatLaku
+Route::get('/LaporanBarangLambatLaku', [BarangLambatLakuController::class, 'index'])->name('baranglambatlaku');
+
+//LaporanBarang-HapusBarang
+Route::get('/LaporanHapusBarang', [HapusBarangController::class, 'index'])->name('hapusbarang');
+
+//LaporanPembelian-PembelianUmum
+Route::get('/LaporanPembelianUmum', [PembelianUmumController::class, 'index'])->name('pembelianumum');
+
 //StokOpname- Stok Opname Global
 Route::get('/stokopname', [StokOpnameController::class, 'index'])->name('stokopname');
 
@@ -305,6 +337,7 @@ Route::get('/backup', [BackupController::class, 'index'])->name('backup');
 
 //UtilitySetting-QR Direktur
 Route::get('/setting-qr_direktur', [QRDirekturController::class, 'index'])->name('qr_direktur');
+Route::post('/setting-qr_direktur', [QRDirekturController::class, 'store'])->name('qr_direktur.store');
 
 
 Route::get('/', function () {

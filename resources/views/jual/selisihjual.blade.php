@@ -10,12 +10,12 @@
 </head>
 
 <body>
-@include('partials.navbar')
-    <h1>RIWAYAT BATAL BELI</h1>
+    @include('partials.navbar')
+    <h1>SELISIH BATAL & JUAL</h1>
 
     <div class="container">
 
-         <div class="top-bar">
+        <div class="top-bar">
             <div class="left-controls">
                 <select onchange="handleExport(this.value)">
                     <option value="">Pilih Export</option>
@@ -48,27 +48,28 @@
                 </tr>
             </thead>
             <tbody>
+                @foreach($selisih as $item)
                     <tr>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
+                        <td>{{ $loop->iteration }}</td>
+                        <td>{{ $item->fakturbataljual }}</td>
+                        <td>{{ $item->barcode }}</td>
+                        <td>{{ number_format($item->harga_jual_asli, 0, ',', '.') }}</td>
+                        <td>{{ number_format($item->harga_batal, 0, ',', '.') }}</td>
+                        <td>{{ number_format($item->ongkos, 0, ',', '.') }}</td>
+                        <td>{{ number_format($item->selisih, 0, ',', '.') }}</td>
                         <td>
-                            <button class="action-btn"><i class="fa-solid fa-pen-to-square"></i></button>
                             <button class="action-btn"><i class="fas fa-trash"></i></button>
                         </td>
                     </tr>
+                @endforeach
             </tbody>
         </table>
     </div>
 
- 
+
     <script>
 
-                // Fungsi export ke CSV
+        // Fungsi export ke CSV
         function exportCSV() {
             let table = document.querySelector("table");
             let rows = table.querySelectorAll("tr");

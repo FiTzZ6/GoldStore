@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="id">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -8,15 +9,16 @@
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
+
 <body>
-@include('partials.navbar')
+    @include('partials.navbar')
     <div class="container">
         <div class="header">
             <!-- Header Top: Judul di tengah -->
             <div class="header-top">
                 <h1><i class="fas fa-times-circle"></i> Daftar Pembatalan</h1>
             </div>
-            
+
             <!-- Header Bottom: Export di kiri, Search/Sorting di kanan -->
             <div class="header-bottom">
                 <div class="left-controls">
@@ -28,7 +30,7 @@
                         <option value="excel">Export Excel</option>
                     </select>
                 </div>
-                
+
                 <div class="right-controls">
                     <div class="icon-group">
                         <button title="Sorting" onclick="sortTable()"><i class="fas fa-sort"></i></button>
@@ -58,54 +60,46 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <tr>
-                            <td>27.03.2021 14:40:13</td>
-                            <td>BB-SAMBA512103-0001</td>
-                            <td>FB-SAMBA512103-0001</td>
-                            <td>ANT JPT COR AD PTH</td>
-                            <td>0.000</td>
-                            <td>Rp. 388.180,00</td>
-                            <td><span class="status-badge good">MULUS</span></td>
-                            <td><span class="status-badge good">MULUS</span></td>
-                            <td>Mengganti Barang</td>
-                            <td></td>
-                            <td>
-                                <button class="action-btn"><i class="fa-solid fa-pen-to-square"></i></button>
-                                <button class="action-btn"><i class="fas fa-trash"></i></button>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>28.03.2021 10:15:27</td>
-                            <td>BB-SAMBA512103-0002</td>
-                            <td>FB-SAMBA512103-0002</td>
-                            <td>KABEL HDMI 2.0</td>
-                            <td>0.000</td>
-                            <td>Rp. 125.000,00</td>
-                            <td><span class="status-badge damaged">RUSAK</span></td>
-                            <td><span class="status-badge good">MULUS</span></td>
-                            <td>Batal otomatis</td>
-                            <td></td>
-                            <td>
-                                <button class="action-btn"><i class="fa-solid fa-pen-to-square"></i></button>
-                                <button class="action-btn"><i class="fas fa-trash"></i></button>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>29.03.2021 16:45:32</td>
-                            <td>BB-SAMBA512103-0003</td>
-                            <td>FB-SAMBA512103-0003</td>
-                            <td>ADAPTOR 12V 3A</td>
-                            <td>0.000</td>
-                            <td>Rp. 87.500,00</td>
-                            <td><span class="status-badge good">MULUS</span></td>
-                            <td><span class="status-badge damaged">RUSAK</span></td>
-                            <td>Stok habis</td>
-                            <td></td>
-                            <td>
-                                <button class="action-btn"><i class="fa-solid fa-pen-to-square"></i></button>
-                                <button class="action-btn"><i class="fas fa-trash"></i></button>
-                            </td>
-                        </tr>
+                        @forelse($riwayat as $item)
+                                                    <tr>
+                                                        <td>{{ $item->created_at->format('d.m.Y H:i:s') }}</td>
+                                                        <td>{{ $item->nofakturbatalbeli }}</td>
+                                                        <td>{{ $item->nofakturbeli }}</td>
+                                                        <td>{{ $item->namabarang }}</td>
+                                                        <td>{{ number_format($item->berat, 3, ',', '.') }}</td>
+                                                        <td>Rp. {{ number_format($item->hargabeli, 2, ',', '.') }}</td>
+
+                                                        @php
+                                                            $classMap = [
+                                                                'BAIK' => 'good',
+                                                                'RUSAK' => 'damaged',
+                                                                'LECET' => 'warning',
+                                                                'HILANG' => 'hilang',
+                                                            ];
+                                                        @endphp
+                                                        <td>
+                                                            <span class="status-badge {{ $classMap[$item->kondisibeli] ?? 'good' }}">
+                                                                {{ $item->kondisibeli }}
+                                                            </span>
+                                                        </td>
+                                                        <td>
+                                                            <span class="status-badge {{ $classMap[$item->kondisibatalbeli] ?? 'warning' }}">
+                                                                {{ $item->kondisibatalbeli }}
+                                                            </span>
+                                                        </td>
+
+                                                        <td>{{ $item->keterangan }}</td>
+                                                        <td>{{ $item->namastaff }}</td>
+                                                        <td>
+                                                            <button class="action-btn"><i class="fa-solid fa-pen-to-square"></i></button>
+                                                            <button class="action-btn"><i class="fas fa-trash"></i></button>
+                                                        </td>
+                                                    </tr>
+                        @empty
+                            <tr>
+                                <td colspan="11" style="text-align:center;">Tidak ada data pembatalan</td>
+                            </tr>
+                        @endforelse
                     </tbody>
                 </table>
             </div>
@@ -125,7 +119,7 @@
 
     <script>
         // Set tanggal default
-        document.addEventListener('DOMContentLoaded', function() {
+        document.addEventListener('DOMContentLoaded', function () {
             const today = new Date().toISOString().substr(0, 10);
             document.getElementById('start-date').value = "2021-03-01";
             document.getElementById('end-date').value = today;
@@ -146,4 +140,5 @@
         }
     </script>
 </body>
+
 </html>

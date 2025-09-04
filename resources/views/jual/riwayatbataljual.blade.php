@@ -11,7 +11,7 @@
 
 <body>
     @include('partials.navbar')
-    <h1>RIWAYAT BATAL BELI</h1>
+    <h1>RIWAYAT BATAL JUAL</h1>
 
     <div class="container">
 
