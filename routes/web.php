@@ -233,6 +233,8 @@ Route::get('/RiwayatKetidaksesuaian', [RiwayatKetidaksesuaianController::class, 
 
 //PindahBarang-Pindah Baki
 Route::get('/PindahBaki', [PindahBakiController::class, 'index'])->name('pindahbaki');
+Route::post('/PindahBaki/getBarang', [PindahBakiController::class, 'getBarang'])->name('pindahbaki.getBarang');
+Route::post('/PindahBaki/store', [PindahBakiController::class, 'store'])->name('pindahbaki.store');
 
 //PindahBarang-Riwayat Pindah Barang
 Route::get('/RiwayatPindahBarang', [RiwayatPindahBarangController::class, 'index'])->name('riwayatpindahbarang');

@@ -165,7 +165,7 @@
     </div>
 
     <script>
-        // Fungsi untuk menampilkan waktu
+        // Fungsi untuk menampilkan jam realtime
         function updateClock() {
             const now = new Date();
             const options = { 
@@ -179,109 +179,100 @@
             };
             document.getElementById('clock').textContent = now.toLocaleDateString('id-ID', options);
         }
-        
-        // Update clock setiap detik
         setInterval(updateClock, 1000);
         updateClock();
-        
+
         // Toggle print option
         document.getElementById('print').addEventListener('change', function() {
             document.getElementById('listprint').style.display = this.checked ? 'block' : 'none';
         });
-        
-        // Modal functionality
+
+        // Modal Cancel
         document.getElementById('btnCancel').addEventListener('click', function() {
             document.getElementById('confirmModal').style.display = 'block';
         });
-        
         document.querySelector('.close').addEventListener('click', function() {
             document.getElementById('confirmModal').style.display = 'none';
         });
-        
         document.getElementById('modalCancel').addEventListener('click', function() {
             document.getElementById('confirmModal').style.display = 'none';
         });
-        
         document.getElementById('modalConfirm').addEventListener('click', function() {
-            // Redirect to barang page
-            window.location.href = 'barang.html';
+            window.location.href = "{{ url('/PindahBaki') }}";
         });
-        
-        // Close modal when clicking outside
         window.addEventListener('click', function(event) {
             if (event.target === document.getElementById('confirmModal')) {
                 document.getElementById('confirmModal').style.display = 'none';
             }
         });
-        
-        // Simulate adding items (for demo purposes)
+
+        // ===============================
+        //  SCAN BARCODE
+        // ===============================
         document.getElementById('inputbarcode').addEventListener('keypress', function(e) {
             if (e.key === 'Enter') {
                 e.preventDefault();
-                simulateAddItem();
+                const barcode = this.value.trim();
+                if (!barcode) return;
+
+                fetch("{{ route('pindahbaki.getBarang') }}", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                        "X-CSRF-TOKEN": "{{ csrf_token() }}"
+                    },
+                    body: JSON.stringify({ barcode: barcode })
+                })
+                .then(res => res.json())
+                .then(data => {
+                    if (!data.status) {
+                        alert(data.message || "Barang tidak ditemukan");
+                        return;
+                    }
+                    tambahRow(data.data);
+                    document.getElementById('inputbarcode').value = '';
+                    document.getElementById('inputbarcode').focus();
+                })
+                .catch(err => {
+                    console.error(err);
+                    alert("Terjadi kesalahan koneksi ke server");
+                });
             }
         });
-        
-        function simulateAddItem() {
-            const barcode = document.getElementById('inputbarcode').value;
-            if (!barcode) return;
-            
-            // Clear empty row if it exists
+
+        // ===============================
+        //  TAMBAH BARANG KE TABEL
+        // ===============================
+        function tambahRow(item) {
+            const tbody = document.getElementById('bodykirimbarang');
             const emptyRow = document.querySelector('.empty-row');
             if (emptyRow) emptyRow.remove();
-            
-            // Add new item to table
-            const tbody = document.getElementById('bodykirimbarang');
+
             const newRow = document.createElement('tr');
-            
-            // Sample data based on barcode
-            const items = [
-                {barcode: '123456', name: 'Produk A', baki: 'B001', jenis: 'JNS001', berat: '120.5'},
-                {barcode: '789012', name: 'Produk B', baki: 'B002', jenis: 'JNS002', berat: '85.0'},
-                {barcode: '345678', name: 'Produk C', baki: 'B003', jenis: 'JNS003', berat: '210.75'}
-            ];
-            
-            const randomItem = items[Math.floor(Math.random() * items.length)];
-            
             newRow.innerHTML = `
-                <td>${barcode}</td>
-                <td>${randomItem.name}</td>
-                <td>${randomItem.baki}</td>
-                <td>${randomItem.jenis}</td>
-                <td>${randomItem.berat}</td>
+                <td>${item.barcode}</td>
+                <td>${item.namabarang}</td>
+                <td>${item.kdbaki}</td>
+                <td>${item.kdjenis}</td>
+                <td>${item.berat}</td>
                 <td>
                     <button class="btn-icon" onclick="removeItem(this)">
                         <i class="fas fa-times"></i>
                     </button>
                 </td>
             `;
-            
             tbody.appendChild(newRow);
-            
-            // Update counters
-            const itemCount = tbody.children.length;
-            document.getElementById('jumlahkirim').textContent = `${itemCount} barang`;
-            
-            // Update total weight (simple simulation)
-            const totalWeight = itemCount * 100 + Math.random() * 100;
-            document.getElementById('totalberat').textContent = `${totalWeight.toFixed(2)} gr`;
-            
-            // Clear input
-            document.getElementById('inputbarcode').value = '';
-            document.getElementById('inputbarcode').focus();
+            updateSummary();
         }
-        
+
+        // Hapus barang dari tabel
         function removeItem(button) {
             const row = button.closest('tr');
             row.remove();
-            
-            // Update counters
+            updateSummary();
+
             const tbody = document.getElementById('bodykirimbarang');
-            const itemCount = tbody.children.length;
-            document.getElementById('jumlahkirim').textContent = `${itemCount} barang`;
-            
-            // If no items left, show empty message
-            if (itemCount === 0) {
+            if (tbody.children.length === 0) {
                 tbody.innerHTML = `
                     <tr class="empty-row">
                         <td colspan="6">
@@ -293,36 +284,87 @@
                 `;
             }
         }
-        
-        // Simulate save
-        document.getElementById('btnSimpan').addEventListener('click', function() {
+
+        // Update jumlah barang & total berat
+        function updateSummary() {
             const tbody = document.getElementById('bodykirimbarang');
-            if (tbody.querySelector('.empty-row')) {
+            const rows = tbody.querySelectorAll('tr');
+            document.getElementById('jumlahkirim').textContent = `${rows.length} barang`;
+
+            let total = 0;
+            rows.forEach(r => {
+                if (!r.classList.contains('empty-row')) {
+                    total += parseFloat(r.children[4].textContent);
+                }
+            });
+            document.getElementById('totalberat').textContent = total.toFixed(2) + ' gr';
+        }
+
+        // ===============================
+        //  SIMPAN TRANSAKSI
+        // ===============================
+        document.getElementById('btnSimpan').addEventListener('click', function() {
+            const tujuan = document.getElementById('kdbakitujuan').value;
+            if (!tujuan) {
+                alert('Pilih baki tujuan dulu!');
+                return;
+            }
+
+            const rows = document.querySelectorAll('#bodykirimbarang tr');
+            if (rows.length === 0 || rows[0].classList.contains('empty-row')) {
                 alert('Tidak ada barang untuk disimpan!');
                 return;
             }
-            
-            // Show loader
+
+            let items = [];
+            rows.forEach(r => {
+                if (!r.classList.contains('empty-row')) {
+                    items.push({
+                        barcode: r.children[0].textContent,
+                        namabarang: r.children[1].textContent,
+                        kdbaki: r.children[2].textContent,
+                        kdjenis: r.children[3].textContent,
+                        berat: r.children[4].textContent
+                    });
+                }
+            });
+
+            // tampilkan loader
             document.getElementById('loader').style.display = 'flex';
-            
-            // Simulate API call
-            setTimeout(function() {
+
+            fetch("{{ route('pindahbaki.store') }}", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    "X-CSRF-TOKEN": "{{ csrf_token() }}"
+                },
+                body: JSON.stringify({ kdbakitujuan: tujuan, items: items })
+            })
+            .then(res => res.json())
+            .then(data => {
                 document.getElementById('loader').style.display = 'none';
-                alert('Data berhasil disimpan!');
-                
-                // Reset form
-                document.getElementById('bodykirimbarang').innerHTML = `
-                    <tr class="empty-row">
-                        <td colspan="6">
-                            <i class="fas fa-box-open"></i>
-                            <p>Belum ada barang yang ditambahkan</p>
-                            <small>Scan barcode untuk menambahkan barang</small>
-                        </td>
-                    </tr>
-                `;
-                document.getElementById('jumlahkirim').textContent = '0 barang';
-                document.getElementById('totalberat').textContent = '0 gr';
-            }, 1500);
+                alert(data.message);
+
+                if (data.status) {
+                    // reset tabel
+                    document.getElementById('bodykirimbarang').innerHTML = `
+                        <tr class="empty-row">
+                            <td colspan="6">
+                                <i class="fas fa-box-open"></i>
+                                <p>Belum ada barang yang ditambahkan</p>
+                                <small>Scan barcode untuk menambahkan barang</small>
+                            </td>
+                        </tr>
+                    `;
+                    document.getElementById('jumlahkirim').textContent = '0 barang';
+                    document.getElementById('totalberat').textContent = '0 gr';
+                }
+            })
+            .catch(err => {
+                document.getElementById('loader').style.display = 'none';
+                console.error(err);
+                alert("Gagal menyimpan data!");
+            });
         });
     </script>
 </body>

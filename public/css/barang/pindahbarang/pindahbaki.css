@@ -2,6 +2,7 @@
 :root {
     --primary: #2c3e50;
     --primary-dark: #434343;
+    --save: #1d8eff;
     --secondary: #2c3e50;
     --success: #27ae60;
     --danger: #e74c3c;
@@ -447,7 +448,7 @@ body {
 }
 
 .btn-primary {
-    background-color: var(--primary);
+    background-color: var(--save);
     color: white;
 }
 
