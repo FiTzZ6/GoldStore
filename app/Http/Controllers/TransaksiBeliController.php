@@ -60,12 +60,20 @@ class TransaksiBeliController extends Controller
                 'total' => 'nullable|numeric',
             ]);
 
+            // 🔹 Generate nofakturbeli otomatis
+            $lastFaktur = TransBeli::orderBy('id', 'desc')->first();
+            $number = $lastFaktur ? ((int) substr($lastFaktur->nofakturbeli, -4)) + 1 : 1;
+            $kodeFaktur = 'FB-' . date('ymd') . '-' . str_pad($number, 4, '0', STR_PAD_LEFT);
+
+            $data['nofakturbeli'] = $kodeFaktur;
+
             TransBeli::create($data);
 
-            return redirect()->route('transaksibeli')->with('success', 'Transaksi berhasil disimpan!');
+            return redirect()->route('transaksibeli')->with('success', 'Transaksi berhasil disimpan dengan No Faktur Beli: ' . $kodeFaktur);
         } catch (\Exception $e) {
             return redirect()->back()->with('error', 'Gagal menyimpan transaksi: ' . $e->getMessage());
         }
     }
+
 
 }

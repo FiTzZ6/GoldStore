@@ -17,6 +17,7 @@ class TransBeli extends Model
 
     // Field yang boleh diisi massal
     protected $fillable = [
+        'nofakturbeli',
         'staff',
         'barcode',
         'namapenjual',

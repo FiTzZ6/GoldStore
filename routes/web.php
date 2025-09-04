@@ -251,6 +251,7 @@ Route::post('/transaksi-beli', [TransaksiBeliController::class, 'store'])->name(
 
 //BeliBatal-Beli
 Route::get('/BatalBeli', [BatalBeliController::class, 'index'])->name('batalbeli');
+Route::post('/BatalBeli/store', [BatalBeliController::class, 'store'])->name('batalbeli.store');
 
 //BeliRiwayat-Beli
 Route::get('/RiwayatBeli', [RiwayatBeliController::class, 'index'])->name('riwayatbeli');
