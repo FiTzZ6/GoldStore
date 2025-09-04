@@ -176,6 +176,16 @@ body {
     color: var(--primary);
 }
 
+.no-transaksi input {
+    border: none;
+    background-color: rgb(193, 193, 193);
+    outline: none;
+    cursor: pointer;
+    font-weight: 600;
+    margin-right: 8px;
+    color: var(--primary);
+}
+
 /* Table */
 .table-container {
     margin-bottom: 20px;

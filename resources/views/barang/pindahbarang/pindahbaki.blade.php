@@ -36,17 +36,19 @@
                     <label for="kdbakitujuan" class="form-label">
                         <i class="fas fa-arrow-right"></i> Baki Tujuan
                     </label>
-                    <select id="kdbakitujuan" class="form-select" required>
+                    <select id="kdbakitujuan" name="kdbakitujuan" class="form-select" required>
                         <option value="">Pilih Baki Tujuan</option>
-                        <option value="B001">B001 - Baki Utama</option>
-                        <option value="B002">B002 - Baki Packaging</option>
-                        <option value="B003">B003 - Baki Quality Control</option>
+                        @foreach($baki as $b)
+                            <option value="{{ $b->kdbaki }}">{{ $b->kdbaki }} - {{ $b->namabaki }}</option>
+                        @endforeach
                     </select>
                 </div>
 
                 <div class="no-transaksi">
                     <span class="no-transaksi-label">No. Pindah Baki:</span>
-                    <span id="nopindahbarang" class="no-transaksi-value">PB-20230902-001</span>
+                    <input name="nopindahbarang" type="text" placeholder="No. Faktur"
+                    value="{{ $pb }}" id="nopindahbarang"
+                    style="text-align: center;" readonly>
                 </div>
 
                 <div class="table-container">
@@ -364,6 +366,37 @@
                 document.getElementById('loader').style.display = 'none';
                 console.error(err);
                 alert("Gagal menyimpan data!");
+            });
+        });
+
+        document.getElementById('simpan').addEventListener('click', function () {
+            const rows = document.querySelectorAll('#table-barang tbody tr');
+            let items = [];
+
+            rows.forEach(row => {
+                items.push({
+                    barcode: row.querySelector('td:nth-child(1)').innerText,
+                    asal: row.querySelector('td:nth-child(2)').innerText,
+                    tujuan: row.querySelector('td:nth-child(3)').innerText
+                });
+            });
+
+            fetch("{{ route('pindahbaki.store') }}", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    "X-CSRF-TOKEN": document.querySelector('meta[name="csrf-token"]').getAttribute("content")
+                },
+                body: JSON.stringify({ items })
+            })
+            .then(res => res.json())
+            .then(data => {
+                if (data.success) {
+                    // update no pindah di halaman
+                    document.getElementById('nopindahbarang').innerText = data.no_pindah;
+
+                    alert("Data berhasil disimpan. No. Pindah: " + data.no_pindah);
+                }
             });
         });
     </script>

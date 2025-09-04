@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\PindahBaki;
+use App\Models\Baki;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -10,7 +11,17 @@ class PindahBakiController extends Controller
 {
     public function index()
     {
-        return view('barang.pindahbarang.pindahbaki');
+        // Nomor tampilan awal (opsional). Nomor final tetap dibuat saat simpan.
+        $baki = Baki::all();
+
+        $today = now()->format('Ymd');
+        $countToday = DB::table('pindah_baki')
+            ->whereDate('created_at', now())
+            ->count();
+
+        $pb = "PB-{$today}-" . str_pad($countToday + 1, 3, '0', STR_PAD_LEFT);
+
+        return view('barang.pindahbarang.pindahbaki', compact('pb', 'baki'));
     }
 
     public function getBarang(Request $request)

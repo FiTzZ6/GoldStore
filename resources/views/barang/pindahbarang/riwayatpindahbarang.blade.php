@@ -13,7 +13,7 @@
         <div class="header">
             <h1><i class="fas fa-history"></i> Riwayat Pindah Barang</h1>
             <div class="header-actions">
-                <button class="btn btn-primary" onclick="window.location.href='pindah-baki.html'">
+                <button class="btn btn-primary" onclick="window.location.href='{{ route('pindahbaki') }}'">
                     <i class="fas fa-exchange-alt"></i> Pindah Barang Baru
                 </button>
             </div>
