@@ -134,7 +134,8 @@ table {
     background: white;
 }
 
-th, td {
+th,
+td {
     padding: 12px 15px;
     text-align: left;
     border-bottom: 1px solid #e9ecef;
@@ -158,13 +159,13 @@ tr:hover {
 }
 
 .status-badge {
-    padding: 6px 12px;
-    border-radius: 20px;
-    font-size: 0.8rem;
-    font-weight: 500;
     display: inline-block;
-    text-align: center;
-    min-width: 70px;
+    padding: 4px 8px;
+    border-radius: 12px;
+    font-size: 12px;
+    font-weight: 600;
+    color: #fff;
+    text-transform: uppercase;
 }
 
 .status-badge.good {
@@ -177,6 +178,18 @@ tr:hover {
     background: #fce8e6;
     color: #dc3545;
     border: 1px solid #dc3545;
+}
+
+.status-badge.warning {
+    background-color: #ffc107;
+    /* kuning */
+    color: #000;
+}
+
+.status-badge.hilang {
+    background-color: #000000;
+    /* kuning */
+    color: #ffffff;
 }
 
 .action-btn {
@@ -253,7 +266,7 @@ tr:hover {
     .table-container {
         overflow-x: auto;
     }
-    
+
     table {
         min-width: 1000px;
     }
@@ -265,16 +278,17 @@ tr:hover {
         align-items: stretch;
         gap: 15px;
     }
-    
-    .left-controls, .right-controls {
+
+    .left-controls,
+    .right-controls {
         justify-content: center;
         width: 100%;
     }
-    
+
     .right-controls {
         flex-direction: column;
     }
-    
+
     .right-controls input[type="text"] {
         width: 100%;
     }
@@ -285,29 +299,30 @@ tr:hover {
         margin: 20px auto;
         padding: 15px;
     }
-    
+
     .header {
         padding: 15px;
         border-radius: 10px 10px 0 0;
     }
-    
+
     .header h1 {
         font-size: 1.5rem;
     }
-    
+
     .header-bottom {
         flex-direction: column;
     }
-    
-    .left-controls, .right-controls {
+
+    .left-controls,
+    .right-controls {
         flex-direction: column;
         gap: 10px;
     }
-    
+
     .left-controls select {
         width: 100%;
     }
-    
+
     .pagination {
         flex-direction: column;
         gap: 15px;
@@ -319,36 +334,37 @@ tr:hover {
         padding: 10px;
         margin: 10px auto;
     }
-    
+
     .header {
         padding: 12px;
     }
-    
+
     .header h1 {
         font-size: 1.3rem;
     }
-    
-    th, td {
+
+    th,
+    td {
         padding: 8px 10px;
         font-size: 0.85rem;
     }
-    
+
     .status-badge {
         padding: 4px 8px;
         font-size: 0.75rem;
         min-width: 60px;
     }
-    
+
     .action-btn {
         padding: 4px 8px;
         font-size: 0.8rem;
     }
-    
+
     .icon-group {
         width: 100%;
         justify-content: center;
     }
-    
+
     .icon-group button {
         flex: 1;
         text-align: center;
