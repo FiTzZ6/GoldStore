@@ -280,6 +280,7 @@ Route::get('/transaksi/{nofaktur}/struk', [TransaksiJualController::class, 'stru
     ->name('transpenjualan.struk');
 Route::get('/transaksi/{nofaktur}/struk-pdf', [TransaksiJualController::class, 'strukPdf'])
     ->name('transpenjualan.struk.pdf');
+    
 
 
 //JualSelisih-jual

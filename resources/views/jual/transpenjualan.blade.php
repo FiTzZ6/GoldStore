@@ -24,6 +24,7 @@
             <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
         </div>
     @endif
+
     <div class="container">
         <form action="{{ route('transpenjualan.store') }}" method="POST" id="formTransaksi">
             @csrf
@@ -104,6 +105,7 @@
                         <div class="invoice-input">
                             <label for="invoice-no">No. Faktur:</label>
                             <input type="text" id="invoice-no" value="{{ $nofaktur }}" readonly>
+                            <input type="hidden" name="nofaktur" value="{{ $nofaktur }}">
                         </div>
                         <div class="items-count">Jumlah Barang: <span id="item-count">0</span></div>
                     </div>

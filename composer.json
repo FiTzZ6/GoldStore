@@ -7,12 +7,14 @@
     "require": {
         "php": "^8.1",
         "guzzlehttp/guzzle": "^7.2",
+        "intervention/image": "^3.11",
         "laravel/framework": "^10.10",
         "laravel/sanctum": "^3.3",
         "laravel/tinker": "^2.8",
         "maatwebsite/excel": "^1.1",
         "mike42/escpos-php": "4.0",
         "milon/barcode": "^12.0",
+        "phpoffice/phpspreadsheet": "^5.1",
         "picqer/php-barcode-generator": "^2.4",
         "simplesoftwareio/simple-qrcode": "^4.2"
     },

@@ -35,26 +35,21 @@ class QRDirekturController extends Controller
             Storage::disk('public')->delete(str_replace('storage/', '', $direktur->qrcode));
         }
 
-        // Bikin nama file unik
+        // Buat nama file baru
         $fileName = str_replace(' ', '_', $request->nama) . '_' . time() . '.svg';
         $filePath = 'qrdirektur/' . $fileName;
 
-        // ✅ Generate QR Code (pakai SVG backend biar gak butuh imagick)
-        $renderer = new ImageRenderer(
-            new RendererStyle(300),
-            new SvgImageBackEnd()
-        );
+        // Generate QR Code
+        $renderer = new ImageRenderer(new RendererStyle(300), new SvgImageBackEnd());
         $writer = new Writer($renderer);
-
-        // Simpan ke storage/app/public/qrdirektur
         Storage::disk('public')->put($filePath, $writer->writeString($request->nama));
 
-        // Simpan/update ke database
+        // Simpan atau update data direktur
         if ($direktur) {
             $direktur->update([
                 'nama' => $request->nama,
                 'jabatan' => $request->jabatan,
-                'qrcode' => 'storage/' . $filePath, // simpan path yang bisa diakses publik
+                'qrcode' => 'storage/' . $filePath,
             ]);
         } else {
             Direktur::create([
