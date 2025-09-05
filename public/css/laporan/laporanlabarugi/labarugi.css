@@ -1,4 +1,4 @@
-/* === Global Styles === */
+/* === Reset dasar === */
 body {
     font-family: 'Montserrat', sans-serif;
     background: #f8f9fa;
@@ -7,137 +7,130 @@ body {
     color: #333;
 }
 
+/* === Container utama === */
+.container {
+    width: 95%;
+    max-width: 1200px;
+    margin: 20px auto;
+}
+
+/* === Judul Halaman === */
 h1 {
     text-align: center;
-    margin: 20px 0;
     font-weight: 800;
     color: #c70000;
+    margin-bottom: 25px;
 }
 
-/* === Container === */
-.container {
-    width: 90%;
-    max-width: 1100px;
-    margin: 0 auto;
-}
-
-/* === Card (Form Filter) === */
+/* === Card umum === */
 .card {
     background: #fff;
     border-radius: 10px;
     padding: 20px;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
-    margin-bottom: 20px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
 }
 
-label {
-    font-weight: 600;
-    margin-bottom: 5px;
-    display: block;
+/* === Form filter di kiri === */
+.card h5 {
+    font-weight: 700;
+    color: #444;
+    margin-bottom: 15px;
+    text-transform: uppercase;
 }
 
-/* === Form Input === */
-input[type="date"],
-input[type="text"],
-select {
-    width: 100%;
-    padding: 8px 12px;
-    margin-top: 4px;
-    border: 1px solid #ddd;
+.form-control {
     border-radius: 6px;
     font-size: 14px;
-    outline: none;
-    transition: border 0.2s ease-in-out;
 }
 
-input:focus,
-select:focus {
-    border-color: #c70000;
-}
-
-/* === Button === */
-.btn-danger {
+.btn-primary {
     background: #c70000;
-    color: #fff;
     border: none;
     border-radius: 6px;
-    padding: 10px 16px;
-    cursor: pointer;
     font-weight: 600;
-    transition: 0.2s;
+    padding: 10px;
+    transition: background 0.2s ease-in-out;
 }
 
-.btn-danger:hover {
-    background: #8b0000;
+.btn-primary:hover {
+    background: #900000;
 }
 
-/* === Checkbox === */
-.form-check {
-    margin-top: 10px;
-}
-
+/* === Checkbox cetak laporan === */
 .form-check-label {
-    margin-left: 6px;
     font-size: 14px;
+    font-weight: 500;
 }
 
-/* === Table === */
-.table-wrapper {
-    background: #fff;
-    border-radius: 10px;
-    padding: 20px;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
-}
-
+/* === Tabel laporan === */
 .table {
     width: 100%;
     border-collapse: collapse;
     font-size: 14px;
-}
-
-.table th,
-.table td {
-    border: 1px solid #ddd;
-    padding: 10px 14px;
-    text-align: center;
+    margin-top: 10px;
 }
 
 .table th {
-    background: linear-gradient(90deg, #c70000, #8b0000);
+    background: linear-gradient(90deg, #c70000, #900000);
     color: #fff;
     font-weight: 600;
+    text-align: center;
+    padding: 10px;
+}
+
+.table td {
+    text-align: center;
+    padding: 10px;
+    border: 1px solid #ddd;
 }
 
 .table tr:nth-child(even) {
     background: #f9f9f9;
 }
 
-.table tr:hover {
-    background: #f1f1f1;
-}
-
-/* === Warna khusus untuk angka === */
-.type-masuk {
+/* Warna angka */
+.text-success {
     color: #28a745;
-    /* Hijau */
     font-weight: bold;
 }
 
-.type-keluar {
+.text-danger {
     color: #dc3545;
-    /* Merah */
     font-weight: bold;
 }
 
-/* === Responsive === */
+.text-primary {
+    color: #007bff;
+    font-weight: bold;
+}
+
+/* === Layout kolom kiri-kanan === */
+.row {
+    display: flex;
+    gap: 20px;
+}
+
+.col-md-4 {
+    flex: 0 0 30%;
+}
+
+.col-md-8 {
+    flex: 1;
+}
+
+.col-md-4 .card {
+    height: 100%;
+}
+
+/* === Responsive mobile === */
 @media (max-width: 768px) {
     .row {
         display: block;
     }
 
-    .col-md-5,
-    .col-md-2 {
+    .col-md-4,
+    .col-md-8 {
         width: 100%;
-        margin-bottom: 10px;
+        margin-bottom: 15px;
     }
 }
