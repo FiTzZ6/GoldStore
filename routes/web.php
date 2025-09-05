@@ -62,8 +62,8 @@ use App\Http\Controllers\PembelianUmumController;
 use App\Http\Controllers\PersediaanBarangController;
 use App\Http\Controllers\StokBarangController;
 use App\Http\Controllers\StokKosongController;
-
-
+//labarugi
+use App\Http\Controllers\LabaRugiController;
 
 
 Route::get('/login', [LoginController::class, 'index'])->name('login');
@@ -340,6 +340,10 @@ Route::get('/backup', [BackupController::class, 'index'])->name('backup');
 Route::get('/setting-qr_direktur', [QRDirekturController::class, 'index'])->name('qr_direktur');
 Route::post('/setting-qr_direktur', [QRDirekturController::class, 'store'])->name('qr_direktur.store');
 
+//Laporan Laba Rugi
+Route::get('/laba-rugi', [LabaRugiController::class, 'index'])->name('labarugi');
+Route::get('/laba-rugi', [LabaRugiController::class, 'labaRugi'])->name('laporan.labarugi');
+Route::post('/laba-rugi', [LabaRugiController::class, 'labaRugiShow'])->name('laporan.labarugi.show');
 
 Route::get('/', function () {
     return view('login');
