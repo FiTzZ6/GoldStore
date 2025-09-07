@@ -45,31 +45,35 @@ class PindahBakiController extends Controller
         $tujuan = $request->kdbakitujuan;
         $items = $request->items; // array barang dari JS
 
-        // --- Generate No. Pindah Baki otomatis ---
-        $date = date('Ymd'); // format 20250904
-        $prefix = "PB-$date-";
+        // --- Generate No Faktur dengan format PB-4RANDOM-4RANDOM ---
+        $noPindah = "PB-" . rand(1000, 9999) . "-" . rand(1000, 9999);
 
-        // hitung urutan transaksi hari ini
-        $last = DB::table('pindah_baki')
-            ->whereDate('created_at', now()) // pastikan ada kolom created_at
-            ->count() + 1;
-
-        $noPindah = $prefix . str_pad($last, 3, '0', STR_PAD_LEFT);
-        // contoh hasil: PB-20250904-001
+        // Cek dulu apakah sudah ada yang sama, kalau ada generate ulang
+        while (DB::table('pindah_baki')->where('fakturpindahbaki', $noPindah)->exists()) {
+            $noPindah = "PB-" . rand(1000, 9999) . "-" . rand(1000, 9999);
+        }
 
         foreach ($items as $item) {
             DB::table('pindah_baki')->insert([
-                'barcode'   => $item['barcode'],
+                'fakturpindahbaki' => $noPindah,
+                'barcode' => $item['barcode'],
+                'namabarang' => $item['namabarang'] ?? null, // isi kalau mau
                 'kdbaki_asal' => $item['kdbaki'],
                 'kdbaki_tujuan' => $tujuan,
                 'created_at' => now()
             ]);
 
             // update lokasi baki barang
-            DB::table('barang')->where('barcode', $item['barcode'])
+            DB::table('barang')
+                ->where('barcode', $item['barcode'])
                 ->update(['kdbaki' => $tujuan]);
         }
 
-        return response()->json(['status' => true, 'message' => 'Data berhasil disimpan']);
+        return response()->json([
+            'status' => true,
+            'message' => 'Data berhasil disimpan',
+            'nofaktur' => $noPindah
+        ]);
     }
+
 }

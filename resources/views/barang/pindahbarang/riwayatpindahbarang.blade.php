@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="id">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -7,8 +8,9 @@
     <link rel="stylesheet" href="{{ asset('css/barang//pindahbarang/riwayatpindahbarang.css') }}">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
+
 <body>
-@include('partials.navbar')
+    @include('partials.navbar')
     <div class="container">
         <div class="header">
             <h1><i class="fas fa-history"></i> Riwayat Pindah Barang</h1>
@@ -32,7 +34,7 @@
                         </select>
                         <span>entries</span>
                     </div>
-                    
+
                     <div class="action-buttons">
                         <button class="btn-icon" title="Copy">
                             <i class="fas fa-copy"></i>
@@ -51,7 +53,7 @@
                         </button>
                     </div>
                 </div>
-                
+
                 <div class="controls-right">
                     <div class="search-box">
                         <i class="fas fa-search"></i>
@@ -98,14 +100,6 @@
                             </th>
                             <th>
                                 <div class="th-content">
-                                    <span>Berat</span>
-                                    <div class="search-field">
-                                        <input type="text" placeholder="Search Berat">
-                                    </div>
-                                </div>
-                            </th>
-                            <th>
-                                <div class="th-content">
                                     <span>Baki Asal</span>
                                     <div class="search-field">
                                         <input type="text" placeholder="Search Baki Asal">
@@ -124,76 +118,25 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <tr>
-                            <td>02.09.2023</td>
-                            <td>PB-20230902-001</td>
-                            <td>1234567890123</td>
-                            <td>Produk A - Model X</td>
-                            <td>120.5 gr</td>
-                            <td>B001</td>
-                            <td>B002</td>
-                            <td>
-                                <button class="btn-action" title="Cetak Bukti">
-                                    <i class="fas fa-print"></i>
-                                </button>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>01.09.2023</td>
-                            <td>PB-20230901-005</td>
-                            <td>9876543210987</td>
-                            <td>Produk B - Model Y</td>
-                            <td>85.0 gr</td>
-                            <td>B003</td>
-                            <td>B001</td>
-                            <td>
-                                <button class="btn-action" title="Cetak Bukti">
-                                    <i class="fas fa-print"></i>
-                                </button>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>31.08.2023</td>
-                            <td>PB-20230831-012</td>
-                            <td>4567891230456</td>
-                            <td>Produk C - Model Z</td>
-                            <td>210.75 gr</td>
-                            <td>B002</td>
-                            <td>B004</td>
-                            <td>
-                                <button class="btn-action" title="Cetak Bukti">
-                                    <i class="fas fa-print"></i>
-                                </button>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>30.08.2023</td>
-                            <td>PB-20230830-008</td>
-                            <td>7890123456789</td>
-                            <td>Produk D - Model W</td>
-                            <td>150.25 gr</td>
-                            <td>B004</td>
-                            <td>B001</td>
-                            <td>
-                                <button class="btn-action" title="Cetak Bukti">
-                                    <i class="fas fa-print"></i>
-                                </button>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>29.08.2023</td>
-                            <td>PB-20230829-003</td>
-                            <td>3210987654321</td>
-                            <td>Produk E - Model V</td>
-                            <td>95.5 gr</td>
-                            <td>B001</td>
-                            <td>B003</td>
-                            <td>
-                                <button class="btn-action" title="Cetak Bukti">
-                                    <i class="fas fa-print"></i>
-                                </button>
-                            </td>
-                        </tr>
+                        @forelse($riwayat as $item)
+                            <tr>
+                                <td>{{ \Carbon\Carbon::parse($item->created_at)->format('d.m.Y H:i') }}</td>
+                                <td>{{ $item->fakturpindahbaki }}</td>
+                                <td>{{ $item->barcode }}</td>
+                                <td>{{ $item->namabarang }}</td>
+                                <td>{{ $item->kdbaki_asal }}</td>
+                                <td>{{ $item->kdbaki_tujuan }}</td>
+                                <td>
+                                    <button class="btn-action" title="Cetak Bukti">
+                                        <i class="fas fa-print"></i>
+                                    </button>
+                                </td>
+                            </tr>
+                        @empty
+                            <tr>
+                                <td colspan="7" style="text-align:center;">Belum ada data pindah barang</td>
+                            </tr>
+                        @endforelse
                     </tbody>
                 </table>
             </div>
@@ -217,16 +160,16 @@
 
     <script>
         // Fungsi untuk fitur pencarian
-        document.getElementById('global-search').addEventListener('input', function(e) {
+        document.getElementById('global-search').addEventListener('input', function (e) {
             const searchTerm = e.target.value.toLowerCase();
             const rows = document.querySelectorAll('.data-table tbody tr');
-            
+
             rows.forEach(row => {
                 let rowText = '';
                 row.querySelectorAll('td').forEach(cell => {
                     rowText += cell.textContent.toLowerCase() + ' ';
                 });
-                
+
                 if (rowText.includes(searchTerm)) {
                     row.style.display = '';
                 } else {
@@ -237,11 +180,11 @@
 
         // Fungsi untuk filter per kolom
         document.querySelectorAll('.search-field input').forEach(input => {
-            input.addEventListener('input', function(e) {
+            input.addEventListener('input', function (e) {
                 const columnIndex = this.closest('th').cellIndex;
                 const searchTerm = e.target.value.toLowerCase();
                 const rows = document.querySelectorAll('.data-table tbody tr');
-                
+
                 rows.forEach(row => {
                     const cell = row.cells[columnIndex];
                     if (cell.textContent.toLowerCase().includes(searchTerm)) {
@@ -254,10 +197,11 @@
         });
 
         // Fungsi untuk mengubah jumlah entri yang ditampilkan
-        document.getElementById('show-entries').addEventListener('change', function(e) {
+        document.getElementById('show-entries').addEventListener('change', function (e) {
             // Simulasi perubahan jumlah entri
             console.log('Menampilkan ' + e.target.value + ' entri');
         });
     </script>
 </body>
+
 </html>
