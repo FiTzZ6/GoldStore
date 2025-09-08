@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-//waawaaw
 use App\Models\PindahBaki;
 use App\Models\Baki;
 use Illuminate\Http\Request;
