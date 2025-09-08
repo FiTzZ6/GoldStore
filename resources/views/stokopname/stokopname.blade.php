@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>Stok Opname Global - Sistem Manajemen</title>
     <link rel="stylesheet" href="{{ asset('css/stokopname/stok-opname.css') }}">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -25,13 +26,13 @@
                     </div>
                     <div class="card-body">
                         <div class="form-group">
-                            <label for="baki-select">BAKI</label>
-                            <select id="baki-select" class="form-control">
-                                <option value="">PILIH BAKI</option>
-                                <option value="B001">B001 - Baki Emas</option>
-                                <option value="B002">B002 - Baki Perak</option>
-                                <option value="B003">B003 - Baki Permata</option>
-                            </select>
+                            <label for="baki-select">BAKI</label> 
+                            <select id="baki-select" name="kdbaki" class="form-control"> 
+                                <option value="">PILIH BAKI</option> 
+                                @foreach($baki as $b)
+                                    <option value="{{ $b->kdbaki }}">{{ $b->kdbaki }} - {{ $b->namabaki }}</option>
+                                @endforeach
+                            </select> 
                         </div>
 
                         <div class="baki-info">
@@ -82,8 +83,8 @@
                     <div class="card-header">
                         <h2><i class="fas fa-list"></i> DAFTAR BARANG BAKI</h2>
                         <div class="header-stats">
-                            <span id="total-items">0 barang</span>
-                            <span id="total-weight">0 gr</span>
+                            <span id="total-items">Barang: 0 ptg</span>
+                            <span id="total-weight">Berat: 0 gr</span>
                         </div>
                     </div>
                     <div class="card-body">
@@ -144,59 +145,81 @@
             });
         });
 
-        // Fungsi untuk memuat data baki
         function loadBakiData(baki) {
             if (!baki) return;
 
-            // Tampilkan loader
             document.getElementById('loader').style.display = 'flex';
-            
-            // Simulasi loading data
-            setTimeout(function() {
-                // Update info baki
-                document.getElementById('current-baki').textContent = baki;
-                document.getElementById('barcode-card').style.display = 'block';
-                
-                // Generate sample data
-                generateSampleData(baki);
-                
-                // Sembunyikan loader
+
+            fetch(`/stokopname/barang/${baki}`) // ✅ gunakan parameter 'baki'
+            .then(response => response.json())
+            .then(data => {
+                let rows = '';
+                data.forEach((item, index) => {
+                    rows += `
+                        <tr>
+                            <td>${index + 1}</td>
+                            <td>${item.barcode}</td>
+                            <td>${item.namabarang}</td>
+                            <td>${item.kategori}</td>
+                            <td>${item.kdbaki}</td>
+                            <td>${item.berat} gr</td>
+                            <td>${item.kadar}</td>
+                            <td>
+                                <div class="status-indicator">
+                                    <input type="checkbox" onchange="updateItemStatus('${item.barcode}', this.checked)">
+                                    <span class="checkmark"></span>
+                                </div>
+                            </td>
+                        </tr>
+                    `;
+                });
+
+                document.querySelector('#items-table-body').innerHTML = rows;
+                document.getElementById('loader').style.display = 'none'; // ✅ jangan lupa hide loader
+
+                updateSummary();
+            })
+            .catch(err => {
+                console.error(err);
                 document.getElementById('loader').style.display = 'none';
-                
-                // Fokus ke input barcode
-                document.getElementById('barcode-input').focus();
-            }, 1000);
+            });
         }
 
-        // Fungsi untuk generate sample data
-        function generateSampleData(baki) {
-            const sampleData = [
-                { barcode: 'BRC001', name: 'Cincin Emas 24K', category: 'EMAS', weight: '5.25', kadar: '24' },
-                { barcode: 'BRC002', name: 'Gelang Perak', category: 'PERAK', weight: '15.75', kadar: '92.5' },
-                { barcode: 'BRC003', name: 'Kalung Permata', category: 'PERMATA', weight: '8.50', kadar: '-', checked: true },
-                { barcode: 'BRC004', name: 'Anting Emas 18K', category: 'EMAS', weight: '3.15', kadar: '18' },
-                { barcode: 'BRC005', name: 'Liontin Perak', category: 'PERAK', weight: '7.80', kadar: '92.5' }
-            ];
-
+        // Generate data dari DB
+        function generateDataFromDB(baki, data) {
             const tableBody = document.getElementById('items-table-body');
             let html = '';
             let totalWeight = 0;
 
-            sampleData.forEach((item, index) => {
-                totalWeight += parseFloat(item.weight);
+            if (!data || data.length === 0) {
+                html = `
+                    <tr class="empty-row">
+                        <td colspan="8">
+                            <i class="fas fa-box-open"></i>
+                            <p>Tidak ada barang dalam baki ini</p>
+                        </td>
+                    </tr>
+                `;
+                document.getElementById('total-items').textContent = `0 barang`;
+                document.getElementById('total-weight').textContent = `0 gr`;
+                tableBody.innerHTML = html;
+                return;
+            }
+
+            data.forEach((item, index) => {
+                totalWeight += parseFloat(item.berat);
                 html += `
-                    <tr class="${item.checked ? 'checked' : ''}">
+                    <tr>
                         <td>${index + 1}</td>
                         <td>${item.barcode}</td>
-                        <td>${item.name}</td>
-                        <td>${item.category}</td>
+                        <td>${item.namabarang}</td>
+                        <td>${item.kategori}</td>
                         <td>${baki}</td>
-                        <td>${item.weight} gr</td>
+                        <td>${item.berat} gr</td>
                         <td>${item.kadar}</td>
                         <td>
                             <div class="status-indicator">
-                                <input type="checkbox" ${item.checked ? 'checked' : ''} 
-                                    onchange="updateItemStatus('${item.barcode}', this.checked)">
+                                <input type="checkbox" onchange="updateItemStatus('${item.barcode}', this.checked)">
                                 <span class="checkmark"></span>
                             </div>
                         </td>
@@ -204,13 +227,10 @@
                 `;
             });
 
-            // Update totals
-            document.getElementById('total-items').textContent = `${sampleData.length} barang`;
+            document.getElementById('total-items').textContent = `${data.length} barang`;
             document.getElementById('total-weight').textContent = `${totalWeight.toFixed(2)} gr`;
 
-            // Update checked counts
             updateCheckedCounts();
-
             tableBody.innerHTML = html;
         }
 
@@ -227,6 +247,7 @@
             let found = false;
 
             rows.forEach(row => {
+                if (row.cells.length < 2) return; // skip jika baris kosong
                 const rowBarcode = row.cells[1].textContent;
                 if (rowBarcode === barcode) {
                     found = true;
@@ -241,13 +262,11 @@
                 showNotification('Barcode tidak ditemukan', 'warning');
             }
 
-            // Clear input
             document.getElementById('barcode-input').value = '';
         }
 
         // Fungsi untuk update status item
         function updateItemStatus(barcode, isChecked) {
-            // Simulasi update status
             console.log(`Item ${barcode} ${isChecked ? 'checked' : 'unchecked'}`);
             updateCheckedCounts();
         }
@@ -276,19 +295,67 @@
                 return;
             }
 
+            const items = [];
+            checkedItems.forEach(cb => {
+                const row = cb.closest('tr');
+                items.push({
+                    barcode: row.cells[1].textContent,
+                    namabarang: row.cells[2].textContent,
+                    kdkategori: row.cells[3].textContent,
+                    kdbaki: row.cells[4].textContent,
+                    berat: row.cells[5].textContent.replace(' gr', ''),
+                    kadar: row.cells[6].textContent
+                });
+            });
+
+            const kdbaki = document.getElementById('baki-select').value;
+
             document.getElementById('loader').style.display = 'flex';
 
-            // Simulasi proses penyimpanan
-            setTimeout(function() {
+            fetch('/stokopname/simpan', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content
+                },
+                body: JSON.stringify({ kdbaki, items })
+            })
+            .then(res => res.json())
+            .then(res => {
                 document.getElementById('loader').style.display = 'none';
-                showNotification('Stok opname berhasil disimpan', 'success');
-            }, 1500);
+                if (res.success) {
+                    showNotification('Stok opname berhasil disimpan', 'success');
+                } else {
+                    showNotification(res.message || 'Gagal menyimpan stok opname', 'error');
+                }
+            })
+            .catch(err => {
+                console.error(err);
+                document.getElementById('loader').style.display = 'none';
+                showNotification('Terjadi kesalahan', 'error');
+            });
         }
 
         // Fungsi untuk menampilkan notifikasi
         function showNotification(message, type) {
-            // Implementasi notifikasi sederhana
             alert(`${type.toUpperCase()}: ${message}`);
+        }
+
+        function updateSummary() {
+            const rows = document.querySelectorAll('#items-table-body tr');
+            let jumlah = 0;
+            let totalBerat = 0;
+
+            rows.forEach(row => {
+                if (row.cells.length > 5) {
+                    jumlah++;
+                    let beratText = row.cells[5].textContent.replace(" gr", "").trim();
+                    totalBerat += parseFloat(beratText) || 0;
+                }
+            });
+
+            document.getElementById('total-items').textContent = `Barang: ${jumlah} ptg`;
+            document.getElementById('total-weight').textContent = `Berat: ${totalBerat.toFixed(2)} gr`;
         }
     </script>
 </body>

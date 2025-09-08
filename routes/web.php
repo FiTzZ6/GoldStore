@@ -330,6 +330,9 @@ Route::get('/LaporanPembelianUmum', [PembelianUmumController::class, 'index'])->
 
 //StokOpname- Stok Opname Global
 Route::get('/stokopname', [StokOpnameController::class, 'index'])->name('stokopname');
+Route::get('/stokopname/barang/{kdbaki}', [StokOpnameController::class, 'getBarangByBaki']);
+Route::post('/stokopname/simpan', [StokOpnameController::class, 'simpan']);
+
 
 //backup_data-utility
 Route::get('/backup', [BackupController::class, 'index'])->name('backup');
