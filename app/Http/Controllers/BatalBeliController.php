@@ -31,13 +31,14 @@ class BatalBeliController extends Controller
             'hargabeli' => 'required|numeric',
             'kondisibeli' => 'required',
             'kondisibatalbeli' => 'required',
+            'hargabatalbeli' => 'required|numeric',
         ]);
 
         try {
             $nofakturbatal = 'FBB-' . rand(100000, 999999);
 
             TransBatalBeli::create([
-                'namastaff' => auth()->user()->name ?? 'Staff', // atau dari request
+                 'namastaff' => $request->namastaff, // atau dari request
                 'nofakturbeli' => $request->nofakturbeli,
                 'nofakturbatalbeli' => $nofakturbatal,
                 'namapenjual' => $request->namapenjual,
@@ -46,6 +47,7 @@ class BatalBeliController extends Controller
                 'namabarang' => $request->namabarang,
                 'berat' => $request->berat,
                 'hargabeli' => $request->hargabeli,
+                'hargabatalbeli' => $request->hargabatalbeli,
                 'keterangan' => $request->keterangan,
             ]);
 

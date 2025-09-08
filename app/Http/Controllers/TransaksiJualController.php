@@ -1,13 +1,13 @@
 <?php
 
 namespace App\Http\Controllers;
+
 use App\Models\Pelanggan;
 use App\Models\Staff;
 use App\Models\Barang;
 use App\Models\StokJual;
 use App\Models\TransPenjualan;
 use Illuminate\Http\Request;
-
 
 class TransaksiJualController extends Controller
 {
@@ -17,23 +17,24 @@ class TransaksiJualController extends Controller
         $barang = Barang::all();
         $staff = Staff::all();
         $pelanggan = Pelanggan::all();
-         $nofaktur = $this->generateNoFaktur();
-        return view('jual.transpenjualan', compact('pelanggan', 'staff', 'stokjual','nofaktur'));
+
+        $nofaktur = $this->generateNoFaktur(); // nomor faktur otomatis
+
+        return view('jual.transpenjualan', compact('pelanggan', 'staff', 'stokjual', 'nofaktur'));
     }
 
     public function store(Request $request)
     {
         $data = $request->all();
-        // dd($request->all());
-
-        // cek isi request
-        // dd($data);
-
-        // kalau field items kosong/null, $items akan null
         $items = json_decode($data['items'] ?? '[]', true);
 
         if (empty($items)) {
             return back()->with('error', 'Data item kosong atau tidak valid');
+        }
+
+        // cek duplikat faktur
+        if (TransPenjualan::where('nofaktur', $data['nofaktur'])->exists()) {
+            return back()->with('error', 'Nomor faktur sudah ada, silakan generate ulang.');
         }
 
         foreach ($items as $item) {
@@ -48,10 +49,12 @@ class TransaksiJualController extends Controller
                 'harga' => $item['price'],
                 'ongkos' => $item['fee'],
                 'total' => $item['total'],
+                'quantity' => $item['quantity'] ?? 1,
                 'pembayaran' => $data['pembayaran'],
                 'created_at' => now(),
             ]);
 
+            // update stok
             $stok = StokJual::where('barcode', $item['code'])->first();
             if ($stok) {
                 $stok->stok -= $item['quantity'];
@@ -66,19 +69,21 @@ class TransaksiJualController extends Controller
     private function generateNoFaktur()
     {
         $prefix = 'FJ-';
-        $tanggal = now()->format('ymd'); // contoh: 250902
-        $last = TransPenjualan::whereDate('created_at', today())
-            ->orderBy('id', 'desc')
-            ->first();
+        $tanggal = now()->format('ymd'); // YYMMDD
 
-        if ($last) {
-            $lastNumber = intval(substr($last->nofaktur, -4));
-            $newNumber = str_pad($lastNumber + 1, 4, '0', STR_PAD_LEFT);
-        } else {
-            $newNumber = '0001';
-        }
+        do {
+            $random4 = str_pad(rand(0, 9999), 4, '0', STR_PAD_LEFT);
 
-        return $prefix . $tanggal . '-' . $newNumber;
+            $last = TransPenjualan::where('nofaktur', 'like', $prefix . $tanggal . '-' . $random4 . '-%')
+                ->orderBy('id', 'desc')
+                ->first();
+
+            $newNumber = $last ? str_pad(intval(substr($last->nofaktur, -4)) + 1, 4, '0', STR_PAD_LEFT) : '0001';
+
+            $nofaktur = $prefix . $tanggal . '-' . $random4 . '-' . $newNumber;
+        } while (TransPenjualan::where('nofaktur', $nofaktur)->exists());
+
+        return $nofaktur;
     }
 
     public function struk($nofaktur)
@@ -97,7 +102,4 @@ class TransaksiJualController extends Controller
 
         return view('jual.struk', compact('nofaktur', 'items', 'tanggal', 'total', 'pelanggan', 'staff', 'pembayaran'));
     }
-
-
-
 }

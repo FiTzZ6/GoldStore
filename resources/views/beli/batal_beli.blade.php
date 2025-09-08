@@ -71,6 +71,7 @@
                     <th>NAMA BARANG</th>
                     <th>BERAT</th>
                     <th>HARGA BELI</th>
+                    <th>HARGA BATAL BELI</th>
                 </tr>
             </thead>
             <tbody>
@@ -78,24 +79,30 @@
                     <tr>
                         <td>{{ $riwayat->nofakturbeli }}</td>
                         <td>{{ $riwayat->namapenjual }}</td>
-                        <td>{{ $riwayat->kondisi }}</td> {{-- kondisi dari TransBeli --}}
+                        <td>{{ $riwayat->kondisi }}</td>
                         <td>{{ $riwayat->deskripsi }}</td>
                         <td>{{ $riwayat->beratbaru }}</td>
                         <td>{{ number_format($riwayat->hargabaru, 0, ',', '.') }}</td>
+                        <td>
+                            {{-- Input harga batal beli ikut ke form simpan --}}
+                            <input type="number" name="hargabatalbeli" form="form-simpan-batalbeli"
+                                placeholder="Masukkan Harga Batal Beli" required>
+                        </td>
                     </tr>
                 @else
                     <tr>
-                        <td colspan="6" class="empty-row">Data belum ada / No Faktur tidak ditemukan</td>
+                        <td colspan="7" class="empty-row">Data belum ada / No Faktur tidak ditemukan</td>
                     </tr>
                 @endif
             </tbody>
         </table>
 
         <div class="form-section">
-            <form method="POST" action="{{ route('batalbeli.store') }}">
+            <form id="form-simpan-batalbeli" method="POST" action="{{ route('batalbeli.store') }}">
                 @csrf
 
-                {{-- Hidden input ambil data dari hasil pencarian --}}
+                {{-- Hidden input ambil data hasil pencarian --}}
+                <input type="hidden" name="namastaff" value="{{ request('staff') }}">
                 <input type="hidden" name="nofakturbeli" value="{{ $riwayat->nofakturbeli ?? '' }}">
                 <input type="hidden" name="namapenjual" value="{{ $riwayat->namapenjual ?? '' }}">
                 <input type="hidden" name="namabarang" value="{{ $riwayat->deskripsi ?? '' }}">

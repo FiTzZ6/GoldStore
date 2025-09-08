@@ -20,6 +20,7 @@ class TransBatalBeli extends Model
         'namabarang',
         'berat',
         'hargabeli',
+        'hargabatalbeli',
         'keterangan',
     ];
 }
