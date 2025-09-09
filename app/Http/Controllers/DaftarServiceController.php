@@ -2,10 +2,15 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\TransService;
+
 class DaftarServiceController extends Controller
 {
     public function index()
     {
-        return view('service.daftarservice');
+        // Ambil semua data transaksi, urutkan terbaru
+        $data = TransService::latest()->get();
+
+        return view('service.daftarservice', compact('data'));
     }
 }

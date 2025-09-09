@@ -303,6 +303,9 @@ Route::get('/daftarPesanan', [DaftarPesananController::class, 'index'])->name('d
 
 //Service-Transaksi Service
 Route::get('/TransaksiService', [TransaksiServiceController::class, 'index'])->name('transaksiservice');
+Route::post('/TransaksiService/store', [TransaksiServiceController::class, 'store'])->name('transaksiservice.store');
+Route::get('/api/trans-service', [TransaksiServiceController::class, 'data']);
+Route::get('/transaksiservice/cetak/{id}', [TransaksiServiceController::class, 'cetak'])->name('transaksiservice.cetak');
 
 //Service-Daftar Service
 Route::get('/DaftarService', [DaftarServiceController::class, 'index'])->name('daftarservice');
