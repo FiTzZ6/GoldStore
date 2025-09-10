@@ -229,8 +229,27 @@ class BarangStokController extends Controller
         if (session('typeuser') != 1) {
             return back()->with('error', 'Hanya Admin yang bisa hapus barang');
         }
+
         $barang = Barang::findOrFail($id);
 
+        // === 1. Buat faktur barang hapus ===
+        $faktur = 'BH-' . rand(1000, 9999) . '-' . rand(1000, 9999) . '-' . rand(1000, 9999);
+
+        // === 2. Simpan ke tabel barang_terhapus ===
+        \App\Models\BarangTerhapus::create([
+            'fakturbaranghapus' => $faktur,
+            'kdbarang' => $barang->kdbarang,
+            'barcode' => $barang->barcode,
+            'namabarang' => $barang->namabarang,
+            'kdkategori' => $barang->kdkategori,
+            'kdbaki' => $barang->kdbaki,
+            'kdtoko' => $barang->kdtoko,
+            'berat' => $barang->berat,
+            'kadar' => $barang->kadar,
+            'tanggalhapus' => now(),
+        ]);
+
+        // === 3. Hapus file barcode & foto ===
         if ($barang->barcode) {
             Storage::disk('public')->delete('barcodeBarang/' . $barang->barcode . '.png');
         }
@@ -238,7 +257,9 @@ class BarangStokController extends Controller
             Storage::disk('public')->delete('barangFoto/' . $barang->photo);
         }
 
+        // === 4. Hapus data dari tabel barang ===
         $barang->delete();
-        return back()->with('success', 'Barang berhasil dihapus');
+
+        return back()->with('success', 'Barang berhasil dihapus dan dipindahkan ke Barang Terhapus');
     }
 }
