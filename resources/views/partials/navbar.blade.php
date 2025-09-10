@@ -182,7 +182,7 @@
                                 <li><a href="{{ route('barangterhapus') }}">Barang Dihapus</a></li>
                             </ul>
                         </li>
-                        <li><a href="{{ route('terimabarang') }}">Terima Barang</a></li>
+                        <li><a href="{{ route('terimabarang.index') }}">Terima Barang</a></li>
                         <li class="has-submenu">
                             <a href="#">Cuci Sepuh</a>
                             <ul class="dropdown-menu-1">

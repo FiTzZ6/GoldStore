@@ -278,7 +278,7 @@ Route::get('/transaksi/{nofaktur}/struk', [TransaksiJualController::class, 'stru
     ->name('transpenjualan.struk');
 Route::get('/transaksi/{nofaktur}/struk-pdf', [TransaksiJualController::class, 'strukPdf'])
     ->name('transpenjualan.struk.pdf');
-    
+
 
 
 //JualSelisih-jual
@@ -351,17 +351,20 @@ Route::post('/laba-rugi', [LabaRugiController::class, 'labaRugiShow'])->name('la
 
 
 
-//BarangTerima-Barang
-Route::get('/terimabarang', [TerimaBarangController::class, 'index'])->name('terimabarang');
+// Admin -> kelola surat kirim
+Route::middleware('role:1')->group(function () {
+    Route::get('/suratkirim', [SuratKirimController::class, 'index'])->name('suratkirim.index');
+    Route::get('/suratkirim/create', [SuratKirimController::class, 'create'])->name('suratkirim.create');
+    Route::post('/suratkirim', [SuratKirimController::class, 'store'])->name('suratkirim.store');
+    Route::get('/suratkirim/{nokirim}/edit', [SuratKirimController::class, 'edit'])->name('suratkirim.edit');
+    Route::put('/suratkirim/{nokirim}', [SuratKirimController::class, 'update'])->name('suratkirim.update');
+});
+
+// Non-admin -> hanya terima dan lihat
+Route::get('/terimabarang', [TerimaBarangController::class, 'index'])->name('terimabarang.index');
 Route::post('/terimabarang/{nokirim}/terima', [TerimaBarangController::class, 'terima'])->name('terimabarang.terima');
 Route::get('/terimabarang/{nokirim}/cetakpdf', [TerimaBarangController::class, 'cetakPdf'])->name('terimabarang.cetakpdf');
-
-
-Route::get('/suratkirim/{id}/edit', [SuratKirimController::class, 'edit'])->name('suratkirim.edit');
-Route::get('/suratkirim', [SuratKirimController::class, 'index'])->name('suratkirim.index');
-Route::get('/suratkirim/create', [SuratKirimController::class, 'create'])->name('suratkirim.create');
-Route::post('/surat-kirim', [SuratKirimController::class, 'store'])->name('suratkirim.store');
-Route::post('/suratkirim/{id}/update', [SuratKirimController::class, 'update'])->name('suratkirim.update');
+Route::get('/terimabarang/{nokirim}/preview', [TerimaBarangController::class, 'previewPdf'])->name('terimabarang.preview');
 
 Route::get('/', function () {
     return view('login');
