@@ -62,6 +62,7 @@ use App\Http\Controllers\PembelianUmumController;
 use App\Http\Controllers\PersediaanBarangController;
 use App\Http\Controllers\StokBarangController;
 use App\Http\Controllers\StokKosongController;
+use App\Http\Controllers\SuratKirimController;
 //labarugi
 use App\Http\Controllers\LabaRugiController;
 
@@ -213,9 +214,6 @@ Route::get('/BarangTerjual', [BarangTerjualController::class, 'index'])->name('B
 Route::get('/BarangTerhapus', [BarangTerhapusController::class, 'index'])->name('barangterhapus');
 
 
-//BarangTerima-Barang
-Route::get('/terimabarang', [TerimaBarangController::class, 'index'])->name('terimabarang');
-
 
 //BarangCuciSepuh-FormPenyimpanan
 Route::get('/FormPenyimpanan', [FormPenyimpananController::class, 'index'])->name('formpenyimpanan');
@@ -350,6 +348,20 @@ Route::post('/setting-qr_direktur', [QRDirekturController::class, 'store'])->nam
 Route::get('/laba-rugi', [LabaRugiController::class, 'index'])->name('labarugi');
 Route::get('/laba-rugi', [LabaRugiController::class, 'labaRugi'])->name('laporan.labarugi');
 Route::post('/laba-rugi', [LabaRugiController::class, 'labaRugiShow'])->name('laporan.labarugi.show');
+
+
+
+//BarangTerima-Barang
+Route::get('/terimabarang', [TerimaBarangController::class, 'index'])->name('terimabarang');
+Route::post('/terimabarang/{nokirim}/terima', [TerimaBarangController::class, 'terima'])->name('terimabarang.terima');
+Route::get('/terimabarang/{nokirim}/cetakpdf', [TerimaBarangController::class, 'cetakPdf'])->name('terimabarang.cetakpdf');
+
+
+Route::get('/suratkirim/{id}/edit', [SuratKirimController::class, 'edit'])->name('suratkirim.edit');
+Route::get('/suratkirim', [SuratKirimController::class, 'index'])->name('suratkirim.index');
+Route::get('/suratkirim/create', [SuratKirimController::class, 'create'])->name('suratkirim.create');
+Route::post('/surat-kirim', [SuratKirimController::class, 'store'])->name('suratkirim.store');
+Route::post('/suratkirim/{id}/update', [SuratKirimController::class, 'update'])->name('suratkirim.update');
 
 Route::get('/', function () {
     return view('login');
