@@ -281,6 +281,7 @@ Route::get('/transaksi/{nofaktur}/struk-pdf', [TransaksiJualController::class, '
 
 
 
+
 //JualSelisih-jual
 Route::get('/SelisihJual', [SelisihJualController::class, 'index'])->name('selisihjual');
 Route::delete('/selisih-jual/{id}', [SelisihJualController::class, 'destroy'])->name('selisihjual.destroy');
@@ -295,9 +296,11 @@ Route::put('/stokjual/{nofaktur}', [StokJualController::class, 'update'])->name(
 Route::delete('/stokjual/{nofaktur}', [StokJualController::class, 'destroy'])->name('stokjual.destroy');
 
 
-
 //daftarPesanan- pesan
 Route::get('/daftarPesanan', [DaftarPesananController::class, 'index'])->name('daftarpesanan');
+// Route::get('/pesanan/{id}/edit', [DaftarPesananController::class, 'edit'])->name('pesanan.edit');
+Route::put('/pesanan/{id}', [DaftarPesananController::class, 'update'])->name('pesanan.update');
+Route::delete('/pesanan/{id}', [DaftarPesananController::class, 'destroy'])->name('pesanan.destroy');
 
 //Service-Transaksi Service
 Route::get('/TransaksiService', [TransaksiServiceController::class, 'index'])->name('transaksiservice');

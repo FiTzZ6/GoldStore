@@ -8,6 +8,7 @@ use App\Models\Staff;
 use App\Models\Barang;
 use App\Models\StokJual;
 use App\Models\TransPenjualan;
+use App\Models\Pesanan;
 use Illuminate\Http\Request;
 
 class TransaksiJualController extends Controller
@@ -26,6 +27,11 @@ class TransaksiJualController extends Controller
 
     public function store(Request $request)
     {
+        // 🔹 validasi awal
+        $request->validate([
+            'typepesanan' => 'required|in:umum,pesanan',
+        ]);
+
         $data = $request->all();
         $items = json_decode($data['items'] ?? '[]', true);
 
@@ -33,56 +39,92 @@ class TransaksiJualController extends Controller
             return back()->with('error', 'Data item kosong atau tidak valid');
         }
 
+        // 🔹 validasi nofaktur duplikat
         if (TransPenjualan::where('nofaktur', $data['nofaktur'])->exists()) {
             return back()->with('error', 'Nomor faktur sudah ada, silakan generate ulang.');
         }
 
-        foreach ($items as $item) {
-            // simpan transaksi penjualan
-            TransPenjualan::create([
-                'nofaktur' => $data['nofaktur'],
-                'namastaff' => $data['namastaff'],
-                'namapelanggan' => $data['namapelanggan'],
-                'nohp' => $data['nohp'],
-                'alamat' => $data['alamat'],
-                'barcode' => $item['code'],
-                'namabarang' => $item['name'],
-                'harga' => $item['price'],
-                'ongkos' => $item['fee'],
-                'total' => $item['total'],
-                'quantity' => $item['quantity'] ?? 1,
-                'pembayaran' => $data['pembayaran'],
-                'created_at' => now(),
+        if ($data['typepesanan'] === 'umum') {
+            // ======================
+            // 🔹 TRANSAKSI UMUM
+            // ======================
+            foreach ($items as $item) {
+                TransPenjualan::create([
+                    'nofaktur' => $data['nofaktur'],
+                    'namastaff' => $data['namastaff'],
+                    'typepesanan' => 'umum',
+                    'namapelanggan' => $data['namapelanggan'] ?? '-',
+                    'nohp' => $data['nohp'] ?? '-',
+                    'alamat' => $data['alamat'] ?? '-',
+                    'barcode' => $item['code'],
+                    'namabarang' => $item['name'],
+                    'harga' => $item['price'],
+                    'ongkos' => $item['fee'],
+                    'total' => $item['total'],
+                    'quantity' => $item['quantity'] ?? 1,
+                    'pembayaran' => $data['pembayaran'],
+                ]);
+
+                // update stok + simpan barang terjual
+                $stok = StokJual::with('barang')->where('barcode', $item['code'])->first();
+                if ($stok && $stok->barang) {
+                    BarangTerjual::create([
+                        'fakturbarangterjual' => $data['nofaktur'],
+                        'namabarang' => $item['name'],
+                        'barcode' => $item['code'],
+                        'kdbaki' => $stok->barang->kdbaki ?? '-',
+                        'berat' => $stok->barang->berat ?? 0,
+                        'kadar' => $stok->barang->kadar ?? 0,
+                        'harga' => $item['price'],
+                        'namastaff' => $data['namastaff'],
+                        'tanggalterjual' => now()->toDateString(),
+                    ]);
+
+                    $stok->stok -= $item['quantity'];
+                    $stok->save();
+                }
+            }
+        } else {
+            // ======================
+            // 🔹 PESANAN
+            // ======================
+            $request->validate([
+                'tglpesan' => 'required|date',
+                'tglambil' => 'required|date|after_or_equal:tglpesan',
+            ], [
+                'tglpesan.required' => 'Tanggal pesan wajib diisi',
+                'tglambil.required' => 'Tanggal ambil wajib diisi',
+                'tglambil.after_or_equal' => 'Tanggal ambil harus >= tanggal pesan',
             ]);
 
-            // ambil data barang dari tabel stokjual/barang
-            $stok = StokJual::with('barang')->where('barcode', $item['code'])->first();
-
-            if ($stok && $stok->barang) {
-                BarangTerjual::create([
-                    'fakturbarangterjual' => $data['nofaktur'],
+            foreach ($items as $item) {
+                \App\Models\Pesanan::create([
+                    'nofakturpesan' => $data['nofaktur'],
                     'namabarang' => $item['name'],
                     'barcode' => $item['code'],
-                    'kdbaki' => $stok->barang->kdbaki ?? '-',
-                    'berat' => $stok->barang->berat ?? 0,
-                    'kadar' => $stok->barang->kadar ?? 0,
+                    'tglpesan' => $data['tglpesan'],
+                    'tglambil' => $data['tglambil'],
+                    'staff' => $data['namastaff'],
+                    'namapemesan' => $data['namapelanggan'],
+                    'alamatpemesan' => $data['alamat'],
+                    'notelp' => $data['nohp'],
+                    'quantity' => $item['quantity'] ?? 1,
                     'harga' => $item['price'],
-                    'namastaff' => $data['namastaff'],
-                    'tanggalterjual' => now()->toDateString(),
+                    'ongkos' => $item['fee'],
+                    'total' => $item['total'],
                 ]);
-            } else {
-                \Log::warning("Barang dengan barcode {$item['code']} tidak ditemukan di stokjual/barang");
-            }
-
-            // update stok
-            if ($stok) {
-                $stok->stok -= $item['quantity'];
-                $stok->save();
             }
         }
 
         return redirect()->route('transpenjualan')
             ->with('success', 'Transaksi berhasil disimpan');
+    }
+
+    public function daftarPesanan()
+    {
+        $pesanan = Pesanan::orderBy('tglpesan', 'desc')->get();
+
+        return view('jual.daftar_pesanan', compact('pesanan'));
     }
 
 
@@ -98,7 +140,9 @@ class TransaksiJualController extends Controller
                 ->orderBy('id', 'desc')
                 ->first();
 
-            $newNumber = $last ? str_pad(intval(substr($last->nofaktur, -4)) + 1, 4, '0', STR_PAD_LEFT) : '0001';
+            $newNumber = $last
+                ? str_pad(intval(substr($last->nofaktur, -4)) + 1, 4, '0', STR_PAD_LEFT)
+                : '0001';
 
             $nofaktur = $prefix . $tanggal . '-' . $random4 . '-' . $newNumber;
         } while (TransPenjualan::where('nofaktur', $nofaktur)->exists());
@@ -120,6 +164,14 @@ class TransaksiJualController extends Controller
         $staff = $items->first()->namastaff ?? '-';
         $pembayaran = $items->first()->pembayaran ?? '-';
 
-        return view('jual.struk', compact('nofaktur', 'items', 'tanggal', 'total', 'pelanggan', 'staff', 'pembayaran'));
+        return view('jual.struk', compact(
+            'nofaktur',
+            'items',
+            'tanggal',
+            'total',
+            'pelanggan',
+            'staff',
+            'pembayaran'
+        ));
     }
 }
