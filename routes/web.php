@@ -210,6 +210,8 @@ Route::delete('/StokBarang/{id}', [BarangStokController::class, 'destroy'])->nam
 //BarangTerjual-barang
 Route::get('/BarangTerjual', [BarangTerjualController::class, 'index'])->name('BarangTerjual');
 
+Route::get('/TerimaBarang', [TerimaBarangController::class, 'index'])->name('terimabarang.index');
+
 
 //BarangTerhapus-Barang
 Route::get('/BarangTerhapus', [BarangTerhapusController::class, 'index'])->name('barangterhapus');
