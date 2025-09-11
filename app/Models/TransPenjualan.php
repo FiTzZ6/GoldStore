@@ -15,6 +15,7 @@ class TransPenjualan extends Model
     protected $fillable = [
         'nofaktur',
         'namastaff',
+        'typepesanan',   // 🔹 ditambahkan
         'namapelanggan',
         'nohp',
         'alamat',
@@ -23,6 +24,7 @@ class TransPenjualan extends Model
         'harga',
         'ongkos',
         'total',
+        'quantity',        // 🔹 sebelumnya belum ada di model
         'pembayaran'
     ];
 }
