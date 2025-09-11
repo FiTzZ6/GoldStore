@@ -311,7 +311,7 @@
                     </li>
                     <li><a href="#">Laporan Transaksi Kas</a></li>
                     <li><a href="{{ route('laporan.labarugi') }}">Laporan Laba Rugi</a></li>
-                    <li><a href="#">Laporan Stok Opname</a></li>
+                    <li><a href="{{ route('laporan.stokopname') }}">Laporan Stok Opname</a></li>
                     <li><a href="#">Laporan Tukar Poin</a></li>
                     <li><a href="#">Laporan Tukar Rupiah</a></li>
                     <li><a href="#">Laporan Cuci Sepuh</a></li>

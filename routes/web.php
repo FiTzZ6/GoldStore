@@ -353,6 +353,10 @@ Route::get('/laba-rugi', [LabaRugiController::class, 'index'])->name('labarugi')
 Route::get('/laba-rugi', [LabaRugiController::class, 'labaRugi'])->name('laporan.labarugi');
 Route::post('/laba-rugi', [LabaRugiController::class, 'labaRugiShow'])->name('laporan.labarugi.show');
 
+//Laporan Stok Opname
+Route::get('/laporan/stok-opname', [LPopnameController::class, 'index'])->name('laporan.stokopname');
+Route::post('/laporan/stok-opname', [LPopnameController::class, 'show'])->name('laporan.stokopname.show');
+
 Route::get('/', function () {
     return view('login');
 });
