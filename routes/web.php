@@ -62,8 +62,10 @@ use App\Http\Controllers\PembelianUmumController;
 use App\Http\Controllers\PersediaanBarangController;
 use App\Http\Controllers\StokBarangController;
 use App\Http\Controllers\StokKosongController;
-//labarugi
+//laporanlabarugi
 use App\Http\Controllers\LabaRugiController;
+//laporanstokopname
+use App\Http\Controllers\LPopnameController;
 
 
 Route::get('/login', [LoginController::class, 'index'])->name('login');
@@ -347,6 +349,10 @@ Route::post('/setting-qr_direktur', [QRDirekturController::class, 'store'])->nam
 Route::get('/laba-rugi', [LabaRugiController::class, 'index'])->name('labarugi');
 Route::get('/laba-rugi', [LabaRugiController::class, 'labaRugi'])->name('laporan.labarugi');
 Route::post('/laba-rugi', [LabaRugiController::class, 'labaRugiShow'])->name('laporan.labarugi.show');
+
+//Laporan Stok Opname
+Route::get('/laporan/stok-opname', [LPopnameController::class, 'index'])->name('laporan.stokopname');
+Route::post('/laporan/stok-opname', [LPopnameController::class, 'show'])->name('laporan.stokopname.show');
 
 Route::get('/', function () {
     return view('login');
