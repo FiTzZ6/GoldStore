@@ -137,15 +137,19 @@
             <i class="fas fa-bars"></i>
         </div>
         <ul class="menu">
+            {{-- ====================== NAVBAR ====================== --}}
+
+            {{-- HOME --}}
             <li>
                 <a href="{{ route('laporan.dashboard') }}"><i class="fas fa-home"></i> Home</a>
             </li>
 
-            <!-- navbar datamaster -->
+            {{-- ====================== DATA MASTER ====================== --}}
             <li>
                 <a href="#"><i class="fas fa-database"></i> Data Master</a>
                 <ul>
-                    @if(session('typeuser') == 1)
+                    {{-- SUPER ADMIN, DIREKTUR, DIREKSI, AKUNTAN, MANAGER TOKO --}}
+                    @if(in_array(session('typeuser'), [1, 2, 3, 6,7, 8]))
                         <li><a href="{{ route('area') }}">Area</a></li>
                         <li><a href="{{ route('cabang') }}">Cabang</a></li>
                         <li><a href="{{ route('supplier') }}">Supplier</a></li>
@@ -159,108 +163,113 @@
                         <li><a href="{{ route('staff') }}">Staff</a></li>
                         <li><a href="#">Merchandise</a></li>
                     @endif
+
+                    {{-- Semua user (termasuk CUSTOMER) --}}
                     <li><a href="{{ route('pelanggan') }}">Pelanggan</a></li>
                     <li><a href="{{ route('caripelanggan') }}">Cari Pelanggan</a></li>
-
                 </ul>
             </li>
 
-            <!-- navbar barang -->
-            <li>
-                <a href="#"><i class="fas fa-box"></i> Barang</a>
-                <ul>
-                    <li class="has-submenu"><a href="#">Data Barang</a>
-                        <ul class="dropdown-menu-1">
+            {{-- ====================== BARANG ====================== --}}
+            @if(in_array(session('typeuser'), [1, 2, 4, 5,6, 8, 9]))
+                <li>
+                    <a href="#"><i class="fas fa-box"></i> Barang</a>
+                    <ul>
+                        <li class="has-submenu"><a href="#">Data Barang</a>
+                            <ul class="dropdown-menu-1">
                                 <li><a href="{{ route('barangStok') }}">Barang Stok</a></li>
                                 <li><a href="{{ route('BarangTerjual') }}">Barang Terjual</a></li>
-                                <li><a href="{{ route('barangterhapus') }}">Barang DiHapus</a></li>
-                        </ul>
-                    </li>
-                    <li><a href="{{ route('terimabarang') }}">Terima Barang</a></li>
-                    <li class="has-submenu">
-                        <a href="#">Cuci Sepuh<span style="float: right;"></span></a>
-                        <ul class="dropdown-menu-1">
-                            <li><a href="#">Formulir Cuci Sepuh</a></li>
-                            <li><a href="{{ route('riwayatcuci') }}">Riwayat Cuci Sepuh</a></li>
-                            @if(session('typeuser') == 1)
-                                <li><a href="{{ route('formpenyimpanan') }}">Formulir Penyimpanan Mutu</a></li>
-                                <li><a href="{{ route('riwayatpenyimpanan') }}">Riwayat Penyimpanan Mutu</a></li>
-                            @endif
-                        </ul>
-                    </li>
-                    <li class="has-submenu">
-                        <a href="#">Rongsok <span style="float: right;"></span></a>
-                        <ul class="dropdown-menu-1">
-                            @if(session('typeuser') == 1)
-                                <li><a href="{{ route('formrongsok') }}">Formulir Rongsok</a></li>
-                                <li><a href="{{ route('riwayatrongsok') }}">Riwayat Rongsok</a></li>
-                            @endif
-                            <li><a href="{{ route('formketidaksesuaian') }}">Formulir Ketidaksesuaian</a></li>
-                            <li><a href="{{ route('riwayatketidaksesuaian') }}">Riwayat Ketidaksesuaian</a></li>
-                        </ul>
-                    </li>
-                    <li class="has-submenu">
-                        <a href="#">Pindah Barang <span style="float: right;"></span></a>
-                        <ul class="dropdown-menu-1">
-                            <li><a href="{{ route('pindahbaki') }}">Pindah Baki</a></li>
-                            <li><a href="{{ route('riwayatpindahbarang') }}">Riwayat Pindah Baki</a></li>
-                            <li><a href="#">Pindah Brangkas</a></li>
-                            <li><a href="#">Riwayat Pindah Brangkas</a></li>
-                        </ul>
-                    </li>
-                </ul>
-            </li>
+                                <li><a href="{{ route('barangterhapus') }}">Barang Dihapus</a></li>
+                            </ul>
+                        </li>
+                        <li><a href="{{ route('terimabarang.index') }}">Terima Barang</a></li>
+                        <li class="has-submenu">
+                            <a href="#">Cuci Sepuh</a>
+                            <ul class="dropdown-menu-1">
+                                <li><a href="#">Formulir Cuci Sepuh</a></li>
+                                <li><a href="{{ route('riwayatcuci') }}">Riwayat Cuci Sepuh</a></li>
+                                @if(session('typeuser') == 1)
+                                    <li><a href="{{ route('formpenyimpanan') }}">Formulir Penyimpanan Mutu</a></li>
+                                    <li><a href="{{ route('riwayatpenyimpanan') }}">Riwayat Penyimpanan Mutu</a></li>
+                                @endif
+                            </ul>
+                        </li>
+                        <li class="has-submenu">
+                            <a href="#">Rongsok</a>
+                            <ul class="dropdown-menu-1">
+                                @if(session('typeuser') == 1)
+                                    <li><a href="{{ route('formrongsok') }}">Formulir Rongsok</a></li>
+                                    <li><a href="{{ route('riwayatrongsok') }}">Riwayat Rongsok</a></li>
+                                @endif
+                                <li><a href="{{ route('formketidaksesuaian') }}">Formulir Ketidaksesuaian</a></li>
+                                <li><a href="{{ route('riwayatketidaksesuaian') }}">Riwayat Ketidaksesuaian</a></li>
+                            </ul>
+                        </li>
+                        <li class="has-submenu">
+                            <a href="#">Pindah Barang</a>
+                            <ul class="dropdown-menu-1">
+                                <li><a href="{{ route('pindahbaki') }}">Pindah Baki</a></li>
+                                <li><a href="{{ route('riwayatpindahbarang') }}">Riwayat Pindah Baki</a></li>
+                                <li><a href="#">Pindah Brangkas</a></li>
+                                <li><a href="#">Riwayat Pindah Brangkas</a></li>
+                            </ul>
+                        </li>
+                    </ul>
+                </li>
+            @endif
 
+            {{-- ====================== JUAL ====================== --}}
+            @if(in_array(session('typeuser'), [1, 2, 3, 6, 8]))
+                <li>
+                    <a href="#"><i class="fas fa-cash-register"></i> Jual</a>
+                    <ul>
+                        <li><a href="{{ route('transpenjualan') }}">Transaksi Penjualan</a></li>
+                        <li><a href="{{ route('bataljual') }}">Batal Penjualan</a></li>
+                        <li><a href="{{ route('riwayatpenjualan') }}">Riwayat Penjualan</a></li>
+                        <li><a href="{{ route('riwayatbataljual') }}">Riwayat Batal Jual</a></li>
+                        <li><a href="{{ route('selisihjual') }}">Selisih Jual & Batal</a></li>
+                        <li><a href="{{ route('stokjual') }}">Stok Barang Jual</a></li>
+                    </ul>
+                </li>
+            @endif
 
+            {{-- ====================== BELI ====================== --}}
+            @if(in_array(session('typeuser'), [1, 2, 3, 4,6, 8, 9]))
+                <li>
+                    <a href="#"><i class="fas fa-cart-arrow-down"></i> Beli</a>
+                    <ul>
+                        <li><a href="{{ route('transaksibeli') }}">Transaksi Pembelian</a></li>
+                        <li><a href="{{ route('batalbeli') }}">Batal Pembelian</a></li>
+                        <li><a href="{{ route('riwayatbeli') }}">Riwayat Pembelian</a></li>
+                        <li><a href="{{ route('riwayatbatalbeli') }}">Riwayat Batal Beli</a></li>
+                        <li><a href="{{ route('selisihbelibatal') }}">Selisih Beli & Batal</a></li>
+                    </ul>
+                </li>
+            @endif
 
-            <!-- navbar JUAL -->
-            <li>
-                <a href="#"><i class="fas fa-cash-register"></i> Jual</a>
-                <ul>
-                    <li><a href="{{ route('transpenjualan') }}">Transaksi Penjualan</a></li>
-                    <li><a href="{{ route('bataljual') }}">Batal Penjualan</a></li>
-                    <li><a href="{{ route('riwayatpenjualan') }}">Riwayat Penjualan</a></li>
-                    <li><a href="{{ route('riwayatbataljual') }}">Riwayat Batal jual</a></li>
-                    <li><a href="{{ route('selisihjual') }}">Selisih Jual & Batal</a></li>
-                    <li><a href="{{ route('stokjual') }}">Stok Barang Jual</a></li>
+            {{-- ====================== PESANAN (Staff & Customer) ====================== --}}
+            @if(in_array(session('typeuser'), [1, 2, 3,6, 8, 10]))
+                <li>
+                    <a href="#"><i class="fas fa-clipboard-list"></i> Pesanan</a>
+                    <ul>
+                        <li><a href="{{ route('daftarpesanan') }}">Daftar Pesanan</a></li>
+                    </ul>
+                </li>
+            @endif
 
-                </ul>
-            </li>
+            {{-- ====================== SERVICE (Kasir & Admin) ====================== --}}
+            @if(in_array(session('typeuser'), [1, 2, 6, 8]))
+                <li>
+                    <a href="#"><i class="fas fa-tools"></i> Service</a>
+                    <ul>
+                        <li><a href="{{ route('transaksiservice') }}">Transaksi Service</a></li>
+                        <li><a href="{{ route('daftarservice') }}">Daftar Service</a></li>
+                    </ul>
+                </li>
+            @endif
 
-            <!-- navbar BELI -->
-            <li>
-                <a href="#"><i class="fas fa-cart-arrow-down"></i> Beli</a>
-                <ul>
-                    <li><a href="{{ route('transaksibeli') }}">Transaksi Pembelian</a></li>
-                    <li><a href="{{ route('batalbeli') }}">Batal Pembelian</a></li>
-                    <li><a href="{{ route('riwayatbeli') }}">Riwayat Pembelian</a></li>
-                    <li><a href="{{ route('riwayatbatalbeli') }}">Riwayat Batal beli</a></li>
-                    <li><a href="{{ route('selisihbelibatal') }}">Selisih Beli & Batal</a></li>
-                </ul>
-            </li>
-
-
-            <!-- navbar PESANAN  -->
-            <li>
-                <a href="#"><i class="fas fa-clipboard-list"></i> Pesanan</a>
-                <ul>
-                    <li><a href="{{ route('daftarpesanan') }}">Daftar Pesanan</a></li>
-                </ul>
-            </li>
-
-
-            <!-- navbar service  -->
-            <li>
-                <a href="#"><i class="fas fa-tools"></i> Service</a>
-                <ul>
-                    <li><a href="{{ route('transaksiservice') }}">Transaksi Service</a></li>
-                    <li><a href="{{ route('daftarservice') }}">Daftar Service</a></li>
-                </ul>
-            </li>
-
-
-            <!-- navbar uang kas  -->
-            @if(session('typeuser') == 1)
+            {{-- ====================== UANG KAS (Admin, Akuntan) ====================== --}}
+            @if(in_array(session('typeuser'), [1,6, 7]))
                 <li>
                     <a href="#"><i class="fa-solid fa-sack-dollar"></i> Uang Kas</a>
                     <ul>
@@ -302,16 +311,14 @@
                     </li>
                     <li><a href="#">Laporan Transaksi Kas</a></li>
                     <li><a href="{{ route('laporan.labarugi') }}">Laporan Laba Rugi</a></li>
-                    <li><a href="{{ route('laporan.stokopname') }}">Laporan Stok Opname</a></li>
+                    <li><a href="#">Laporan Stok Opname</a></li>
                     <li><a href="#">Laporan Tukar Poin</a></li>
                     <li><a href="#">Laporan Tukar Rupiah</a></li>
                     <li><a href="#">Laporan Cuci Sepuh</a></li>
                 </ul>
             </li>
 
-
-
-            <!-- navbar opname  -->
+            {{-- ====================== STOK OPNAME ====================== --}}
             @if(session('typeuser') == 1)
                 <li>
                     <a href="#"><i class="fa-solid fa-building-columns"></i> Stok Opname</a>
@@ -321,52 +328,52 @@
                 </li>
             @endif
 
+            {{-- ====================== UTILITY ====================== --}}
+            @if(in_array(session('typeuser'), [1,6, 7, 8]))
+                <li>
+                    <a href="#"><i class="fas fa-cogs"></i> Utility</a>
+                    <ul>
+                        @if(session('typeuser') == 1)
+                            <li class="has-submenu">
+                                <a href="#">Permintaan Pembelian</a>
+                                <ul class="dropdown-menu-1">
+                                    <li><a href="{{ route('utility.permintaan_pembelian.index') }}">Formulir PP</a></li>
+                                    <li><a href="#">Riwayat PP</a></li>
+                                </ul>
+                            </li>
+                        @endif
 
-
-            <!-- navbar Utility -->
-            <li>
-                <a href="#"><i class="fas fa-cogs"></i> Utility</a>
-                <ul>
-                    @if(session('typeuser') == 1)
                         <li class="has-submenu">
-                            <a href="#">Permintaan Pembelian <span style="float: right;"></span></a>
+                            <a href="#">Akun</a>
                             <ul class="dropdown-menu-1">
-                                <li><a href="{{ route('utility.permintaan_pembelian.index') }}">Formulir PP</a></li>
-                                <li><a href="#">Riwayat PP</a></li>
+                                @if(session('typeuser') == 1)
+                                    <li><a href="{{ route('utility.akun.table_akun') }}">Akun</a></li>
+                                @endif
+                                <li><a href="{{ route('utility.akun.profile') }}">Profil</a></li>
                             </ul>
                         </li>
-                    @endif
 
+                        @if(session('typeuser') == 1)
+                            <li class="has-submenu">
+                                <a href="#">Setting</a>
+                                <ul class="dropdown-menu-1">
+                                    <li><a href="#">Printer BL</a></li>
+                                    <li><a href="{{ route('qr_direktur') }}">QR Direktur Oprasional</a></li>
+                                </ul>
+                            </li>
+                        @endif
 
-                    <li class="has-submenu">
-                        <a href="#">Akun <span style="float: right;"></span></a>
-                        <ul class="dropdown-menu-1">
-                            @if(session('typeuser') == 1)
-                                <li><a href="{{ route('utility.akun.table_akun') }}">Akun</a></li>
-                            @endif
-                            <li><a href="{{ route('utility.akun.profile') }}">Profil</a></li>
-                        </ul>
-                    </li>
+                        <li><a href="#">Tukar Koin</a></li>
+                        <li><a href="#">Tukar Rupiah</a></li>
+                        @if(session('typeuser') == 1)
+                            <li><a href="{{ route('utility.company.company_profile') }}">Profil Perusahaan</a></li>
+                        @endif
+                        <li><a href="{{ route('backup') }}">Backup Data</a></li>
+                        <li><a href="#">Dokumen</a></li>
+                    </ul>
+                </li>
+            @endif
 
-                    @if(session('typeuser') == 1)
-                        <li class="has-submenu">
-                            <a href="#">Setting <span style="float: right;"></span></a>
-                            <ul class="dropdown-menu-1">
-                                <li><a href="#">Printer BL</a></li>
-                                <li><a href="{{ route('qr_direktur') }}">QR Direktur Oprasional</a></li>
-                            </ul>
-                        </li>
-                    @endif
-
-                    <li><a href="#">Tukar Koin</a></li>
-                    <li><a href="#">Tukar Rupiah</a></li>
-                    @if(session('typeuser') == 1)
-                        <li><a href="{{ route('utility.company.company_profile') }}">Profil Perusahaan</a></li>
-                    @endif
-                    <li><a href="{{ route('backup') }}">Backup Data</a></li>
-                    <li><a href="#">Dokumen</a></li>
-                </ul>
-            </li>
         </ul>
 
         <div class="navbar-icons">

@@ -38,7 +38,6 @@
                     <option value="csv">Export CSV</option>
                     <option value="excel">Export Excel</option>
                 </select>
-                <button class="btn-primary" onclick="openModal('modalTambah')">+ Tambah Kategori</button>
             </div>
             <div style="display:flex; align-items:center; gap:6px;">
                 <div class="icon-group">
@@ -61,35 +60,30 @@
                     <th>Kd baki</th>
                     <th>Berat</th>
                     <th>Kadar</th>
-                    <th>Status berakhir</th>
                     <th>Kdtoko</th>
-                    <th>delete by</th>
+                    <th>faktur barang hapus</th>
                     <th>Tgl Hapus</th>
                     <th>action</th>
                 </tr>
             </thead>
             <tbody>
+                @foreach($barangTerhapus as $bt)
                     <tr>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
+                        <td>{{ $bt->kdbarang }}</td>
+                        <td>{{ $bt->barcode }}</td>
+                        <td>{{ $bt->namabarang }}</td>
+                        <td>{{ $bt->kdkategori }}</td>
+                        <td>{{ $bt->kdbaki }}</td>
+                        <td>{{ $bt->berat }}</td>
+                        <td>{{ $bt->kadar }}</td>
+                        <td>{{ $bt->kdtoko }}</td>
+                        <td>{{ $bt->fakturbaranghapus }}</td>
+                        <td>{{ $bt->tanggalhapus }}</td>
                         <td>
-                            <button class="action-btn">
-                                <i class="fa-solid fa-pen-to-square"></i>
-                            </button>
-                            <button class="action-btn" >
-                                <i class="fas fa-trash"></i>
-                            </button>
+                            <button class="action-btn"><i class="fas fa-eye"></i></button>
                         </td>
                     </tr>
+                @endforeach
             </tbody>
         </table>
 

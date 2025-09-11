@@ -8,6 +8,7 @@ class BarangTerhapusController extends Controller
 {
     public function index(Request $request)
     {
-        return view('barang.barangterhapus');
+        $barangTerhapus = \App\Models\BarangTerhapus::all();
+        return view('barang.barangterhapus', compact('barangTerhapus'));
     }
 }

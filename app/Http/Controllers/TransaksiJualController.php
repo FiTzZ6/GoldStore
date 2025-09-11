@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Pelanggan;
+use App\Models\BarangTerjual;
 use App\Models\Staff;
 use App\Models\Barang;
 use App\Models\StokJual;
@@ -32,12 +33,12 @@ class TransaksiJualController extends Controller
             return back()->with('error', 'Data item kosong atau tidak valid');
         }
 
-        // cek duplikat faktur
         if (TransPenjualan::where('nofaktur', $data['nofaktur'])->exists()) {
             return back()->with('error', 'Nomor faktur sudah ada, silakan generate ulang.');
         }
 
         foreach ($items as $item) {
+            // simpan transaksi penjualan
             TransPenjualan::create([
                 'nofaktur' => $data['nofaktur'],
                 'namastaff' => $data['namastaff'],
@@ -54,8 +55,26 @@ class TransaksiJualController extends Controller
                 'created_at' => now(),
             ]);
 
+            // ambil data barang dari tabel stokjual/barang
+            $stok = StokJual::with('barang')->where('barcode', $item['code'])->first();
+
+            if ($stok && $stok->barang) {
+                BarangTerjual::create([
+                    'fakturbarangterjual' => $data['nofaktur'],
+                    'namabarang' => $item['name'],
+                    'barcode' => $item['code'],
+                    'kdbaki' => $stok->barang->kdbaki ?? '-',
+                    'berat' => $stok->barang->berat ?? 0,
+                    'kadar' => $stok->barang->kadar ?? 0,
+                    'harga' => $item['price'],
+                    'namastaff' => $data['namastaff'],
+                    'tanggalterjual' => now()->toDateString(),
+                ]);
+            } else {
+                \Log::warning("Barang dengan barcode {$item['code']} tidak ditemukan di stokjual/barang");
+            }
+
             // update stok
-            $stok = StokJual::where('barcode', $item['code'])->first();
             if ($stok) {
                 $stok->stok -= $item['quantity'];
                 $stok->save();
@@ -65,6 +84,7 @@ class TransaksiJualController extends Controller
         return redirect()->route('transpenjualan')
             ->with('success', 'Transaksi berhasil disimpan');
     }
+
 
     private function generateNoFaktur()
     {

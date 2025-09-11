@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="id">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -8,8 +9,9 @@
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
+
 <body>
-@include('partials.navbar')
+    @include('partials.navbar')
     <div class="container">
         <div class="header">
             <h1><i class="fas fa-exchange-alt"></i> DAFTAR SERVICE</h1>
@@ -27,9 +29,9 @@
             </div>
             <div class="right-controls">
                 <div class="icon-group">
-                            <button title="Sorting" onclick="sortTable()"><i class="fas fa-sort"></i></button>
-                            <button title="Refresh" onclick="refreshPage()"><i class="fas fa-sync"></i></button>
-                        </div>
+                    <button title="Sorting" onclick="sortTable()"><i class="fas fa-sort"></i></button>
+                    <button title="Refresh" onclick="refreshPage()"><i class="fas fa-sync"></i></button>
+                </div>
                 <div class="search-section">
                     <input type="text" placeholder="Search">
                     <button><i class="fas fa-search"></i></button>
@@ -53,15 +55,34 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <tr class="no-data">
-                            <td colspan="7">
-                                <div class="no-data-message">
-                                    <i class="fas fa-database"></i>
-                                    <p>No matching records found</p>
-                                </div>
-                            </td>
-                        </tr>
+                        @forelse($data as $item)
+                            <tr>
+                                <td>{{ $item->fakturservice }}</td>
+                                <td>{{ $item->tanggalservice }}</td>
+                                <td>{{ $item->tanggalambil }}</td>
+                                <td>{{ $item->namapelanggan }}</td>
+                                <td>{{ $item->alamat ?? '-' }}</td>
+                                <td>{{ $item->notelp }}</td>
+                                <td>{{ $item->staff }}</td>
+                                <td>
+                                    <a href="{{ route('transaksiservice.cetak', $item->id) }}"
+                                        class="btn btn-sm btn-primary">
+                                        <i class="fas fa-print"></i> Cetak
+                                    </a>
+                                </td>
+                            </tr>
+                        @empty
+                            <tr class="no-data">
+                                <td colspan="8">
+                                    <div class="no-data-message">
+                                        <i class="fas fa-database"></i>
+                                        <p>No matching records found</p>
+                                    </div>
+                                </td>
+                            </tr>
+                        @endforelse
                     </tbody>
+
                 </table>
             </div>
         </div>
@@ -69,15 +90,15 @@
 
     <script>
         // Script untuk interaksi dasar
-        document.addEventListener('DOMContentLoaded', function() {
+        document.addEventListener('DOMContentLoaded', function () {
             const searchInput = document.querySelector('.search-section input');
             const searchButton = document.querySelector('.search-section button');
-            
-            searchButton.addEventListener('click', function() {
+
+            searchButton.addEventListener('click', function () {
                 alert('Fitur pencarian: ' + searchInput.value);
             });
-            
-            searchInput.addEventListener('keypress', function(e) {
+
+            searchInput.addEventListener('keypress', function (e) {
                 if (e.key === 'Enter') {
                     alert('Fitur pencarian: ' + searchInput.value);
                 }
@@ -85,4 +106,5 @@
         });
     </script>
 </body>
+
 </html>

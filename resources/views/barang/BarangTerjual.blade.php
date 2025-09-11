@@ -38,7 +38,6 @@
                     <option value="csv">Export CSV</option>
                     <option value="excel">Export Excel</option>
                 </select>
-                <button class="btn-primary" onclick="openModal('modalTambah')">+ Tambah Kategori</button>
             </div>
             <div style="display:flex; align-items:center; gap:6px;">
                 <div class="icon-group">
@@ -66,25 +65,36 @@
                 </tr>
             </thead>
             <tbody>
+                @forelse($barangTerjual as $barang)
                     <tr>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
+                        <td>{{ $barang->namabarang }}</td>
+                        <td>{{ $barang->barcode }}</td>
+                        <td>{{ $barang->kdbaki }}</td>
+                        <td>{{ $barang->berat }}</td>
+                        <td>{{ $barang->kadar }}</td>
+                        <td>{{ $barang->tanggalterjual }}</td>
+                        <td>{{ number_format($barang->harga, 0, ',', '.') }}</td>
+                        <td>{{ $barang->namastaff }}</td>
                         <td>
                             <button class="action-btn">
                                 <i class="fa-solid fa-pen-to-square"></i>
                             </button>
-                            <button class="action-btn" >
-                                <i class="fas fa-trash"></i>
-                            </button>
+                            <form action="#" method="POST" style="display:inline;">
+                                @csrf
+                                @method('DELETE')
+                                <button class="action-btn">
+                                    <i class="fas fa-trash"></i>
+                                </button>
+                            </form>
                         </td>
                     </tr>
+                @empty
+                    <tr>
+                        <td colspan="9" style="text-align:center;">Belum ada barang terjual</td>
+                    </tr>
+                @endforelse
             </tbody>
+
         </table>
 
         <div class="footer">

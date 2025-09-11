@@ -62,7 +62,7 @@ use App\Http\Controllers\PembelianUmumController;
 use App\Http\Controllers\PersediaanBarangController;
 use App\Http\Controllers\StokBarangController;
 use App\Http\Controllers\StokKosongController;
-//laporanlabarugi
+//labarugi
 use App\Http\Controllers\LabaRugiController;
 //laporanstokopname
 use App\Http\Controllers\LPopnameController;
@@ -215,9 +215,6 @@ Route::get('/BarangTerjual', [BarangTerjualController::class, 'index'])->name('B
 Route::get('/BarangTerhapus', [BarangTerhapusController::class, 'index'])->name('barangterhapus');
 
 
-//BarangTerima-Barang
-Route::get('/terimabarang', [TerimaBarangController::class, 'index'])->name('terimabarang');
-
 
 //BarangCuciSepuh-FormPenyimpanan
 Route::get('/FormPenyimpanan', [FormPenyimpananController::class, 'index'])->name('formpenyimpanan');
@@ -282,7 +279,7 @@ Route::get('/transaksi/{nofaktur}/struk', [TransaksiJualController::class, 'stru
     ->name('transpenjualan.struk');
 Route::get('/transaksi/{nofaktur}/struk-pdf', [TransaksiJualController::class, 'strukPdf'])
     ->name('transpenjualan.struk.pdf');
-    
+
 
 
 //JualSelisih-jual
@@ -305,6 +302,9 @@ Route::get('/daftarPesanan', [DaftarPesananController::class, 'index'])->name('d
 
 //Service-Transaksi Service
 Route::get('/TransaksiService', [TransaksiServiceController::class, 'index'])->name('transaksiservice');
+Route::post('/TransaksiService/store', [TransaksiServiceController::class, 'store'])->name('transaksiservice.store');
+Route::get('/api/trans-service', [TransaksiServiceController::class, 'data']);
+Route::get('/transaksiservice/cetak/{id}', [TransaksiServiceController::class, 'cetak'])->name('transaksiservice.cetak');
 
 //Service-Daftar Service
 Route::get('/DaftarService', [DaftarServiceController::class, 'index'])->name('daftarservice');
@@ -349,10 +349,6 @@ Route::post('/setting-qr_direktur', [QRDirekturController::class, 'store'])->nam
 Route::get('/laba-rugi', [LabaRugiController::class, 'index'])->name('labarugi');
 Route::get('/laba-rugi', [LabaRugiController::class, 'labaRugi'])->name('laporan.labarugi');
 Route::post('/laba-rugi', [LabaRugiController::class, 'labaRugiShow'])->name('laporan.labarugi.show');
-
-//Laporan Stok Opname
-Route::get('/laporan/stok-opname', [LPopnameController::class, 'index'])->name('laporan.stokopname');
-Route::post('/laporan/stok-opname', [LPopnameController::class, 'show'])->name('laporan.stokopname.show');
 
 Route::get('/', function () {
     return view('login');
