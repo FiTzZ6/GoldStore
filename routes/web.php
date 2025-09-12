@@ -62,6 +62,13 @@ use App\Http\Controllers\PembelianUmumController;
 use App\Http\Controllers\PersediaanBarangController;
 use App\Http\Controllers\StokBarangController;
 use App\Http\Controllers\StokKosongController;
+use App\Http\Controllers\LPPenjualanUmumController;
+use App\Http\Controllers\LPPenjualanBatalJualController;
+use App\Http\Controllers\LPPenjualanStaffController;
+use App\Http\Controllers\LaporanTransKasController;
+use App\Http\Controllers\LaporanCuciSepuhController;
+use App\Http\Controllers\LaporanTukarRupiahController;
+use App\Http\Controllers\FormulirPPController;
 //labarugi
 use App\Http\Controllers\LabaRugiController;
 //laporanstokopname
@@ -89,12 +96,13 @@ Route::post('/utility/company-profile', [UtilityController::class, 'setUpCompany
     ->name('utility.company.set_up_company');
 
 // Formulir PP
-Route::get('/formulir_pp', [UtilityController::class, 'index'])
-    ->name('formulir_pp.index'); // halaman list atau index
-Route::get('/formulir_pp/create', [UtilityController::class, 'create'])
-    ->name('formulir_pp.create'); // halaman form input
-Route::post('/utility/permintaan-pembelian/kirim', [UtilityController::class, 'kirimPP'])
-    ->name('utility.kirim_pp');
+Route::get('/formulir_pp', [FormulirPPController::class, 'index'])->name('formulir_pp');
+Route::post('/formulir_pp/store', [FormulirPPController::class, 'store'])->name('formulir_pp.store');
+Route::get('/generate-nopp/{kdtoko}', [FormulirPPController::class, 'generateNopp']);
+Route::get('/formulirpp/search-barang', [FormulirPPController::class, 'searchBarang'])->name('formulirpp.search.barang');
+
+
+
 
 // Akun Management
 Route::get('/utility/akun', [LoginController::class, 'listAkun'])
@@ -334,6 +342,24 @@ Route::get('/LaporanHapusBarang', [HapusBarangController::class, 'index'])->name
 
 //LaporanPembelian-PembelianUmum
 Route::get('/LaporanPembelianUmum', [PembelianUmumController::class, 'index'])->name('pembelianumum');
+
+//LaporanPenjualan-PenjualanUmum
+Route::get('/LaporanPenjualanUmum', [LPPenjualanUmumController::class, 'index'])->name('penjualanumum');
+
+//LaporanPenjualan-BatalJual
+Route::get('/LaporanPenjualanBatalJual', [LPPenjualanBatalJualController::class, 'index'])->name('penjualanbataljual');
+
+//LaporanPenjualan-PenjualanStaff
+Route::get('/LaporanPenjualanStaff', [LPPenjualanStaffController::class, 'index'])->name('penjualanstaff');
+
+//Laporan-LaporanTransKas
+Route::get('/LaporanTransKas', [LaporanTransKasController::class, 'index'])->name('laporankas');
+
+//Laporan-LaporanCuciSepuh
+Route::get('/LaporanCuciSepuh', [LaporanCuciSepuhController::class, 'index'])->name('laporancucisepuh');
+
+//Laporan-LaporanTukarRupiah
+Route::get('/LaporanTukarRupiah', [LaporanTukarRupiahController::class, 'index'])->name('laporantukarrupiah');
 
 //StokOpname- Stok Opname Global
 Route::get('/stokopname', [StokOpnameController::class, 'index'])->name('stokopname');

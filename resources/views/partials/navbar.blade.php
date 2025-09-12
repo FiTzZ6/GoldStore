@@ -304,17 +304,17 @@
                     <li class="has-submenu">
                         <a href="#">Laporan Penjualan<span style="float: right;"></span></a>
                         <ul class="dropdown-menu">
-                            <li><a href="#">Penjualan Umum</a></li>
-                            <li><a href="#">Penjualan Staff</a></li>
-                            <li><a href="#">Batal Jual</a></li>
+                            <li><a href="{{ route('penjualanumum') }}">Penjualan Umum</a></li>
+                            <li><a href="{{ route('penjualanstaff') }}">Penjualan Staff</a></li>
+                            <li><a href="{{ route('penjualanbataljual') }}">Batal Jual</a></li>
                         </ul>
                     </li>
-                    <li><a href="#">Laporan Transaksi Kas</a></li>
+                    <li><a href="{{ route('laporankas') }}">Laporan Transaksi Kas</a></li>
                     <li><a href="{{ route('laporan.labarugi') }}">Laporan Laba Rugi</a></li>
                     <li><a href="{{ route('laporan.stokopname') }}">Laporan Stok Opname</a></li>
                     <li><a href="#">Laporan Tukar Poin</a></li>
-                    <li><a href="#">Laporan Tukar Rupiah</a></li>
-                    <li><a href="#">Laporan Cuci Sepuh</a></li>
+                    <li><a href="{{ route('laporantukarrupiah') }}">Laporan Tukar Rupiah</a></li>
+                    <li><a href="{{ route('laporancucisepuh') }}">Laporan Cuci Sepuh</a></li>
                 </ul>
             </li>
 
@@ -337,8 +337,8 @@
                             <li class="has-submenu">
                                 <a href="#">Permintaan Pembelian</a>
                                 <ul class="dropdown-menu-1">
-                                    <li><a href="{{ route('utility.permintaan_pembelian.index') }}">Formulir PP</a></li>
-                                    <li><a href="#">Riwayat PP</a></li>
+                                    <li><a href="{{ route('formulir_pp') }}">Formulir PP</a></li>
+                                    <li><a href="{{ route('utility.permintaan_pembelian.index') }}">Riwayat PP</a></li>
                                 </ul>
                             </li>
                         @endif

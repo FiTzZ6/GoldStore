@@ -1,0 +1,123 @@
+<?php
+
+namespace App\Http\Controllers;
+
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+use App\Models\DetailPP;
+use App\Models\Toko;
+use Carbon\Carbon;
+
+class FormulirPPController extends Controller
+{
+    public function index()
+    {
+        $toko = Toko::all();
+        return view('utility.permintaan_pembelian.formulir_pp', compact('toko'));
+    }
+
+    public function store(Request $request)
+    {
+        $kdtoko = $request->input('kdtoko'); // ambil kode toko dari form
+        $tanggal_permintaan = Carbon::now();
+        $tanggal_dibutuhkan = $request->input('tanggal_dibutuhkan');
+
+        // ====== Generate No. PP Otomatis ======
+        $tahunBulan = Carbon::now()->format('ym'); // contoh: 2509 untuk Sept 2025
+
+        $last = DetailPP::where('kdtoko', $kdtoko)
+            ->whereYear('created_at', Carbon::now()->year)
+            ->orderBy('id', 'desc')
+            ->first();
+
+        if ($last) {
+            $lastNumber = intval(substr($last->nopp, -4)); // ambil 4 digit terakhir
+            $newNumber = str_pad($lastNumber + 1, 4, '0', STR_PAD_LEFT);
+        } else {
+            $newNumber = '0001';
+        }
+
+        $nopp = "PP-{$tahunBulan}-{$kdtoko}-{$newNumber}";
+        // =====================================
+
+        // Ambil semua input array
+        $namabarang  = $request->input('namabarang', []);
+        $spesifikasi = $request->input('spesifikasi', []);
+        $jumlah      = $request->input('jumlah', []);
+        $satuan      = $request->input('satuan', []);
+        $supplier1   = $request->input('supplier1', []);
+        $harga1      = $request->input('harga1', []);
+        $supplier2   = $request->input('supplier2', []);
+        $harga2      = $request->input('harga2', []);
+        $supplier3   = $request->input('supplier3', []);
+        $harga3      = $request->input('harga3', []);
+
+        // Loop simpan barang
+        for ($i = 0; $i < count($namabarang); $i++) {
+            if (empty($namabarang[$i])) continue;
+
+            DetailPP::create([
+                'nopp'               => $nopp,
+                'kdtoko'             => $kdtoko,
+                'namabarang'         => $namabarang[$i],
+                'spesifikasi'        => $spesifikasi[$i],
+                'jumlah'             => $jumlah[$i],
+                'satuan'             => $satuan[$i],
+                'supplier1'          => $supplier1[$i],
+                'harga1'             => $harga1[$i],
+                'supplier2'          => $supplier2[$i],
+                'harga2'             => $harga2[$i],
+                'supplier3'          => $supplier3[$i],
+                'harga3'             => $harga3[$i],
+                'tanggal_permintaan' => $tanggal_permintaan,
+                'tanggal_dibutuhkan' => $tanggal_dibutuhkan,
+            ]);
+        }
+
+        return redirect()->route('formulir_pp')->with('success', "Data berhasil disimpan dengan No. PP {$nopp}!");
+    }
+
+    public function create()
+    {
+        // Ambil data toko buat pilihan
+        $toko = DB::table('toko')->get();
+
+        return view('formulir_pp', compact('toko'));
+    }
+
+
+    public function generateNopp($kdtoko)
+    {
+        $tahunBulan = Carbon::now()->format('ym');
+
+        // Cari nomor terakhir untuk toko & periode yg sama
+        $last = DetailPP::where('kdtoko', $kdtoko)
+            ->whereYear('created_at', Carbon::now()->year)
+            ->whereMonth('created_at', Carbon::now()->month)
+            ->orderBy('id', 'desc')
+            ->first();
+
+        if ($last) {
+            $lastNumber = intval(substr($last->nopp, -4));
+            $newNumber = str_pad($lastNumber + 1, 4, '0', STR_PAD_LEFT);
+        } else {
+            $newNumber = '0001';
+        }
+
+        $nopp = "PP-{$tahunBulan}-{$kdtoko}-{$newNumber}";
+
+        return response()->json(['nopp' => $nopp]);
+    }
+
+    public function searchBarang(Request $request)
+    {
+        $keyword = $request->get('q');
+
+        $barang = \App\Models\Barang::with('supplier')
+            ->where('namabarang', 'like', "%{$keyword}%")
+            ->limit(10)
+            ->get();
+
+        return response()->json($barang);
+    }
+}

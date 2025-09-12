@@ -14,7 +14,7 @@
 
     <!-- Judul dan Tombol -->
     <div class="header-pp">
-        <a href="{{ route('formulir_pp.index') }}" class="btn-primary">
+        <a href="{{ route('formulir_pp') }}" class="btn-primary">
             <i class="fa fa-plus"></i> Formulir Permintaan Pembelian
         </a>
     </div>

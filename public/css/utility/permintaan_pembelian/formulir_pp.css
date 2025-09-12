@@ -14,7 +14,7 @@ body {
 }
 
 .container {
-    max-width: 1400px;
+    max-width: 1800px;
     margin: 20px auto;
     background: white;
     border-radius: 12px;
@@ -44,11 +44,19 @@ body {
     padding: 30px;
 }
 
-.form-header, .form-details {
+.form-header {
     display: grid;
-    grid-template-columns: 1fr 1fr;
+    grid-template-columns: 1fr 1fr; /* 2 kolom */
     gap: 20px;
     margin-bottom: 25px;
+}
+
+/* Atur supaya field dalam kolom tersusun vertikal */
+.form-header .left-col,
+.form-header .right-col {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
 }
 
 .form-group {
@@ -75,6 +83,43 @@ body {
     background: #e9ecef;
     color: #495057;
     font-weight: 500;
+}
+
+.mb-3 {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    margin-bottom: 20px;
+}
+
+.mb-3 label {
+    font-weight: 500;
+    color: #2c3e50;
+    font-size: 14px;
+}
+
+.mb-3 input,
+.mb-3 select {
+    padding: 12px 15px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    font-family: 'Poppins', sans-serif;
+    font-size: 14px;
+    background: #f8f9fa;
+    transition: all 0.2s ease-in-out;
+}
+
+.mb-3 input:read-only {
+    background: #e9ecef;
+    color: #495057;
+    font-weight: 500;
+}
+
+.mb-3 input:focus,
+.mb-3 select:focus {
+    outline: none;
+    border-color: #4a6491;
+    box-shadow: 0 0 0 2px rgba(74, 100, 145, 0.2);
 }
 
 .divider {
