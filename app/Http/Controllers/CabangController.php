@@ -50,7 +50,7 @@ class CabangController extends Controller
             'namatoko' => 'nullable|max:100',
             'alamattoko' => 'nullable|max:100',
             'area' => 'nullable|max:50',
-            'kdtoko' => 'required|max:50|unique:toko,kdtoko,' . $toko->kdtoko . ',kdtoko',
+            // 'kdtoko' => 'required|max:50|unique:toko,kdtoko,' . $toko->kdtoko . ',kdtoko',
         ]);
 
         $logoName = $toko->logo;
