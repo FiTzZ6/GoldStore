@@ -69,6 +69,8 @@
                     <th>Harga Jual</th>
                     <th>Ongkos</th>
                     <th>Stok</th>
+                    <th>Stok Terjual</th>
+                    <th>Stok Total</th>
                     <th>Aksi</th>
                 </tr>
             </thead>
@@ -80,23 +82,27 @@
                         <td>{{ $row->namabarang }}</td>
                         <td>{{ $row->berat }}</td>
                         <td>{{ $row->kadar }}</td>
-                        <td>{{ $row->hargabeli }}</td>
-                        <td>{{ $row->hargajual }}</td>
-                        <td>{{ $row->ongkos }}</td>
+                        <td>Rp {{ number_format($row->hargabeli, 0, ',', '.') }}</td>
+                        <td>Rp {{ number_format($row->hargajual, 0, ',', '.') }}</td>
+                        <td>Rp {{ number_format($row->ongkos, 0, ',', '.') }}</td>
                         <td>{{ $row->stok }}</td>
+                        <td>{{ $row->stokterjual }}</td>
+                        <td>{{ $row->stoktotal }}</td>
                         <td>
                             <!-- Tombol Edit -->
                             <button class="action-btn" onclick="openEdit(
-                                                                                                            '{{ $row->nofaktur }}',
-                                                                                                            '{{ $row->barcode }}',
-                                                                                                            '{{ $row->namabarang }}',
-                                                                                                            '{{ $row->berat }}',
-                                                                                                            '{{ $row->kadar }}',
-                                                                                                            '{{ $row->hargabeli }}',
-                                                                                                            '{{ $row->hargajual }}',
-                                                                                                            '{{ $row->ongkos }}',
-                                                                                                            '{{ $row->stok }}'
-                                                                                                        )">
+                                                        '{{ $row->nofaktur }}',
+                                                        '{{ $row->barcode }}',
+                                                        '{{ $row->namabarang }}',
+                                                        '{{ $row->berat }}',
+                                                        '{{ $row->kadar }}',
+                                                        '{{ $row->hargabeli }}',
+                                                        '{{ $row->hargajual }}',
+                                                        '{{ $row->ongkos }}',
+                                                        '{{ $row->stok }}',
+                                                        '{{ $row->stokterjual }}',
+                                                        '{{ $row->stoktotal }}'
+                                                    )">
                                 <i class="fa-solid fa-pen-to-square"></i>
                             </button>
 
@@ -132,34 +138,36 @@
                         @endforeach
                     </select>
 
-
                     <label>Nama Barang</label>
-                    <input type="text" name="namabarang" required>
+                    <input type="text" name="namabarang" id="namabarang" required>
 
                     <label>Berat</label>
-                    <input type="number" step="0.01" name="berat" required>
+                    <input type="number" step="0.01" name="berat" id="berat" required>
 
                     <label>Kadar</label>
-                    <input type="text" name="kadar" required>
+                    <input type="text" name="kadar" id="kadar" required>
 
                     <label>Harga Beli</label>
-                    <input type="number" name="hargabeli" required>
+                    <input type="number" name="hargabeli" id="hargabeli" required>
 
                     <label>Harga Jual</label>
-                    <input type="number" name="hargajual" required>
+                    <input type="number" name="hargajual" id="hargajual" required>
 
                     <label>Ongkos</label>
-                    <input type="number" name="ongkos">
+                    <input type="number" name="ongkos" id="ongkos">
 
                     <label>Stok</label>
-                    <input type="number" name="stok" required>
+                    <input type="number" name="stok" id="stok" required>
 
-                    <button type="submit">Simpan</button>
+                    <div class="form-buttons">
+                        <button type="button" class="btn-cancel" onclick="closeModal('modalTambah')">Batal</button>
+                        <button type="submit" class="btn-submit">Simpan</button>
+                    </div>
                 </form>
             </div>
         </div>
 
-        <!-- ✅ Modal Edit -->
+        <!-- Modal Edit -->
         <div id="modalEdit" class="modal">
             <div class="modal-content">
                 <span class="close" onclick="closeModal('modalEdit')">&times;</span>
@@ -192,12 +200,21 @@
                     <label>Stok</label>
                     <input type="number" name="stok" id="edit_stok" required>
 
-                    <button type="submit">Update</button>
+                    <label>Stok Terjual</label>
+                    <input type="number" name="stokterjual" id="edit_stokterjual">
+
+                    <label>Stok Total</label>
+                    <input type="number" name="stoktotal" id="edit_stoktotal">
+
+                    <div class="form-buttons">
+                        <button type="button" class="btn-cancel" onclick="closeModal('modalEdit')">Batal</button>
+                        <button type="submit" class="btn-submit">Update</button>
+                    </div>
                 </form>
             </div>
         </div>
 
-        <!-- ✅ Modal Hapus -->
+        <!-- Modal Hapus -->
         <div id="modalHapus" class="modal">
             <div class="modal-content">
                 <span class="close" onclick="closeModal('modalHapus')">&times;</span>
@@ -206,7 +223,10 @@
                 <form id="formHapus" method="POST">
                     @csrf
                     @method('DELETE')
-                    <button type="submit">Hapus</button>
+                    <div class="form-buttons">
+                        <button type="button" class="btn-cancel" onclick="closeModal('modalHapus')">Batal</button>
+                        <button type="submit" class="btn-delete">Hapus</button>
+                    </div>
                 </form>
             </div>
         </div>
@@ -216,6 +236,7 @@
 
     <script>
 
+        // Fungsi untuk membuka modal
         function openModal(id) {
             document.getElementById(id).style.display = "block";
 
@@ -224,7 +245,7 @@
                 $('#barangSelect').select2({
                     placeholder: "Cari barcode / nama barang...",
                     allowClear: true,
-                    dropdownParent: $('#' + id)
+                    dropdownParent: $('#modalTambah')
                 });
             }
 
@@ -232,32 +253,36 @@
             $('#barangSelect').on('change', function () {
                 let selected = $(this).find(':selected');
 
-                $("input[name='namabarang']").val(selected.data('namabarang') || '');
-                $("input[name='berat']").val(selected.data('berat') || '');
-                $("input[name='kadar']").val(selected.data('kadar') || '');
-                $("input[name='hargabeli']").val(selected.data('hargabeli') || '');
-                $("input[name='hargajual']").val(selected.data('hargajual') || '');
-                $("input[name='ongkos']").val(selected.data('ongkos') || '');
-                $("input[name='stok']").val(selected.data('stok') || '');
+                $("#namabarang").val(selected.data('namabarang') || '');
+                $("#berat").val(selected.data('berat') || '');
+                $("#kadar").val(selected.data('kadar') || '');
+                $("#hargabeli").val(selected.data('hargabeli') || '');
+                $("#hargajual").val(selected.data('hargajual') || '');
+                $("#ongkos").val(selected.data('ongkos') || '');
+                $("#stok").val(selected.data('stok') || '');
             });
         }
 
+        // Fungsi untuk menutup modal
         function closeModal(id) {
             document.getElementById(id).style.display = "none";
 
             // Reset select2 dan field
-            $('#barangSelect').val(null).trigger('change');
-            $("input[name='namabarang']").val('');
-            $("input[name='berat']").val('');
-            $("input[name='kadar']").val('');
-            $("input[name='hargabeli']").val('');
-            $("input[name='hargajual']").val('');
-            $("input[name='ongkos']").val('');
-            $("input[name='stok']").val('');
+            if ($('#barangSelect').hasClass("select2-hidden-accessible")) {
+                $('#barangSelect').val(null).trigger('change');
+            }
+
+            $("#namabarang").val('');
+            $("#berat").val('');
+            $("#kadar").val('');
+            $("#hargabeli").val('');
+            $("#hargajual").val('');
+            $("#ongkos").val('');
+            $("#stok").val('');
         }
 
-        // ✅ Edit Modal
-        function openEdit(nofaktur, barcode, namabarang, berat, kadar, hargabeli, hargajual, ongkos, stok) {
+        // Fungsi untuk membuka modal edit
+        function openEdit(nofaktur, barcode, namabarang, berat, kadar, hargabeli, hargajual, ongkos, stok, stokterjual, stoktotal) {
             document.getElementById("formEdit").action = "/stokjual/" + nofaktur;
             document.getElementById("edit_barcode").value = barcode;
             document.getElementById("edit_namabarang").value = namabarang;
@@ -267,10 +292,12 @@
             document.getElementById("edit_hargajual").value = hargajual;
             document.getElementById("edit_ongkos").value = ongkos;
             document.getElementById("edit_stok").value = stok;
+            document.getElementById("edit_stokterjual").value = stokterjual;
+            document.getElementById("edit_stoktotal").value = stoktotal;
             openModal("modalEdit");
         }
 
-        // ✅ Delete Modal
+        // Fungsi untuk membuka modal hapus
         function openDelete(nofaktur) {
             document.getElementById("formHapus").action = "/stokjual/" + nofaktur;
             openModal("modalHapus");

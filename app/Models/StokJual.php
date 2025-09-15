@@ -21,7 +21,9 @@ class StokJual extends Model
         'ongkos',
         'berat',
         'kadar',
-        'stok'
+        'stok',
+        'stokterjual',
+        'stoktotal'
     ];
 
 
@@ -32,8 +34,8 @@ class StokJual extends Model
 
         // Ambil nofaktur terakhir dengan prefix ini
         $last = self::where('nofaktur', 'like', $prefix . '%')
-                    ->orderBy('nofaktur', 'desc')
-                    ->first();
+            ->orderBy('nofaktur', 'desc')
+            ->first();
 
         if ($last) {
             // Ambil angka urut terakhir

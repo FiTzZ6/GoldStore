@@ -80,7 +80,10 @@ class TransaksiJualController extends Controller
                         'tanggalterjual' => now()->toDateString(),
                     ]);
 
-                    $stok->stok -= $item['quantity'];
+                    // 🔹 Update stok di tabel StokJual
+                    $stok->stok -= $item['quantity'];                // stok berkurang
+                    $stok->stokterjual += $item['quantity'];         // stok terjual bertambah
+                    $stok->stoktotal = $stok->stok + $stok->stokterjual; // hitung ulang stok total
                     $stok->save();
                 }
             }
