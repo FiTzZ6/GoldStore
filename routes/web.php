@@ -73,6 +73,7 @@ use App\Http\Controllers\FormulirPPController;
 use App\Http\Controllers\LabaRugiController;
 //laporanstokopname
 use App\Http\Controllers\LPopnameController;
+use App\Http\Controllers\SuratKirimController;
 
 
 Route::get('/login', [LoginController::class, 'index'])->name('login');
@@ -218,7 +219,32 @@ Route::delete('/StokBarang/{id}', [BarangStokController::class, 'destroy'])->nam
 //BarangTerjual-barang
 Route::get('/BarangTerjual', [BarangTerjualController::class, 'index'])->name('BarangTerjual');
 
-Route::get('/TerimaBarang', [TerimaBarangController::class, 'index'])->name('terimabarang.index');
+
+
+Route::prefix('terimabarang')->name('terimabarang.')->group(function () {
+    Route::get('/', [TerimaBarangController::class, 'index'])->name('index');
+    Route::post('/{nokirim}/terima', [TerimaBarangController::class, 'terima'])->name('terima');
+    Route::get('/{nokirim}/preview', [TerimaBarangController::class, 'previewPdf'])->name('preview');
+    Route::get('/{nokirim}/cetak', [TerimaBarangController::class, 'cetakPdf'])->name('cetak');
+    Route::get('/{nokirim}', [TerimaBarangController::class, 'show'])->name('show');
+});
+
+Route::prefix('suratkirim')->name('suratkirim.')->group(function () {
+    // daftar semua surat kirim
+    Route::get('/', [SuratKirimController::class, 'index'])->name('index');
+
+    // form tambah surat
+    Route::get('/create', [SuratKirimController::class, 'create'])->name('create');
+
+    // simpan surat kirim
+    Route::post('/', [SuratKirimController::class, 'store'])->name('store');
+
+    // edit surat
+    Route::get('/{nokirim}/edit', [SuratKirimController::class, 'edit'])->name('edit');
+
+    // update surat
+    Route::put('/{nokirim}', [SuratKirimController::class, 'update'])->name('update');
+});
 
 
 //BarangTerhapus-Barang
