@@ -27,4 +27,10 @@ class TransPenjualan extends Model
         'quantity',        // 🔹 sebelumnya belum ada di model
         'pembayaran'
     ];
+
+    // relasi ke barang
+    public function barang()
+    {
+        return $this->belongsTo(Barang::class, 'barcode', 'barcode');
+    }
 }

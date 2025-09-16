@@ -4,13 +4,13 @@
             box-sizing: border-box;
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         }
-
+        
         body {
             background-color: #f5f7f9;
             color: #333;
             padding: 20px;
         }
-
+        
         .container {
             max-width: 1400px;
             margin: 20px auto;
@@ -19,7 +19,7 @@
             box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
             overflow: hidden;
         }
-
+        
         .header {
             background: #2c3e50;
             color: white;
@@ -29,7 +29,7 @@
             align-items: center;
             flex-wrap: wrap;
         }
-
+        
         .header h1 {
             font-size: 1.5rem;
             font-weight: 500;
@@ -40,11 +40,9 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            gap: 15px;
-            /* beri jarak antar date-item */
+            gap: 15px; /* beri jarak antar date-item */
             color: white;
-            border-radius: 8px;
-            /* sudut lebih halus */
+            border-radius: 8px; /* sudut lebih halus */
         }
 
         .date-item {
@@ -53,34 +51,35 @@
             gap: 10px;
         }
 
-        .filter-section {
+        .filters {
+            background: #f8f9fa;
+            padding: 15px 20px;
             display: flex;
-            gap: 10px;
             flex-wrap: wrap;
-            align-items: flex-end;
-            margin-bottom: 15px;
+            gap: 15px;
+            border-bottom: 1px solid #eaecef;
         }
-
-        .filter-item {
+        
+        .filter-group {
             display: flex;
-            flex-direction: column;
+            align-items: center;
+            gap: 10px;
         }
-
-        .filter-item label {
-            font-size: 12px;
-            margin-bottom: 3px;
+        
+        .filter-group label {
+            font-weight: 500;
+            font-size: 0.9rem;
+            color: #495057;
         }
-
-
-        select,
-        input[type="date"] {
+        
+        select, input[type="date"] {
             padding: 8px 12px;
             border: 1px solid #ced4da;
             border-radius: 4px;
             background: white;
             color: #495057;
         }
-
+        
         .search-container {
             padding: 15px 20px;
             background: #fff;
@@ -89,12 +88,12 @@
             align-items: center;
             gap: 10px;
         }
-
+        
         .search-box {
             flex: 1;
             position: relative;
         }
-
+        
         .search-box input {
             width: 100%;
             padding: 10px 15px 10px 40px;
@@ -102,7 +101,7 @@
             border-radius: 4px;
             font-size: 1rem;
         }
-
+        
         .search-box i {
             position: absolute;
             left: 15px;
@@ -110,7 +109,7 @@
             transform: translateY(-50%);
             color: #6c757d;
         }
-
+        
         .tools {
             display: flex;
             align-items: center;
@@ -120,7 +119,7 @@
             border-bottom: 1px solid #eaecef;
             flex-wrap: wrap;
         }
-
+        
         .btn {
             padding: 8px 15px;
             border: none;
@@ -132,77 +131,77 @@
             font-weight: 500;
             transition: all 0.2s;
         }
-
+        
         .btn-primary {
             background: #3498db;
             color: white;
         }
-
+        
         .btn-secondary {
             background: #95a5a6;
             color: white;
         }
-
+        
         .btn-success {
             background: #2ecc71;
             color: white;
         }
-
+        
         .btn-danger {
             background: #e74c3c;
             color: white;
         }
-
+        
         .btn:hover {
             opacity: 0.9;
             transform: translateY(-1px);
         }
-
+        
         .table-container {
             overflow-x: auto;
             width: 100%;
         }
-
+        
         table {
             width: 100%;
             border-collapse: collapse;
             min-width: 1200px;
         }
-
+        
         thead {
             background: #2c3e50;
             color: white;
         }
-
+        
         th {
             padding: 12px 15px;
             text-align: left;
             font-weight: 500;
             position: relative;
         }
-
+        
         th i {
             margin-left: 5px;
             font-size: 0.8rem;
         }
-
+        
         tbody tr {
             border-bottom: 1px solid #eaecef;
         }
-
+        
         tbody tr:nth-child(even) {
             background: #f8f9fa;
         }
-
+        
         tbody tr:hover {
             background: #e8f4fc;
         }
-
+        
         td {
             padding: 12px 15px;
             color: #495057;
         }
-
+        
         .pagination {
             display: flex;
             justify-content: space-between;
@@ -211,17 +210,17 @@
             background: #f8f9fa;
             border-top: 1px solid #eaecef;
         }
-
+        
         .pagination-info {
             font-size: 0.9rem;
             color: #6c757d;
         }
-
+        
         .pagination-controls {
             display: flex;
             gap: 5px;
         }
-
+        
         .pagination-btn {
             padding: 6px 12px;
             background: white;
@@ -229,23 +228,23 @@
             border-radius: 4px;
             cursor: pointer;
         }
-
+        
         .pagination-btn.active {
             background: #3498db;
             color: white;
             border-color: #3498db;
         }
-
+        
         @media (max-width: 768px) {
             .filters {
                 flex-direction: column;
                 align-items: flex-start;
             }
-
+            
             .tools {
                 justify-content: center;
             }
-
+            
             .header {
                 flex-direction: column;
                 align-items: flex-start;
