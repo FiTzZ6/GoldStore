@@ -4,13 +4,13 @@
             box-sizing: border-box;
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         }
-        
+
         body {
             background: #c3cfe2;
             color: #333;
             padding: 20px;
         }
-        
+
         .container {
             width: 100%;
             max-width: 1000px;
@@ -20,20 +20,20 @@
             box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
             overflow: hidden;
         }
-        
+
         .header {
             background: linear-gradient(135deg, #2c3e50 0%, #4a6491 100%);
             color: white;
             padding: 25px;
             text-align: center;
         }
-        
+
         .header h1 {
             font-size: 28px;
             margin-bottom: 10px;
             font-weight: 600;
         }
-        
+
         .date-section {
             background-color: #3a546f;
             padding: 15px 25px;
@@ -42,17 +42,17 @@
             align-items: center;
             color: white;
         }
-        
+
         .date-item {
             display: flex;
             align-items: center;
             gap: 10px;
         }
-        
+
         .date-item span {
             font-weight: 500;
         }
-        
+
         .date-input {
             background-color: rgba(255, 255, 255, 0.15);
             border: none;
@@ -61,21 +61,21 @@
             color: white;
             width: 120px;
         }
-        
+
         .divider {
             height: 2px;
-            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.5), transparent);
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.5), transparent);
             margin: 5px 0;
         }
-        
+
         .filters-section {
             padding: 25px;
         }
-        
+
         .filter-group {
             margin-bottom: 20px;
         }
-        
+
         .filter-group h3 {
             font-size: 18px;
             color: #2c3e50;
@@ -83,39 +83,41 @@
             padding-bottom: 5px;
             border-bottom: 2px solid #eaeaea;
         }
-        
+
         .options {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
             gap: 15px;
         }
-        
+
         .option-item {
             display: flex;
             flex-direction: column;
             gap: 5px;
         }
-        
+
         .option-item label {
             font-size: 14px;
             color: #555;
             font-weight: 500;
         }
-        
-        .option-item input, .option-item select {
+
+        .option-item input,
+        .option-item select {
             padding: 10px 12px;
             border: 1px solid #ddd;
             border-radius: 8px;
             font-size: 14px;
             transition: all 0.3s;
         }
-        
-        .option-item input:focus, .option-item select:focus {
+
+        .option-item input:focus,
+        .option-item select:focus {
             outline: none;
             border-color: #4a6491;
             box-shadow: 0 0 0 3px rgba(74, 100, 145, 0.2);
         }
-        
+
         .action-section {
             background-color: #f8f9fa;
             padding: 20px 25px;
@@ -123,7 +125,7 @@
             justify-content: center;
             border-top: 1px solid #eaeaea;
         }
-        
+
         .btn-print {
             background: linear-gradient(135deg, #2c3e50 0%, #4a6491 100%);
             color: white;
@@ -139,22 +141,64 @@
             transition: all 0.3s;
             box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
         }
-        
+
         .btn-print:hover {
             transform: translateY(-2px);
             box-shadow: 0 6px 15px rgba(0, 0, 0, 0.15);
         }
-        
+
+        .table-laporan {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            font-size: 14px;
+            background-color: #fff;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+        }
+
+        .table-laporan thead {
+            background: linear-gradient(135deg, #2c3e50 0%, #4a6491 100%);
+            color: #fff;
+        }
+
+        .table-laporan th,
+        .table-laporan td {
+            padding: 12px 15px;
+            text-align: center;
+            border-bottom: 1px solid #eee;
+        }
+
+        .table-laporan tbody tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+
+        .table-laporan tbody tr:hover {
+            background-color: #f1f5fa;
+        }
+
+        .table-laporan th {
+            font-weight: 600;
+            font-size: 15px;
+        }
+
+        .table-laporan td {
+            font-size: 14px;
+            color: #333;
+        }
+
+
         @media (max-width: 600px) {
             .options {
                 grid-template-columns: 1fr;
             }
-            
+
             .date-section {
                 flex-direction: column;
                 gap: 15px;
             }
-            
+
             .date-item {
                 width: 100%;
                 justify-content: space-between;

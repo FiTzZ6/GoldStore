@@ -368,6 +368,7 @@ Route::get('/LaporanHapusBarang', [HapusBarangController::class, 'index'])->name
 
 //LaporanPembelian-PembelianUmum
 Route::get('/LaporanPembelianUmum', [PembelianUmumController::class, 'index'])->name('pembelianumum');
+Route::get('/LaporanPembelianUmum/cetak', [PembelianUmumController::class, 'cetak'])->name('pembelianumum.cetak');
 
 //LaporanPenjualan-PenjualanUmum
 Route::get('/LaporanPenjualanUmum', [LPPenjualanUmumController::class, 'index'])->name('penjualanumum');
