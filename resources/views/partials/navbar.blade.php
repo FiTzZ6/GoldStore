@@ -298,7 +298,7 @@
                         <a href="#">Laporan Pembelian<span style="float: right;"></span></a>
                         <ul class="dropdown-menu">
                             <li><a href="{{ route('pembelianumum') }}">Pembelian Umum</a></li>
-                            <li><a href="#">Batal Beli Umum</a></li>
+                            <li><a href="{{ route('batalbeli') }}">Batal Beli Umum</a></li>
                         </ul>
                     </li>
                     <li class="has-submenu">

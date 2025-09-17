@@ -1,6 +1,7 @@
 <?php
 
 
+
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Auth\LoginController;
 
@@ -69,7 +70,7 @@ use App\Http\Controllers\LaporanTransKasController;
 use App\Http\Controllers\LaporanCuciSepuhController;
 use App\Http\Controllers\LaporanTukarRupiahController;
 use App\Http\Controllers\FormulirPPController;
-//labarugi
+use App\Http\Controllers\LBatalBeliController;
 use App\Http\Controllers\LabaRugiController;
 //laporanstokopname
 use App\Http\Controllers\LPopnameController;
@@ -412,6 +413,10 @@ Route::post('/laba-rugi', [LabaRugiController::class, 'labaRugiShow'])->name('la
 Route::get('/laporan/stok-opname', [LPopnameController::class, 'index'])->name('laporan.stokopname');
 Route::post('/laporan/stok-opname', [LPopnameController::class, 'show'])->name('laporan.stokopname.show');
 
+Route::prefix('laporan')->group(function () {
+    Route::get('/batalbeli', [LBatalBeliController::class, 'index'])->name('batalbeli');
+    Route::get('/batalbeli/cetak', [LBatalBeliController::class, 'cetak'])->name('batalbeli.cetak');
+});
 Route::get('/', function () {
     return view('login');
 });
