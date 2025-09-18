@@ -364,7 +364,7 @@
                         @endif
 
                         <li><a href="#">Tukar Koin</a></li>
-                        <li><a href="#">Tukar Rupiah</a></li>
+                        <li><a href="{{ route('tukar.index') }}">Tukar Rupiah</a></li>
                         @if(session('typeuser') == 1)
                             <li><a href="{{ route('utility.company.company_profile') }}">Profil Perusahaan</a></li>
                         @endif

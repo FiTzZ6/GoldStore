@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use App\Models\UserModel;
+use App\Models\UserType;
 use Illuminate\Support\Facades\Validator;
 
 class LoginController extends Controller

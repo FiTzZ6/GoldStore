@@ -75,6 +75,7 @@ use App\Http\Controllers\LabaRugiController;
 //laporanstokopname
 use App\Http\Controllers\LPopnameController;
 use App\Http\Controllers\SuratKirimController;
+use App\Http\Controllers\TukarController;
 
 
 Route::get('/login', [LoginController::class, 'index'])->name('login');
@@ -417,6 +418,13 @@ Route::prefix('laporan')->group(function () {
     Route::get('/batalbeli', [LBatalBeliController::class, 'index'])->name('batalbeli');
     Route::get('/batalbeli/cetak', [LBatalBeliController::class, 'cetak'])->name('batalbeli.cetak');
 });
+
+Route::get('/tukar', [TukarController::class, 'index'])->name('tukar.index');
+Route::post('/tukar/kurs/store', [TukarController::class, 'storeKurs'])->name('tukar.kurs.store');
+Route::post('/tukar/kurs/update/{id}', [TukarController::class, 'updateKurs'])->name('tukar.kurs.update');
+Route::delete('/tukar/kurs/delete/{id}', [TukarController::class, 'destroyKurs'])->name('tukar.kurs.destroy');
+Route::post('/tukar/transaksi/store', [TukarController::class, 'storeTransaksi'])->name('tukar.transaksi.store');
+
 Route::get('/', function () {
     return view('login');
 });
