@@ -76,6 +76,7 @@ use App\Http\Controllers\LabaRugiController;
 use App\Http\Controllers\LPopnameController;
 use App\Http\Controllers\SuratKirimController;
 use App\Http\Controllers\TukarController;
+use App\Http\Controllers\CuciSepuhController;
 
 
 Route::get('/login', [LoginController::class, 'index'])->name('login');
@@ -424,6 +425,13 @@ Route::post('/tukar/kurs/store', [TukarController::class, 'storeKurs'])->name('t
 Route::post('/tukar/kurs/update/{id}', [TukarController::class, 'updateKurs'])->name('tukar.kurs.update');
 Route::delete('/tukar/kurs/delete/{id}', [TukarController::class, 'destroyKurs'])->name('tukar.kurs.destroy');
 Route::post('/tukar/transaksi/store', [TukarController::class, 'storeTransaksi'])->name('tukar.transaksi.store');
+
+//cucisepuh-barang
+Route::get('/cucihsepuhform', [CuciSepuhController::class, 'index'])->name('cucisepuhform');
+Route::post('/cucisepuhform/store', [CuciSepuhController::class, 'store'])->name('cucisepuh.store');
+Route::put('/cucisepuhform/{id}', [CuciSepuhController::class, 'update'])->name('cucisepuh.update');
+Route::delete('/cucisepuhform/{id}', [CuciSepuhController::class, 'destroy'])->name('cucisepuh.destroy');
+
 
 Route::get('/', function () {
     return view('login');

@@ -186,7 +186,7 @@
                         <li class="has-submenu">
                             <a href="#">Cuci Sepuh</a>
                             <ul class="dropdown-menu-1">
-                                <li><a href="#">Formulir Cuci Sepuh</a></li>
+                                <li><a href="{{ route('cucisepuhform') }}">Formulir Cuci Sepuh</a></li>
                                 <li><a href="{{ route('riwayatcuci') }}">Riwayat Cuci Sepuh</a></li>
                                 @if(session('typeuser') == 1)
                                     <li><a href="{{ route('formpenyimpanan') }}">Formulir Penyimpanan Mutu</a></li>
