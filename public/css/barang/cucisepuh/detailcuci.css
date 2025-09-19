@@ -1,0 +1,85 @@
+/* Import font */
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap');
+
+body {
+    font-family: 'Poppins', sans-serif;
+    background: #f6f7fb;
+    margin: 0;
+    padding: 0;
+    color: #333;
+}
+
+h1 {
+    text-align: center;
+    margin: 30px 0;
+    font-size: 28px;
+    color: #444;
+}
+
+.detail-container {
+    max-width: 800px;
+    margin: 0 auto;
+    background: #fff;
+    padding: 25px 30px;
+    border-radius: 12px;
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.08);
+}
+
+.detail-container p {
+    font-size: 15px;
+    margin: 10px 0;
+    line-height: 1.6;
+}
+
+.detail-container p strong {
+    display: inline-block;
+    width: 150px;
+    font-weight: 600;
+    color: #555;
+}
+
+img {
+    display: block;
+    margin-top: 15px;
+    border-radius: 10px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+}
+
+a {
+    display: inline-block;
+    margin-top: 20px;
+    padding: 10px 18px;
+    background: #4a90e2;
+    color: #fff;
+    text-decoration: none;
+    border-radius: 8px;
+    transition: all 0.3s ease;
+    font-size: 14px;
+}
+
+a:hover {
+    background: #357ab8;
+}
+
+/* Tambahkan status badge */
+.status-badge {
+    display: inline-block;
+    padding: 6px 14px;
+    border-radius: 20px;
+    font-size: 13px;
+    font-weight: 500;
+    color: #fff;
+    margin-left: 5px;
+}
+
+.status-pending {
+    background: #f0ad4e;
+}
+
+.status-proses {
+    background: #5bc0de;
+}
+
+.status-selesai {
+    background: #5cb85c;
+}

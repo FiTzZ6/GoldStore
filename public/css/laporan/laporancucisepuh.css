@@ -106,6 +106,37 @@
             transform: translateY(-1px);
         }
 
+        .filters .filter-form {
+            display: flex;
+            align-items: center;
+            /* biar rata tengah */
+            gap: 15px;
+            /* jarak antar elemen */
+        }
+
+        .filters .filter-group {
+            display: flex;
+            flex-direction: column;
+            /* label di atas input */
+        }
+
+        .filters button {
+            height: 40px;
+            padding: 0 15px;
+        }
+
+        .filters .filter-group {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .filters .filter-group label {
+            white-space: nowrap;
+            /* biar teks label ga turun ke bawah */
+        }
+
+
         select,
         input[type="date"] {
             padding: 8px 12px;

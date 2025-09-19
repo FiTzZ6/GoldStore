@@ -260,6 +260,8 @@ Route::get('/FormPenyimpanan', [FormPenyimpananController::class, 'index'])->nam
 
 //BarangCuciSepuh-RiwayatCuci
 Route::get('/RiwayatCuci', [RiwayatCuciController::class, 'index'])->name('riwayatcuci');
+Route::get('/cucisepuh/{id}/struk', [RiwayatCuciController::class, 'cetakStruk'])->name('cucisepuh.struk');
+
 
 //BarangCuciSepuh-RiwayatPenyimpanan
 Route::get('/RiwayatPenyimpanan', [RiwayatPenyimpananController::class, 'index'])->name('riwayatpenyimpanan');
@@ -431,6 +433,7 @@ Route::get('/cucihsepuhform', [CuciSepuhController::class, 'index'])->name('cuci
 Route::post('/cucisepuhform/store', [CuciSepuhController::class, 'store'])->name('cucisepuh.store');
 Route::put('/cucisepuhform/{id}', [CuciSepuhController::class, 'update'])->name('cucisepuh.update');
 Route::delete('/cucisepuhform/{id}', [CuciSepuhController::class, 'destroy'])->name('cucisepuh.destroy');
+Route::get('/cucisepuhform/{id}', [CuciSepuhController::class, 'show'])->name('cucisepuh.show');
 
 
 Route::get('/', function () {

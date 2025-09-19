@@ -14,27 +14,14 @@
     <div class="container">
         <div class="header">
             <h1><i class="fas fa-boxes"></i> Laporan Transaksi Kas</h1>
-            <div class="date-section">
-                <div class="date-item">
-                    <span>Tanggal</span>
-                    <input type="date" id="start_date" name="start_date" class="date-input"
-                        value="{{ $start ?? date('Y-m-d') }}">
-                </div>
-                <div class="date-item">
-                    <span>s/d</span>
-                    <input type="date" id="end_date" name="end_date" class="date-input"
-                        value="{{ $end ?? date('Y-m-d') }}">
-                </div>
-            </div>
-
         </div>
 
 
         <div class="filters">
-            <div class="filter-group">
-                <label for="baki">Barang</label>
-                <form method="GET" action="{{ route('laporancucisepuh') }}">
-                    <select id="baki" name="barang">
+            <form method="GET" action="{{ route('laporancucisepuh') }}" class="filter-form">
+                <div class="filter-group">
+                    <label for="barang">Barang</label>
+                    <select id="barang" name="barang">
                         <option value="">SEMUA BARANG</option>
                         @foreach(\App\Models\Barang::all() as $b)
                             <option value="{{ $b->namabarang }}" {{ request('barang') == $b->namabarang ? 'selected' : '' }}>
@@ -42,10 +29,22 @@
                             </option>
                         @endforeach
                     </select>
-                    <button type="submit">Filter</button>
-                </form>
-            </div>
+                </div>
+
+                <div class="filter-group">
+                    <label for="start_date">Tanggal</label>
+                    <input type="date" id="start_date" name="start_date" value="{{ request('start_date') }}">
+                </div>
+
+                <div class="filter-group">
+                    <label for="end_date">s/d</label>
+                    <input type="date" id="end_date" name="end_date" value="{{ request('end_date') }}">
+                </div>
+
+                <button type="submit">Filter</button>
+            </form>
         </div>
+
 
         <div class="search-container">
             <div class="search-box">
