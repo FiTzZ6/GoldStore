@@ -72,7 +72,7 @@ use App\Http\Controllers\LaporanTukarRupiahController;
 use App\Http\Controllers\FormulirPPController;
 use App\Http\Controllers\LBatalBeliController;
 use App\Http\Controllers\LabaRugiController;
-//laporanstokopname
+use App\Http\Controllers\MerchandiseController;
 use App\Http\Controllers\LPopnameController;
 use App\Http\Controllers\SuratKirimController;
 use App\Http\Controllers\TukarController;
@@ -435,6 +435,15 @@ Route::put('/cucisepuhform/{id}', [CuciSepuhController::class, 'update'])->name(
 Route::delete('/cucisepuhform/{id}', [CuciSepuhController::class, 'destroy'])->name('cucisepuh.destroy');
 Route::get('/cucisepuhform/{id}', [CuciSepuhController::class, 'show'])->name('cucisepuh.show');
 
+//merch
+// CRUD Merch
+Route::get('/merch', [MerchandiseController::class, 'index'])->name('merch.index');
+Route::post('/merch/store', [MerchandiseController::class, 'store'])->name('merch.store');
+Route::put('/merch/update/{id}', [MerchandiseController::class, 'update'])->name('merch.update');
+Route::delete('/merch/delete/{id}', [MerchandiseController::class, 'destroy'])->name('merch.destroy');
+Route::post('/merch/redeem', [MerchandiseController::class, 'redeem'])->name('merch.redeem');
+Route::get('/pelanggan/get-poin/{kdpelanggan}', [MerchandiseController::class, 'getPoin']);
+Route::get('/merch/redeem-history', [MerchandiseController::class, 'redeemHistory'])->name('merch.redeemHistory');
 
 Route::get('/', function () {
     return view('login');

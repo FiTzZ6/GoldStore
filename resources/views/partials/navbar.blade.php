@@ -161,7 +161,7 @@
                         <li><a href="{{ route('potongan') }}">Potongan</a></li>
                         <li><a href="{{ route('parameterkas') }}">Parameter Kas</a></li>
                         <li><a href="{{ route('staff') }}">Staff</a></li>
-                        <li><a href="#">Merchandise</a></li>
+                        <li><a href="{{ route('merch.index') }}">Merchandise</a></li>
                     @endif
 
                     {{-- Semua user (termasuk CUSTOMER) --}}
