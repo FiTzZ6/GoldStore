@@ -152,85 +152,63 @@
                         url: "{{ route('formulirpp.search.barang') }}",
                         data: { q: request.term },
                         success: function(data) {
+                            // hanya tampilkan label nama barang (tidak duplikat supplier)
                             response($.map(data, function(item) {
                                 return {
                                     label: item.namabarang,
                                     value: item.namabarang,
-                                    kdbarang: item.kdbarang,
-                                    supplier: item.supplier && item.supplier.namasupplier ? item.supplier.namasupplier : '-'
+                                    options: item.options
                                 };
                             }));
                         }
                     });
                 },
                 select: function(event, ui) {
-                    $("#kdbarang").val(ui.item.kdbarang);
-                    $("#supplier-name").text(ui.item.supplier);
-                    $("#supplier-info").show();
+                    const opts = ui.item.options;
+
+                    // supplier pertama (selalu ada minimal 1)
+                    const sup1  = opts[0]?.supplier || '-';
+                    const harga1= opts[0]?.harga || 0;
+                    // supplier kedua dan ketiga jika ada
+                    const sup2  = opts[1]?.supplier || '';
+                    const harga2= opts[1]?.harga || '';
+                    const sup3  = opts[2]?.supplier || '';
+                    const harga3= opts[2]?.harga || '';
 
                     const tableBody = document.getElementById('barang-body');
-                    const firstRow = tableBody.querySelector("tr:first-child td input");
+                    const rowHtml = `
+                        <td><input type="text" name="namabarang[]" value="${ui.item.value}" readonly></td>
+                        <td><input type="text" name="spesifikasi[]" placeholder="Spesifikasi"></td>
+                        <td><input type="number" name="jumlah[]" placeholder="Jumlah" min="1"></td>
+                        <td>
+                            <select name="satuan[]">
+                                <option value="">Pilih Satuan</option>
+                                <option value="pcs">Pcs</option>
+                                <option value="kg">Kg</option>
+                            </select>
+                        </td>
+                        <td><input type="text" name="supplier1[]" value="${sup1}" readonly></td>
+                        <td><input type="number" name="harga1[]" value="${harga1}" min="0" readonly></td>
+                        <td><input type="text" name="supplier2[]" value="${sup2}" readonly></td>
+                        <td><input type="number" name="harga2[]" value="${harga2}" min="0" readonly></td>
+                        <td><input type="text" name="supplier3[]" value="${sup3}" readonly></td>
+                        <td><input type="number" name="harga3[]" value="${harga3}" min="0" readonly></td>
+                        <td>
+                            <select name="supplier_pilih[]">
+                                <option value="">Pilih Supplier</option>
+                                <option value="supplier1">Supplier 1</option>
+                                <option value="supplier2">Supplier 2</option>
+                                <option value="supplier3">Supplier 3</option>
+                            </select>
+                        </td>
+                    `;
 
-                    // kalau baris pertama masih kosong → isi ulang, jangan bikin baris baru
+                    const firstRow = tableBody.querySelector("tr:first-child td input");
                     if (firstRow && firstRow.value === "") {
-                        tableBody.querySelector("tr:first-child").innerHTML = `
-                            <td><input type="text" name="namabarang[]" value="${ui.item.value}" readonly></td>
-                            <td><input type="text" name="spesifikasi[]" placeholder="Spesifikasi"></td>
-                            <td><input type="number" name="jumlah[]" placeholder="Jumlah" min="1"></td>
-                            <td>
-                                <select name="satuan[]">
-                                    <option value="">Pilih Satuan</option>
-                                    <option value="pcs">Pcs</option>
-                                    <option value="kg">Kg</option>
-                                    <option value="unit">Unit</option>
-                                    <option value="meter">Meter</option>
-                                    <option value="lusin">Lusin</option>
-                                </select>
-                            </td>
-                            <td><input type="text" name="supplier1[]" value="${ui.item.supplier}" readonly></td>
-                            <td><input type="number" name="harga1[]" placeholder="Harga" min="0"></td>
-                            <td><input type="text" name="supplier2[]" placeholder="Supplier 2"></td>
-                            <td><input type="number" name="harga2[]" placeholder="Harga" min="0"></td>
-                            <td><input type="text" name="supplier3[]" placeholder="Supplier 3"></td>
-                            <td><input type="number" name="harga3[]" placeholder="Harga" min="0"></td>
-                            <td>
-                                <select name="supplier_pilih[]">
-                                    <option value="">Pilih Supplier</option>
-                                    <option value="supplier1">Supplier 1</option>
-                                    <option value="supplier2">Supplier 2</option>
-                                    <option value="supplier3">Supplier 3</option>
-                                </select>
-                            </td>
-                        `;
+                        tableBody.querySelector("tr:first-child").innerHTML = rowHtml;
                     } else {
-                        // kalau sudah ada isi → tambahkan baris baru
                         const newRow = document.createElement('tr');
-                        newRow.innerHTML = `
-                            <td><input type="text" name="namabarang[]" value="${ui.item.value}" readonly></td>
-                            <td><input type="text" name="spesifikasi[]" placeholder="Spesifikasi"></td>
-                            <td><input type="number" name="jumlah[]" placeholder="Jumlah" min="1"></td>
-                            <td>
-                                <select name="satuan[]">
-                                    <option value="">Pilih Satuan</option>
-                                    <option value="pcs">Pcs</option>
-                                    <option value="kg">Kg</option>
-                                </select>
-                            </td>
-                            <td><input type="text" name="supplier1[]" value="${ui.item.supplier}" readonly></td>
-                            <td><input type="number" name="harga1[]" placeholder="Harga" min="0"></td>
-                            <td><input type="text" name="supplier2[]" placeholder="Supplier 2"></td>
-                            <td><input type="number" name="harga2[]" placeholder="Harga" min="0"></td>
-                            <td><input type="text" name="supplier3[]" placeholder="Supplier 3"></td>
-                            <td><input type="number" name="harga3[]" placeholder="Harga" min="0"></td>
-                            <td>
-                                <select name="supplier_pilih[]">
-                                    <option value="">Pilih Supplier</option>
-                                    <option value="supplier1">Supplier 1</option>
-                                    <option value="supplier2">Supplier 2</option>
-                                    <option value="supplier3">Supplier 3</option>
-                                </select>
-                            </td>
-                        `;
+                        newRow.innerHTML = rowHtml;
                         tableBody.appendChild(newRow);
                     }
 

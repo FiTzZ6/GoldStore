@@ -114,10 +114,23 @@ class FormulirPPController extends Controller
         $keyword = $request->get('q');
 
         $barang = \App\Models\Barang::with('supplier')
-            ->where('namabarang', 'like', "%{$keyword}%")
-            ->limit(10)
-            ->get();
+        ->where('namabarang', 'like', "%{$keyword}%")
+        ->limit(10)
+        ->get(['kdbarang','namabarang','hargabeli','kdsupplier']);
 
-        return response()->json($barang);
+        $result = $barang->groupBy('namabarang')->map(function($items){
+            return [
+                'namabarang' => $items->first()->namabarang,
+                'options' => $items->map(function($row){
+                    return [
+                        'kdbarang' => $row->kdbarang,
+                        'harga'    => $row->hargabeli,
+                        'supplier' => $row->supplier->namasupplier ?? '-'
+                    ];
+                })->values()
+            ];
+        })->values();
+
+        return response()->json($result);
     }
 }

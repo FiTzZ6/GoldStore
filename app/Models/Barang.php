@@ -49,9 +49,12 @@ class Barang extends Model
     public function Status() {
         return $this->belongsTo(Status::class, 'kdstatus', 'kdstatus');
     }
-    public function Supplier() {
-        return $this->belongsTo(Supplier::class, 'kdsupplier', 'kdsupplier');
+    public function supplier()
+    {
+        return $this->belongsTo(Supplier::class, 'kdsupplier','kdsupplier');
     }
+
+
     public function CetakBarcode() {
         return $this->belongsTo(CetakBarcode::class, 'kdintern', 'tipebarang');
     }

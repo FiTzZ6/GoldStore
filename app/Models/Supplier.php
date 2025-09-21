@@ -20,4 +20,10 @@ class Supplier extends Model
         'email',
         'ket',
     ];
+
+    // public function barangs()
+    // {
+    //     return $this->hasMany(Barang::class, 'kdsupplier', 'kdsupplier');
+    // }
+
 }
