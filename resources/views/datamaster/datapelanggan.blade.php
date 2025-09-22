@@ -126,7 +126,7 @@
                     <input type="text" name="notelp" id="edit-telp">
 
                     <label>Poin</label>
-                    <input type="number" name="poin" id="edit-poin">
+                    <input type="number" name="poin" id="edit-poin" step="0.01">
 
                     <button type="submit" class="btn-tb">Simpan</button>
                 </form>

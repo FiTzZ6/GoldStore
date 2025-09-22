@@ -44,6 +44,11 @@ class TransaksiJualController extends Controller
             return back()->with('error', 'Nomor faktur sudah ada, silakan generate ulang.');
         }
 
+        // Hitung total transaksi
+        $grandTotal = collect($items)->sum(function ($item) {
+            return $item['total'] ?? 0;
+        });
+
         if ($data['typepesanan'] === 'umum') {
             // ======================
             // 🔹 TRANSAKSI UMUM
@@ -118,6 +123,18 @@ class TransaksiJualController extends Controller
                 ]);
             }
         }
+
+        // ======================
+        // 🔹 Tambah poin pelanggan (jika total >= 250.000)
+        // ======================
+        if (!empty($data['namapelanggan']) && $data['namapelanggan'] !== '-' && $grandTotal >= 250000) {
+            $pelanggan = Pelanggan::where('namapelanggan', $data['namapelanggan'])->first();
+            if ($pelanggan) {
+                $pelanggan->poin = ($pelanggan->poin ?? 0) + 0.25;
+                $pelanggan->save();
+            }
+        }
+
 
         return redirect()->route('transpenjualan')
             ->with('success', 'Transaksi berhasil disimpan');
