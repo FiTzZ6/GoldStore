@@ -10,7 +10,7 @@ class DetailPP extends Model
     protected $primaryKey = 'id';
     public $timestamps = true; // karena ada created_at & updated_at
 
-     protected $fillable = [
+    protected $fillable = [
         'nopp',
         'kdtoko',
         'namabarang',
@@ -26,5 +26,11 @@ class DetailPP extends Model
         'tanggal_permintaan',
         'tanggal_dibutuhkan',
     ];
+
+    // 🔥 Relasi ke Toko
+    public function toko()
+    {
+        return $this->belongsTo(Toko::class, 'kdtoko', 'kdtoko');
+    }
 }
 

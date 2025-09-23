@@ -87,6 +87,66 @@
                     @endforeach
                 </tbody>
             </table>
+            <div class="pagination">
+                @if ($merchandise instanceof \Illuminate\Pagination\LengthAwarePaginator)
+                                <div class="pagination-info">
+                                    Menampilkan {{ $merchandise->firstItem() }} hingga {{ $merchandise->lastItem() }} dari
+                                    {{ $merchandise->total() }} entri
+                                </div>
+                                <div class="pagination-controls">
+                                    {{-- Tombol Previous --}}
+                                    @if ($merchandise->onFirstPage())
+                                        <button class="pagination-btn" disabled>&laquo; Previous</button>
+                                    @else
+                                        <a href="{{ $merchandise->previousPageUrl() }}" class="pagination-btn">&laquo; Previous</a>
+                                    @endif
+
+                                    {{-- Tombol Halaman Maksimal 5 --}}
+                                    @php
+                                        $start = max($merchandise->currentPage() - 2, 1);
+                                        $end = min($start + 4, $merchandise->lastPage());
+                                        if ($end - $start < 4) {
+                                            $start = max($end - 4, 1);
+                                        }
+                                    @endphp
+
+                                    @if ($start > 1)
+                                        <a href="{{ $merchandise->url(1) }}" class="pagination-btn">1</a>
+                                        @if ($start > 2)
+                                            <span class="pagination-btn">...</span>
+                                        @endif
+                                    @endif
+
+                                    @for ($page = $start; $page <= $end; $page++)
+                                        @if ($page == $merchandise->currentPage())
+                                            <button class="pagination-btn active">{{ $page }}</button>
+                                        @else
+                                            <a href="{{ $merchandise->url($page) }}" class="pagination-btn">{{ $page }}</a>
+                                        @endif
+                                    @endfor
+
+                                    @if ($end < $merchandise->lastPage())
+                                        @if ($end < $merchandise->lastPage() - 1)
+                                            <span class="pagination-btn">...</span>
+                                        @endif
+                                        <a href="{{ $merchandise->url($merchandise->lastPage()) }}"
+                                            class="pagination-btn">{{ $merchandise->lastPage() }}</a>
+                                    @endif
+
+                                    {{-- Tombol Next --}}
+                                    @if ($merchandise->hasMorePages())
+                                        <a href="{{ $merchandise->nextPageUrl() }}" class="pagination-btn">Next &raquo;</a>
+                                    @else
+                                        <button class="pagination-btn" disabled>Next &raquo;</button>
+                                    @endif
+                                </div>
+                @else
+                    <div class="pagination-info">
+                        Menampilkan {{ count($merchandise) }} data hasil filter
+                    </div>
+                @endif
+            </div>
+
         </div>
     </div>
 

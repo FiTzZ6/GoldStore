@@ -1,7 +1,5 @@
 <?php
 
-
-
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Auth\LoginController;
 
@@ -77,6 +75,7 @@ use App\Http\Controllers\LPopnameController;
 use App\Http\Controllers\SuratKirimController;
 use App\Http\Controllers\TukarController;
 use App\Http\Controllers\CuciSepuhController;
+use App\Http\Controllers\LaporanTukarPoinController;
 
 
 Route::get('/login', [LoginController::class, 'index'])->name('login');
@@ -104,8 +103,7 @@ Route::get('/formulir_pp', [FormulirPPController::class, 'index'])->name('formul
 Route::post('/formulir_pp/store', [FormulirPPController::class, 'store'])->name('formulir_pp.store');
 Route::get('/generate-nopp/{kdtoko}', [FormulirPPController::class, 'generateNopp']);
 Route::get('/formulirpp/search-barang', [FormulirPPController::class, 'searchBarang'])->name('formulirpp.search.barang');
-
-
+Route::get('/riwayat-pp', [FormulirPPController::class, 'riwayat'])->name('formulir_pp.riwayat');
 
 
 // Akun Management
@@ -399,6 +397,7 @@ Route::get('/stokopname/barang/{kdbaki}', [StokOpnameController::class, 'getBara
 Route::post('/stokopname/simpan', [StokOpnameController::class, 'simpan']);
 
 
+
 //backup_data-utility
 Route::get('/backup', [BackupController::class, 'index'])->name('backup');
 // Route::post('/backup', [BackupController::class, 'backup'])->name('backup.run');
@@ -415,7 +414,8 @@ Route::post('/laba-rugi', [LabaRugiController::class, 'labaRugiShow'])->name('la
 
 //Laporan Stok Opname
 Route::get('/laporan/stok-opname', [LPopnameController::class, 'index'])->name('laporan.stokopname');
-Route::post('/laporan/stok-opname', [LPopnameController::class, 'show'])->name('laporan.stokopname.show');
+Route::post('/laporan/stok-opname/filter', [LPopnameController::class, 'show'])->name('laporan.stokopname.filter');
+
 
 Route::prefix('laporan')->group(function () {
     Route::get('/batalbeli', [LBatalBeliController::class, 'index'])->name('batalbeli');
@@ -444,6 +444,8 @@ Route::delete('/merch/delete/{id}', [MerchandiseController::class, 'destroy'])->
 Route::post('/merch/redeem', [MerchandiseController::class, 'redeem'])->name('merch.redeem');
 Route::get('/pelanggan/get-poin/{kdpelanggan}', [MerchandiseController::class, 'getPoin']);
 Route::get('/merch/redeem-history', [MerchandiseController::class, 'redeemHistory'])->name('merch.redeemHistory');
+
+Route::get('/laporantukarpoin', [LaporanTukarPoinController::class, 'index'])->name('laporantukarpoin');
 
 Route::get('/', function () {
     return view('login');

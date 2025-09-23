@@ -12,7 +12,7 @@ class MerchandiseController extends Controller
 {
     public function index()
     {
-        $merchandise = Merchandise::all();
+        $merchandise = Merchandise::paginate(10); // <- pagination 10 per halaman
         $pelanggan = Pelanggan::all();
         return view('barang.merch.index', compact('merchandise', 'pelanggan'));
     }
@@ -112,7 +112,7 @@ class MerchandiseController extends Controller
             });
         }
 
-        $redeems = $query->get();
+        $redeems = $query->paginate(10); // <- pagination di riwayat
 
         return view('barang.merch.redeem_history', compact('redeems'));
     }

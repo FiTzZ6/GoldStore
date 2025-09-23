@@ -1,85 +1,140 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="id">
+
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Riwayat Permintaan Pembelian</title>
     <link rel="stylesheet" href="{{ asset('css/utility/permintaan_pembelian/index.css') }}">
-    <title>Permintaan Pembelian</title>
 </head>
+
 <body>
-@include('partials.navbar')
-<h1 class="page-title"> Data Permintaan Pembelian</h1>
+    @include('partials.navbar')
 
-<div class="container-pp">
-
-    <!-- Judul dan Tombol -->
-    <div class="header-pp">
-        <a href="{{ route('formulir_pp') }}" class="btn-primary">
-            <i class="fa fa-plus"></i> Formulir Permintaan Pembelian
-        </a>
-    </div>
-
-
-    <!-- Filter Export -->
-    <div class="filter-section">
-        <select class="select-export">
-            <option>Export Basic</option>
-            <option>Export Excel</option>
-            <option>Export PDF</option>
-        </select>
-        <div class="icon-group">
-            <button title="Sorting"><i class="fas fa-sort"></i></button>
-            <button title="Refresh"><i class="fas fa-sync"></i></button>
-            <button title="Tampilan List"><i class="fas fa-list"></i></button>
-            <button title="Tampilan Grid"><i class="fas fa-th"></i></button>
-            <button title="Export"><i class="fas fa-file-export"></i></button> 
+    <div class="container">
+        <div class="header" style="display:flex; justify-content:space-between; align-items:center;">
+            <h1>Riwayat Permintaan Pembelian</h1>
+            <a href="{{ route('formulir_pp') }}">
+                <button style="padding:8px 14px; border:none; border-radius:6px; background:#6c757d; color:white;">
+                    ⬅ Kembali
+                </button>
+            </a>
         </div>
-        <div class="search-box">
-            <input type="text" placeholder="Search">
-        </div>
-    </div>
 
-    <!-- Tabel Data -->
-    <table class="table-pp">
-        <thead>
-            <tr>
-                <th>No</th>
-                <th>No. PP</th>
-                <th>KD Toko</th>
-                <th>Tgl Permintaan</th>
-                <th>Tgl Dibutuhkan</th>
-                <th>Status</th>
-                <th>Action</th>
-            </tr>
-        </thead>
-        <tbody>
-            @forelse($data as $index => $item)
-                <tr>
-                    <td>{{ $index + 1 }}</td>
-                    <td>{{ $item->no_pp }}</td>
-                    <td>{{ $item->kd_toko }}</td>
-                    <td>{{ $item->tgl_permintaan }}</td>
-                    <td>{{ $item->tgl_dibutuhkan }}</td>
-                    <td>{{ $item->status }}</td>
-                    <td>
-                        <a href="#" class="btn-icon"><i class="fa fa-eye"></i></a>
-                        <a href="#" class="btn-icon"><i class="fa fa-edit"></i></a>
-                        <form action="{{ route('formulir_pp.destroy', $item->id) }}" method="POST" style="display:inline;">
-                            @csrf
-                            @method('DELETE')
-                            <button class="btn-icon" onclick="return confirm('Yakin ingin menghapus?')">
-                                <i class="fa fa-trash"></i>
-                            </button>
-                        </form>
-                    </td>
-                </tr>
-            @empty
-                <tr>
-                    <td colspan="7" class="no-data">No matching records found</td>
-                </tr>
-            @endforelse
-        </tbody>
-    </table>
-</div>
+        <div class="search-box" style="margin:15px 0;">
+            <form method="GET" action="{{ route('formulir_pp.riwayat') }}" style="display:flex; gap:10px;">
+                <input type="text" name="q" value="{{ request('q') }}" placeholder="Cari No. PP / Nama Barang..."
+                    style="flex:1; padding:8px; border:1px solid #ccc; border-radius:6px;">
+                <button type="submit"
+                    style="padding:8px 14px; border:none; border-radius:6px; background:#0d6efd; color:white;">
+                    🔍 Cari
+                </button>
+            </form>
+        </div>
+
+        <div class="table-container">
+            <table>
+                <thead>
+                    <tr>
+                        <th>No. PP</th>
+                        <th>Toko</th>
+                        <th>Nama Barang</th>
+                        <th>Jumlah</th>
+                        <th>Satuan</th>
+                        <th>Supplier</th>
+                        <th>Tanggal Permintaan</th>
+                        <th>Tanggal Dibutuhkan</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @forelse($riwayat as $pp)
+                        <tr>
+                            <td>{{ $pp->nopp }}</td>
+                            <td>{{ $pp->toko->namatoko ?? '-' }}</td>
+                            <td>{{ $pp->namabarang }}</td>
+                            <td>{{ $pp->jumlah }}</td>
+                            <td>{{ $pp->satuan }}</td>
+                            <td>
+                                {{ $pp->supplier1 }}
+                                @if($pp->supplier2) / {{ $pp->supplier2 }} @endif
+                                @if($pp->supplier3) / {{ $pp->supplier3 }} @endif
+                            </td>
+                            <td>{{ \Carbon\Carbon::parse($pp->tanggal_permintaan)->format('d-m-Y H:i') }}</td>
+                            <td>{{ \Carbon\Carbon::parse($pp->tanggal_dibutuhkan)->format('d-m-Y') }}</td>
+                        </tr>
+                    @empty
+                        <tr>
+                            <td colspan="8" style="text-align:center;">Belum ada data riwayat</td>
+                        </tr>
+                    @endforelse
+                </tbody>
+            </table>
+        </div>
+
+        {{-- Pagination --}}
+        <div class="pagination" style="margin-top:15px;">
+            @if ($riwayat instanceof \Illuminate\Pagination\LengthAwarePaginator)
+                        <div class="pagination-info">
+                            Menampilkan {{ $riwayat->firstItem() }} hingga {{ $riwayat->lastItem() }} dari
+                            {{ $riwayat->total() }} entri
+                        </div>
+                        <div class="pagination-controls"
+                            style="display:flex; gap:6px; flex-wrap:wrap; justify-content:center; margin-top:10px;">
+                            {{-- Tombol Previous --}}
+                            @if ($riwayat->onFirstPage())
+                                <button class="pagination-btn" disabled>&laquo; Previous</button>
+                            @else
+                                <a href="{{ $riwayat->appends(request()->query())->previousPageUrl() }}" class="pagination-btn">&laquo;
+                                    Previous</a>
+                            @endif
+
+                            {{-- Tombol Halaman Maksimal 5 --}}
+                            @php
+                                $start = max($riwayat->currentPage() - 2, 1);
+                                $end = min($start + 4, $riwayat->lastPage());
+                                if ($end - $start < 4) {
+                                    $start = max($end - 4, 1);
+                                }
+                            @endphp
+
+                            @if ($start > 1)
+                                <a href="{{ $riwayat->appends(request()->query())->url(1) }}" class="pagination-btn">1</a>
+                                @if ($start > 2)
+                                    <span class="pagination-btn">...</span>
+                                @endif
+                            @endif
+
+                            @for ($page = $start; $page <= $end; $page++)
+                                @if ($page == $riwayat->currentPage())
+                                    <button class="pagination-btn active">{{ $page }}</button>
+                                @else
+                                    <a href="{{ $riwayat->appends(request()->query())->url($page) }}" class="pagination-btn">{{ $page }}</a>
+                                @endif
+                            @endfor
+
+                            @if ($end < $riwayat->lastPage())
+                                @if ($end < $riwayat->lastPage() - 1)
+                                    <span class="pagination-btn">...</span>
+                                @endif
+                                <a href="{{ $riwayat->appends(request()->query())->url($riwayat->lastPage()) }}"
+                                    class="pagination-btn">{{ $riwayat->lastPage() }}</a>
+                            @endif
+
+                            {{-- Tombol Next --}}
+                            @if ($riwayat->hasMorePages())
+                                <a href="{{ $riwayat->appends(request()->query())->nextPageUrl() }}" class="pagination-btn">Next
+                                    &raquo;</a>
+                            @else
+                                <button class="pagination-btn" disabled>Next &raquo;</button>
+                            @endif
+                        </div>
+            @else
+                <div class="pagination-info">
+                    Menampilkan {{ count($riwayat) }} data hasil filter
+                </div>
+            @endif
+        </div>
+
+    </div>
 </body>
+
 </html>

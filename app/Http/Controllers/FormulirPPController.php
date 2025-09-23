@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\DB;
 use App\Models\DetailPP;
 use App\Models\Toko;
 use Carbon\Carbon;
+use App\Models\PermintaanPembelian;
 
 class FormulirPPController extends Controller
 {
@@ -41,34 +42,35 @@ class FormulirPPController extends Controller
         // =====================================
 
         // Ambil semua input array
-        $namabarang  = $request->input('namabarang', []);
+        $namabarang = $request->input('namabarang', []);
         $spesifikasi = $request->input('spesifikasi', []);
-        $jumlah      = $request->input('jumlah', []);
-        $satuan      = $request->input('satuan', []);
-        $supplier1   = $request->input('supplier1', []);
-        $harga1      = $request->input('harga1', []);
-        $supplier2   = $request->input('supplier2', []);
-        $harga2      = $request->input('harga2', []);
-        $supplier3   = $request->input('supplier3', []);
-        $harga3      = $request->input('harga3', []);
+        $jumlah = $request->input('jumlah', []);
+        $satuan = $request->input('satuan', []);
+        $supplier1 = $request->input('supplier1', []);
+        $harga1 = $request->input('harga1', []);
+        $supplier2 = $request->input('supplier2', []);
+        $harga2 = $request->input('harga2', []);
+        $supplier3 = $request->input('supplier3', []);
+        $harga3 = $request->input('harga3', []);
 
         // Loop simpan barang
         for ($i = 0; $i < count($namabarang); $i++) {
-            if (empty($namabarang[$i])) continue;
+            if (empty($namabarang[$i]))
+                continue;
 
             DetailPP::create([
-                'nopp'               => $nopp,
-                'kdtoko'             => $kdtoko,
-                'namabarang'         => $namabarang[$i],
-                'spesifikasi'        => $spesifikasi[$i],
-                'jumlah'             => $jumlah[$i],
-                'satuan'             => $satuan[$i],
-                'supplier1'          => $supplier1[$i],
-                'harga1'             => $harga1[$i],
-                'supplier2'          => $supplier2[$i],
-                'harga2'             => $harga2[$i],
-                'supplier3'          => $supplier3[$i],
-                'harga3'             => $harga3[$i],
+                'nopp' => $nopp,
+                'kdtoko' => $kdtoko,
+                'namabarang' => $namabarang[$i],
+                'spesifikasi' => $spesifikasi[$i],
+                'jumlah' => $jumlah[$i],
+                'satuan' => $satuan[$i],
+                'supplier1' => $supplier1[$i],
+                'harga1' => $harga1[$i],
+                'supplier2' => $supplier2[$i],
+                'harga2' => $harga2[$i],
+                'supplier3' => $supplier3[$i],
+                'harga3' => $harga3[$i],
                 'tanggal_permintaan' => $tanggal_permintaan,
                 'tanggal_dibutuhkan' => $tanggal_dibutuhkan,
             ]);
@@ -114,17 +116,17 @@ class FormulirPPController extends Controller
         $keyword = $request->get('q');
 
         $barang = \App\Models\Barang::with('supplier')
-        ->where('namabarang', 'like', "%{$keyword}%")
-        ->limit(10)
-        ->get(['kdbarang','namabarang','hargabeli','kdsupplier']);
+            ->where('namabarang', 'like', "%{$keyword}%")
+            ->limit(10)
+            ->get(['kdbarang', 'namabarang', 'hargabeli', 'kdsupplier']);
 
-        $result = $barang->groupBy('namabarang')->map(function($items){
+        $result = $barang->groupBy('namabarang')->map(function ($items) {
             return [
                 'namabarang' => $items->first()->namabarang,
-                'options' => $items->map(function($row){
+                'options' => $items->map(function ($row) {
                     return [
                         'kdbarang' => $row->kdbarang,
-                        'harga'    => $row->hargabeli,
+                        'harga' => $row->hargabeli,
                         'supplier' => $row->supplier->namasupplier ?? '-'
                     ];
                 })->values()
@@ -133,4 +135,33 @@ class FormulirPPController extends Controller
 
         return response()->json($result);
     }
+
+    public function riwayat(Request $request)
+    {
+        $query = DetailPP::with('toko');
+
+        // filter tanggal
+        if ($request->filled('tanggal_permintaan')) {
+            $query->whereDate('tanggal_permintaan', $request->tanggal_permintaan);
+        }
+
+        if ($request->filled('tanggal_dibutuhkan')) {
+            $query->whereDate('tanggal_dibutuhkan', $request->tanggal_dibutuhkan);
+        }
+
+        // search keyword (No. PP atau nama barang)
+        if ($request->filled('q')) {
+            $q = $request->q;
+            $query->where(function ($sub) use ($q) {
+                $sub->where('nopp', 'like', "%$q%")
+                    ->orWhere('namabarang', 'like', "%$q%");
+            });
+        }
+
+        // pagination
+        $riwayat = $query->paginate(10)->withQueryString();
+
+        return view('utility.permintaan_pembelian.index', compact('riwayat'));
+    }
+
 }

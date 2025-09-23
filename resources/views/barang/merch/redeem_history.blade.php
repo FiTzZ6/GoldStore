@@ -68,6 +68,67 @@
                 </tbody>
             </table>
         </div>
+
+        {{-- Pagination --}}
+        <div class="pagination">
+            @if ($redeems instanceof \Illuminate\Pagination\LengthAwarePaginator)
+                        <div class="pagination-info">
+                            Menampilkan {{ $redeems->firstItem() }} – {{ $redeems->lastItem() }}
+                            dari {{ $redeems->total() }} entri
+                        </div>
+                        <div class="pagination-controls">
+                            {{-- Tombol Previous --}}
+                            @if ($redeems->onFirstPage())
+                                <button class="pagination-btn" disabled>&laquo; Prev</button>
+                            @else
+                                <a href="{{ $redeems->previousPageUrl() }}" class="pagination-btn">&laquo; Prev</a>
+                            @endif
+
+                            {{-- Nomor Halaman Maks 5 --}}
+                            @php
+                                $start = max($redeems->currentPage() - 2, 1);
+                                $end = min($start + 4, $redeems->lastPage());
+                                if ($end - $start < 4) {
+                                    $start = max($end - 4, 1);
+                                }
+                            @endphp
+
+                            @if ($start > 1)
+                                <a href="{{ $redeems->url(1) }}" class="pagination-btn">1</a>
+                                @if ($start > 2)
+                                    <span class="pagination-btn">...</span>
+                                @endif
+                            @endif
+
+                            @for ($page = $start; $page <= $end; $page++)
+                                @if ($page == $redeems->currentPage())
+                                    <button class="pagination-btn active">{{ $page }}</button>
+                                @else
+                                    <a href="{{ $redeems->url($page) }}" class="pagination-btn">{{ $page }}</a>
+                                @endif
+                            @endfor
+
+                            @if ($end < $redeems->lastPage())
+                                @if ($end < $redeems->lastPage() - 1)
+                                    <span class="pagination-btn">...</span>
+                                @endif
+                                <a href="{{ $redeems->url($redeems->lastPage()) }}"
+                                    class="pagination-btn">{{ $redeems->lastPage() }}</a>
+                            @endif
+
+                            {{-- Tombol Next --}}
+                            @if ($redeems->hasMorePages())
+                                <a href="{{ $redeems->nextPageUrl() }}" class="pagination-btn">Next &raquo;</a>
+                            @else
+                                <button class="pagination-btn" disabled>Next &raquo;</button>
+                            @endif
+                        </div>
+            @else
+                <div class="pagination-info">
+                    Menampilkan {{ count($redeems) }} data hasil filter
+                </div>
+            @endif
+        </div>
     </div>
 </body>
 

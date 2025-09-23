@@ -49,7 +49,8 @@ body {
     gap: 15px;
 }
 
-.export-section, .search-section {
+.export-section,
+.search-section {
     display: flex;
     align-items: center;
     gap: 10px;
@@ -177,7 +178,8 @@ table {
     background: white;
 }
 
-th, td {
+th,
+td {
     padding: 16px 20px;
     text-align: left;
     border-bottom: 1px solid #e9ecef;
@@ -223,34 +225,69 @@ tr:hover {
     font-weight: 500;
 }
 
+.pagination {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px 20px;
+    background: #f8f9fa;
+    border-top: 1px solid #eaecef;
+}
+
+.pagination-info {
+    font-size: 0.9rem;
+    color: #6c757d;
+}
+
+.pagination-controls {
+    display: flex;
+    gap: 5px;
+}
+
+.pagination-btn {
+    padding: 6px 12px;
+    background: white;
+    border: 1px solid #ced4da;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.pagination-btn.active {
+    background: #3498db;
+    color: white;
+    border-color: #3498db;
+}
+
 /* Responsive design */
 @media (max-width: 768px) {
     .controls {
         flex-direction: column;
         align-items: stretch;
     }
-    
-    .export-section, .search-section {
+
+    .export-section,
+    .search-section {
         width: 100%;
     }
-    
+
     .export-section select {
         width: 100%;
     }
-    
+
     .search-section input {
         width: 100%;
     }
-    
+
     .content {
         padding: 0 15px 20px 15px;
     }
-    
+
     .header h1 {
         font-size: 1.5rem;
     }
-    
-    th, td {
+
+    th,
+    td {
         padding: 12px 15px;
     }
 }
@@ -259,30 +296,31 @@ tr:hover {
     body {
         padding: 10px;
     }
-    
+
     .header {
         padding: 20px;
     }
-    
+
     .header h1 {
         font-size: 1.3rem;
         flex-direction: column;
         gap: 8px;
     }
-    
-    th, td {
+
+    th,
+    td {
         padding: 10px 12px;
         font-size: 0.85rem;
     }
-    
+
     .no-data-message {
         padding: 30px 15px;
     }
-    
+
     .no-data-message i {
         font-size: 2.5rem;
     }
-    
+
     .no-data-message p {
         font-size: 1rem;
     }
@@ -293,7 +331,7 @@ tr:hover {
     .table-container {
         overflow-x: auto;
     }
-    
+
     table {
         min-width: 800px;
     }

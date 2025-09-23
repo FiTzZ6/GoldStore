@@ -26,7 +26,8 @@ class StokOpnameController extends Controller
                 'barang.namabarang',
                 'barang.berat',
                 'barang.kadar',
-                'kategori.namakategori as kategori',
+                'barang.kdkategori',            // kode kategori
+                'kategori.namakategori as kategori', // nama kategori, untuk ditampilkan
                 'barang.kdbaki'
             )
             ->get();
@@ -39,21 +40,21 @@ class StokOpnameController extends Controller
     {
         $data = $request->all();
 
-        // Validasi sederhana
         if (!isset($data['items']) || count($data['items']) === 0) {
             return response()->json(['success' => false, 'message' => 'Tidak ada data barang']);
         }
 
         foreach ($data['items'] as $item) {
+            // Simpan kode kategori di kolom namakategori
             DB::table('stok_opname_detail')->insert([
-                'tanggal'     => now()->toDateString(),   // otomatis isi tanggal hari ini
-                'barcode'     => $item['barcode'],
-                'namabarang'  => $item['namabarang'],
-                'kdkategori'  => $item['kdkategori'],
-                'kdbaki'      => $data['kdbaki'],
-                'berat'       => $item['berat'],
-                'kadar'       => $item['kadar'],
-                'staff'       => auth()->user()->name ?? 'system', // isi dari user login
+                'tanggal' => now()->toDateString(),
+                'barcode' => $item['barcode'],
+                'namabarang' => $item['namabarang'],
+                'namakategori' => $item['kdkategori'], // simpan kode kategori di kolom namakategori
+                'kdbaki' => $data['kdbaki'],
+                'berat' => $item['berat'],
+                'kadar' => $item['kadar'],
+                'staff' => auth()->user()->name ?? 'system',
             ]);
         }
 

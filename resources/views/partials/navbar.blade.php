@@ -312,7 +312,7 @@
                     <li><a href="{{ route('laporankas') }}">Laporan Transaksi Kas</a></li>
                     <li><a href="{{ route('laporan.labarugi') }}">Laporan Laba Rugi</a></li>
                     <li><a href="{{ route('laporan.stokopname') }}">Laporan Stok Opname</a></li>
-                    <li><a href="#">Laporan Tukar Poin</a></li>
+                    <li><a href="{{ route('laporantukarpoin') }}">Laporan Tukar Poin</a></li>
                     <li><a href="{{ route('laporantukarrupiah') }}">Laporan Tukar Rupiah</a></li>
                     <li><a href="{{ route('laporancucisepuh') }}">Laporan Cuci Sepuh</a></li>
                 </ul>
@@ -338,7 +338,7 @@
                                 <a href="#">Permintaan Pembelian</a>
                                 <ul class="dropdown-menu-1">
                                     <li><a href="{{ route('formulir_pp') }}">Formulir PP</a></li>
-                                    <li><a href="{{ route('utility.permintaan_pembelian.index') }}">Riwayat PP</a></li>
+                                    <li><a href="{{ route('formulir_pp.riwayat') }}">Riwayat PP</a></li>
                                 </ul>
                             </li>
                         @endif
