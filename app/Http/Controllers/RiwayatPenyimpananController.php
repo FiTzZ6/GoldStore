@@ -2,13 +2,13 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Supplier;
-use Illuminate\Http\Request;
+use App\Models\FormPenyimpanan;
 
 class RiwayatPenyimpananController extends Controller
 {
     public function index()
     {
-        return view('barang.cucisepuh.riwayatpenyimpanan');
+        $riwayat = FormPenyimpanan::with(['barang', 'pelanggan'])->latest()->get();
+        return view('barang.cucisepuh.riwayatpenyimpanan', compact('riwayat'));
     }
 }

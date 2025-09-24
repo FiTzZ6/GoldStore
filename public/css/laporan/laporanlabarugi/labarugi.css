@@ -1,136 +1,299 @@
-/* === Reset dasar === */
-body {
-    font-family: 'Montserrat', sans-serif;
-    background: #f8f9fa;
-    margin: 0;
-    padding: 0;
-    color: #333;
-}
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
 
-/* === Container utama === */
-.container {
-    width: 95%;
-    max-width: 1200px;
-    margin: 20px auto;
-}
+        body {
+            background-color: #f5f7f9;
+            color: #333;
+            padding: 20px;
+        }
 
-/* === Judul Halaman === */
-h1 {
-    text-align: center;
-    font-weight: 800;
-    color: #c70000;
-    margin-bottom: 25px;
-}
+        .container {
+            max-width: 1400px;
+            margin: 20px auto;
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+            overflow: hidden;
+        }
 
-/* === Card umum === */
-.card {
-    background: #fff;
-    border-radius: 10px;
-    padding: 20px;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
-}
+        .header {
+            background: #2c3e50;
+            color: white;
+            padding: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+        }
 
-/* === Form filter di kiri === */
-.card h5 {
-    font-weight: 700;
-    color: #444;
-    margin-bottom: 15px;
-    text-transform: uppercase;
-}
+        .header h1 {
+            font-size: 1.5rem;
+            font-weight: 500;
+        }
 
-.form-control {
-    border-radius: 6px;
-    font-size: 14px;
-}
+        form {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            gap: 15px;
+            background: #f8f9fa;
+            padding: 15px 20px;
+            border-bottom: 1px solid #eaecef;
+            border-radius: 6px;
+            margin-bottom: 15px;
+        }
 
-.btn-primary {
-    background: #c70000;
-    border: none;
-    border-radius: 6px;
-    font-weight: 600;
-    padding: 10px;
-    transition: background 0.2s ease-in-out;
-}
+        .date-section {
+            display: flex;
+            gap: 15px;
+            align-items: center;
+        }
 
-.btn-primary:hover {
-    background: #900000;
-}
 
-/* === Checkbox cetak laporan === */
-.form-check-label {
-    font-size: 14px;
-    font-weight: 500;
-}
+        .date-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
 
-/* === Tabel laporan === */
-.table {
-    width: 100%;
-    border-collapse: collapse;
-    font-size: 14px;
-    margin-top: 10px;
-}
+        .date-item span {
+            font-size: 0.9rem;
+            font-weight: 500;
+            color: #495057;
+        }
 
-.table th {
-    background: linear-gradient(90deg, #c70000, #900000);
-    color: #fff;
-    font-weight: 600;
-    text-align: center;
-    padding: 10px;
-}
+        .filters {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
 
-.table td {
-    text-align: center;
-    padding: 10px;
-    border: 1px solid #ddd;
-}
+        .filter-group {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
 
-.table tr:nth-child(even) {
-    background: #f9f9f9;
-}
+        .filter-group label {
+            font-weight: 500;
+            font-size: 0.9rem;
+            color: #495057;
+        }
 
-/* Warna angka */
-.text-success {
-    color: #28a745;
-    font-weight: bold;
-}
+        button[type="submit"] {
+            padding: 8px 15px;
+            border-radius: 4px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
 
-.text-danger {
-    color: #dc3545;
-    font-weight: bold;
-}
+        select,
+        input[type="date"] {
+            padding: 8px 12px;
+            border: 1px solid #ced4da;
+            border-radius: 4px;
+            background: white;
+            color: #495057;
+        }
 
-.text-primary {
-    color: #007bff;
-    font-weight: bold;
-}
+        .search-container {
+            padding: 15px 20px;
+            background: #fff;
+            border-bottom: 1px solid #eaecef;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
 
-/* === Layout kolom kiri-kanan === */
-.row {
-    display: flex;
-    gap: 20px;
-}
+        .search-box {
+            flex: 1;
+            position: relative;
+        }
 
-.col-md-4 {
-    flex: 0 0 30%;
-}
+        .search-box input {
+            width: 100%;
+            padding: 10px 15px 10px 40px;
+            border: 1px solid #ced4da;
+            border-radius: 4px;
+            font-size: 1rem;
+        }
 
-.col-md-8 {
-    flex: 1;
-}
+        .search-box i {
+            position: absolute;
+            left: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #6c757d;
+        }
 
-.col-md-4 .card {
-    height: 100%;
-}
+        .tools {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 15px 20px;
+            background: #f8f9fa;
+            border-bottom: 1px solid #eaecef;
+            flex-wrap: wrap;
+        }
 
-/* === Responsive mobile === */
-@media (max-width: 768px) {
-    .row {
-        display: block;
-    }
+        .btn {
+            padding: 8px 15px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            font-weight: 500;
+            transition: all 0.2s;
+        }
 
-    .col-md-4,
-    .col-md-8 {
-        width: 100%;
-        margin-bottom: 15px;
-    }
-}
+        .btn-primary {
+            background: #3498db;
+            color: white;
+        }
+
+        .btn-secondary {
+            background: #95a5a6;
+            color: white;
+        }
+
+        .btn-success {
+            background: #2ecc71;
+            color: white;
+        }
+
+        .btn-danger {
+            background: #e74c3c;
+            color: white;
+        }
+
+        .btn:hover {
+            opacity: 0.9;
+            transform: translateY(-1px);
+        }
+
+        .table-container {
+            overflow-x: auto;
+            width: 100%;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            min-width: 1200px;
+        }
+
+        thead {
+            background: #2c3e50;
+            color: white;
+        }
+
+        th {
+            padding: 12px 15px;
+            text-align: left;
+            font-weight: 500;
+            position: relative;
+        }
+
+        th i {
+            margin-left: 5px;
+            font-size: 0.8rem;
+        }
+
+        tbody tr {
+            border-bottom: 1px solid #eaecef;
+        }
+
+        tbody tr:nth-child(even) {
+            background: #f8f9fa;
+        }
+
+        tbody tr:hover {
+            background: #e8f4fc;
+        }
+
+        td {
+            padding: 12px 15px;
+            color: #495057;
+        }
+
+        .pagination {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 20px;
+            background: #f8f9fa;
+            border-top: 1px solid #eaecef;
+        }
+
+        .pagination-info {
+            font-size: 0.9rem;
+            color: #6c757d;
+        }
+
+        .pagination-controls {
+            display: flex;
+            gap: 5px;
+        }
+
+        .pagination-btn {
+            padding: 6px 12px;
+            background: white;
+            border: 1px solid #ced4da;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        .pagination-btn.active {
+            background: #3498db;
+            color: white;
+            border-color: #3498db;
+        }
+
+        @media (max-width: 768px) {
+            .filters {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .tools {
+                justify-content: center;
+            }
+
+            .header {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 15px;
+            }
+
+            form {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .date-section {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 10px;
+            }
+
+            .filters {
+                width: 100%;
+            }
+
+            .filter-group select {
+                width: 100%;
+            }
+
+            button[type="submit"] {
+                width: 100%;
+                justify-content: center;
+            }
+        }

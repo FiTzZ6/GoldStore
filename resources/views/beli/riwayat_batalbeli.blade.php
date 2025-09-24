@@ -21,16 +21,6 @@
 
             <!-- Header Bottom: Export di kiri, Search/Sorting di kanan -->
             <div class="header-bottom">
-                <div class="left-controls">
-                    <select onchange="handleExport(this.value)">
-                        <option value="">Pilih Export</option>
-                        <option value="print">Export Print</option>
-                        <option value="pdf">Export PDF</option>
-                        <option value="csv">Export CSV</option>
-                        <option value="excel">Export Excel</option>
-                    </select>
-                </div>
-
                 <div class="right-controls">
                     <div class="icon-group">
                         <button title="Sorting" onclick="sortTable()"><i class="fas fa-sort"></i></button>

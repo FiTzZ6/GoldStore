@@ -19,19 +19,8 @@
 
         <div class="controls">
             <div class="export-section">
-                <select>
-                    <option value="">Export Basic</option>
-                    <option value="print">Print</option>
-                    <option value="pdf">PDF</option>
-                    <option value="excel">Excel</option>
-                    <option value="csv">CSV</option>
-                </select>
             </div>
             <div class="right-controls">
-                <div class="icon-group">
-                    <button title="Sorting" onclick="sortTable()"><i class="fas fa-sort"></i></button>
-                    <button title="Refresh" onclick="refreshPage()"><i class="fas fa-sync"></i></button>
-                </div>
                 <div class="search-section">
                     <input type="text" placeholder="Search">
                     <button><i class="fas fa-search"></i></button>

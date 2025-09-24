@@ -210,8 +210,6 @@
                             <ul class="dropdown-menu-1">
                                 <li><a href="{{ route('pindahbaki') }}">Pindah Baki</a></li>
                                 <li><a href="{{ route('riwayatpindahbarang') }}">Riwayat Pindah Baki</a></li>
-                                <li><a href="#">Pindah Brangkas</a></li>
-                                <li><a href="#">Riwayat Pindah Brangkas</a></li>
                             </ul>
                         </li>
                     </ul>
@@ -357,19 +355,15 @@
                             <li class="has-submenu">
                                 <a href="#">Setting</a>
                                 <ul class="dropdown-menu-1">
-                                    <li><a href="#">Printer BL</a></li>
                                     <li><a href="{{ route('qr_direktur') }}">QR Direktur Oprasional</a></li>
                                 </ul>
                             </li>
                         @endif
-
-                        <li><a href="#">Tukar Koin</a></li>
                         <li><a href="{{ route('tukar.index') }}">Tukar Rupiah</a></li>
                         @if(session('typeuser') == 1)
                             <li><a href="{{ route('utility.company.company_profile') }}">Profil Perusahaan</a></li>
                         @endif
                         <li><a href="{{ route('backup') }}">Backup Data</a></li>
-                        <li><a href="#">Dokumen</a></li>
                     </ul>
                 </li>
             @endif

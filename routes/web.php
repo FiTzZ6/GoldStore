@@ -247,14 +247,12 @@ Route::prefix('suratkirim')->name('suratkirim.')->group(function () {
     Route::put('/{nokirim}', [SuratKirimController::class, 'update'])->name('update');
 });
 
-
 //BarangTerhapus-Barang
 Route::get('/BarangTerhapus', [BarangTerhapusController::class, 'index'])->name('barangterhapus');
 
-
-
 //BarangCuciSepuh-FormPenyimpanan
 Route::get('/FormPenyimpanan', [FormPenyimpananController::class, 'index'])->name('formpenyimpanan');
+Route::post('/FormPenyimpanan/store', [FormPenyimpananController::class, 'store'])->name('formpenyimpanan.store');
 
 //BarangCuciSepuh-RiwayatCuci
 Route::get('/RiwayatCuci', [RiwayatCuciController::class, 'index'])->name('riwayatcuci');
@@ -272,6 +270,8 @@ Route::get('/RiwayatRongsok', [RiwayatRongsokController::class, 'index'])->name(
 
 //BarangRongsok-FormKetidaksesuaian
 Route::get('/FormKetidaksesuaian', [FormKetidaksesuaianController::class, 'index'])->name('formketidaksesuaian');
+Route::post('/FormKetidaksesuaian', [FormKetidaksesuaianController::class, 'store'])->name('formketidaksesuaian.store');
+;
 
 //BarangRongsok-RiwayatKetidaksesuaian
 Route::get('/RiwayatKetidaksesuaian', [RiwayatKetidaksesuaianController::class, 'index'])->name('riwayatketidaksesuaian');
@@ -408,9 +408,8 @@ Route::get('/setting-qr_direktur', [QRDirekturController::class, 'index'])->name
 Route::post('/setting-qr_direktur', [QRDirekturController::class, 'store'])->name('qr_direktur.store');
 
 //Laporan Laba Rugi
-Route::get('/laba-rugi', [LabaRugiController::class, 'index'])->name('labarugi');
-Route::get('/laba-rugi', [LabaRugiController::class, 'labaRugi'])->name('laporan.labarugi');
-Route::post('/laba-rugi', [LabaRugiController::class, 'labaRugiShow'])->name('laporan.labarugi.show');
+Route::get('/laporan/laba-rugi', [LabaRugiController::class, 'index'])->name('laporan.labarugi');
+Route::post('/laporan/laba-rugi', [LabaRugiController::class, 'show'])->name('laporan.labarugi.show');
 
 //Laporan Stok Opname
 Route::get('/laporan/stok-opname', [LPopnameController::class, 'index'])->name('laporan.stokopname');
