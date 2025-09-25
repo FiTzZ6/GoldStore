@@ -1,4 +1,4 @@
-{{-- resources/views/datamaster/cabang.blade.php --}}
+
 <!DOCTYPE html>
 <html lang="id">
 
@@ -55,6 +55,7 @@
         <table id="cabangTable">
             <thead>
                 <tr>
+                    <th><input type="checkbox" id="selectAll"></th>
                     <th>Kode Cabang</th>
                     <th>Nama Cabang</th>
                     <th>Alamat</th>
@@ -66,6 +67,7 @@
             <tbody>
                 @foreach($tokos as $toko)
                     <tr>
+                        <td><input type="checkbox" class="rowCheckbox"></td>
                         <td>{{ $toko->kdtoko }}</td>
                         <td>{{ $toko->namatoko }}</td>
                         <td>{{ $toko->alamattoko }}</td>
@@ -77,12 +79,12 @@
                         </td>
                         <td>
                             <button class="fa-solid fa-pen-to-square" onclick="openEditModal(
-                                    '{{ $toko->kdtoko }}',
-                                    '{{ $toko->namatoko }}',
-                                    '{{ $toko->alamattoko }}',
-                                    '{{ $toko->area }}',
-                                    '{{ $toko->logo }}'
-                                )"></button>
+                                                            '{{ $toko->kdtoko }}',
+                                                            '{{ $toko->namatoko }}',
+                                                            '{{ $toko->alamattoko }}',
+                                                            '{{ $toko->area }}',
+                                                            '{{ $toko->logo }}'
+                                                        )"></button>
 
                             <button class="fas fa-trash" onclick="openDeleteModal('{{ $toko->kdtoko }}')"></button>
                         </td>
@@ -204,68 +206,106 @@
         const exportColumns = [0, 1, 2, 3];
 
         function exportCSV() {
-            let table = document.querySelector("#cabangTable");
-            let rows = table.querySelectorAll("tr");
-            let csv = [];
+            let rows = getSelectedRows();
+            if (rows.length === 0) return alert("Pilih data dulu!");
 
-            rows.forEach(row => {
-                let cols = row.querySelectorAll("td, th");
-                let rowData = [];
-                exportColumns.forEach(i => rowData.push(cols[i]?.innerText || ""));
-                csv.push(rowData.join(","));
+            let csv = "Kode Cabang,Nama Cabang,Alamat,Area\n";
+            rows.forEach(r => {
+                csv += `${r.kdtoko},${r.namatoko},${r.alamattoko},${r.area}\n`;
             });
 
-            let csvContent = "data:text/csv;charset=utf-8," + csv.join("\n");
+            let blob = new Blob([csv], { type: "text/csv" });
             let link = document.createElement("a");
-            link.setAttribute("href", csvContent);
-            link.setAttribute("download", "cabang.csv");
+            link.href = URL.createObjectURL(blob);
+            link.download = "cabang.csv";
             link.click();
         }
 
         function exportExcel() {
-            let table = document.querySelector("#cabangTable");
-            let rows = table.querySelectorAll("tr");
-            let html = "<table border='1'><tr>";
+            let rows = getSelectedRows();
+            if (rows.length === 0) return alert("Pilih data dulu!");
 
-            rows.forEach(row => {
-                let cols = row.querySelectorAll("td, th");
-                html += "<tr>";
-                exportColumns.forEach(i => {
-                    html += "<td>" + (cols[i]?.innerText || "") + "</td>";
-                });
-                html += "</tr>";
+            let table = `<table><tr><th>Kode Cabang</th><th>Nama Cabang</th><th>Alamat</th><th>Area</th></tr>`;
+            rows.forEach(r => {
+                table += `<tr><td>${r.kdtoko}</td><td>${r.namatoko}</td><td>${r.alamattoko}</td><td>${r.area}</td></tr>`;
             });
+            table += `</table>`;
 
-            html += "</table>";
-
-            let data = new Blob([html], { type: "application/vnd.ms-excel" });
+            let blob = new Blob([table], { type: "application/vnd.ms-excel" });
             let link = document.createElement("a");
-            link.href = URL.createObjectURL(data);
+            link.href = URL.createObjectURL(blob);
             link.download = "cabang.xls";
             link.click();
         }
 
         function exportPDF() {
-            let table = document.querySelector("#cabangTable");
-            let rows = table.querySelectorAll("tr");
-            let printWindow = window.open("", "", "height=600,width=800");
+            let rows = getSelectedRows();
+            if (rows.length === 0) return alert("Pilih data dulu!");
 
-            printWindow.document.write("<html><head><title>Export PDF</title></head><body>");
-            printWindow.document.write("<h2>DATA CABANG</h2>");
-            printWindow.document.write("<table border='1' style='border-collapse: collapse; width:100%'><tr>");
-
-            rows.forEach(row => {
-                let cols = row.querySelectorAll("td, th");
-                printWindow.document.write("<tr>");
-                exportColumns.forEach(i => {
-                    printWindow.document.write("<td style='padding:5px'>" + (cols[i]?.innerText || "") + "</td>");
-                });
-                printWindow.document.write("</tr>");
+            // Buat konten surat resmi hanya dari data yang dipilih
+            let tableRows = "";
+            rows.forEach(r => {
+                tableRows += `
+                <tr>
+                    <td>${r.kdtoko}</td>
+                    <td>${r.namatoko}</td>
+                    <td>${r.alamattoko}</td>
+                    <td>${r.area}</td>
+                </tr>
+            `;
             });
 
-            printWindow.document.write("</table></body></html>");
-            printWindow.document.close();
-            printWindow.print();
+            let surat = `
+            <h2 style="text-align:center;">SURAT RESMI</h2>
+            <p>Kepada Yth,</p>
+            <p><b>Pimpinan Perusahaan</b></p>
+            <p>di Tempat</p>
+
+            <br>
+            <p>Dengan hormat,</p>
+            <p>Bersama ini kami sampaikan daftar cabang yang ada dalam sistem:</p>
+
+            <table border="1" cellspacing="0" cellpadding="5" width="100%">
+                <thead>
+                    <tr>
+                        <th>Kode Cabang</th>
+                        <th>Nama Cabang</th>
+                        <th>Alamat</th>
+                        <th>Area</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    ${tableRows}
+                </tbody>
+            </table>
+
+            <br><br>
+            <p>Hormat kami,</p>
+            <br><br>
+            <p><b>(................................)</b></p>
+        `;
+
+            let win = window.open("", "", "width=800,height=600");
+            win.document.write(`
+            <html>
+                <head>
+                    <title>Surat Resmi Cabang</title>
+                    <style>
+                        body { font-family: Arial, sans-serif; margin: 20px; }
+                        table { border-collapse: collapse; width: 100%; }
+                        th, td { border: 1px solid #000; padding: 6px; text-align: left; }
+                        h2 { text-align: center; }
+                    </style>
+                </head>
+                <body>
+                    ${surat}
+                </body>
+            </html>
+        `);
+            win.document.close();
+            win.focus();
+            win.print();
+            win.close();
         }
 
 
@@ -281,11 +321,32 @@
         }
 
         function handleExport(value) {
-            if (value === "print") window.print();
             if (value === "pdf") exportPDF();
             if (value === "csv") exportCSV();
             if (value === "excel") exportExcel();
         }
+
+        // Ambil baris yang dicentang
+        function getSelectedRows() {
+            let selected = [];
+            document.querySelectorAll(".rowCheckbox:checked").forEach(cb => {
+                let row = cb.closest("tr");
+                let cols = row.querySelectorAll("td");
+                selected.push({
+                    kdtoko: cols[1].innerText,
+                    namatoko: cols[2].innerText,
+                    alamattoko: cols[3].innerText,
+                    area: cols[4].innerText
+                });
+            });
+            return selected;
+        }
+
+        // Select All
+        document.getElementById("selectAll").addEventListener("change", function () {
+            let checkboxes = document.querySelectorAll(".rowCheckbox");
+            checkboxes.forEach(cb => cb.checked = this.checked);
+        });
     </script>
 </body>
 

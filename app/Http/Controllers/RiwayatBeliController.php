@@ -34,4 +34,31 @@ class RiwayatBeliController extends Controller
 
         return view('beli.riwayat_beli', compact('riwayat'));
     }
+
+    public function cetakStruk($nofaktur)
+    {
+        $items = TransBeli::where('nofaktur', $nofaktur)->get();
+
+        if ($items->isEmpty()) {
+            abort(404, 'Transaksi tidak ditemukan');
+        }
+
+        $tanggal = $items->first()->created_at;
+        $total = $items->sum('total');
+        $pelanggan = $items->first()->namapenjual ?? '-'; // di beli, pakai penjual
+        $staff = $items->first()->staff ?? '-';
+        $pembayaran = $items->first()->pembayaran ?? '-';
+
+        return view('beli.strukbeli', compact(
+            'nofaktur',
+            'items',
+            'tanggal',
+            'total',
+            'pelanggan',
+            'staff',
+            'pembayaran'
+        ));
+    }
+
+
 }

@@ -22,25 +22,20 @@
 
     <div class="container">
 
-         <div class="top-bar">
+        <div class="top-bar">
             <div class="left-controls">
                 <select onchange="handleExport(this.value)">
                     <option value="">Pilih Export</option>
-                    <option value="print">Export Print</option>
                     <option value="pdf">Export PDF</option>
                     <option value="csv">Export CSV</option>
                     <option value="excel">Export Excel</option>
                 </select>
                 <button class="btn-primary" onclick="openModal('modalTambah')">+ Tambah Kategori</button>
             </div>
-            <div class="icon-group">
-                <button title="Sorting" onclick="sortTable()"><i class="fas fa-sort"></i></button>
-                <button title="Refresh" onclick="refreshPage()"><i class="fas fa-sync"></i></button>
-            </div>
             <input type="text" placeholder="Search">
         </div>
 
-         <form method="GET" action="{{ route('area') }}">
+        <form method="GET" action="{{ route('area') }}">
             <label for="per_page">Tampilkan:</label>
             <select name="per_page" id="per_page" onchange="this.form.submit()">
                 <option value="10" {{ $perPage == 10 ? 'selected' : '' }}>10</option>
@@ -77,13 +72,49 @@
                         <td>{{ $area->kdarea }}</td>
                         <td>{{ $area->namaarea }}</td>
                         <td>
-                            <button class="action-btn" onclick="editArea('{{ $area->kdarea }}', '{{ $area->namaarea }}')"><i class="fa-solid fa-pen-to-square"></i></button>
-                            <button class="action-btn" onclick="hapusArea('{{ $area->kdarea }}')"><i class="fas fa-trash"></i></button>
+                            <button class="action-btn" onclick="editArea('{{ $area->kdarea }}', '{{ $area->namaarea }}')"><i
+                                    class="fa-solid fa-pen-to-square"></i></button>
+                            <button class="action-btn" onclick="hapusArea('{{ $area->kdarea }}')"><i
+                                    class="fas fa-trash"></i></button>
                         </td>
                     </tr>
                 @endforeach
             </tbody>
         </table>
+    </div>
+
+    <!-- Bagian Surat Resmi -->
+    <div id="suratResmi" class="surat-cetak" style="display:none;">
+        <h2 style="text-align:center;">SURAT RESMI</h2>
+        <p>Kepada Yth,</p>
+        <p><b>Pimpinan Perusahaan</b></p>
+        <p>di Tempat</p>
+
+        <br>
+        <p>Dengan hormat,</p>
+        <p>Berikut kami lampirkan daftar area yang terdaftar dalam sistem:</p>
+
+        <table border="1" cellspacing="0" cellpadding="5" width="100%">
+            <thead>
+                <tr>
+                    <th>Kode Area</th>
+                    <th>Nama Area</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach($areas as $area)
+                    <tr>
+                        <td>{{ $area->kdarea }}</td>
+                        <td>{{ $area->namaarea }}</td>
+                    </tr>
+                @endforeach
+            </tbody>
+        </table>
+
+        <br><br>
+        <p>Hormat kami,</p>
+        <br><br>
+        <p><b>(................................)</b></p>
     </div>
 
     <!-- Modal Tambah -->
@@ -163,13 +194,13 @@
             openModal('modalHapus');
         }
 
-         document.querySelector("input[placeholder='Search']").addEventListener("keyup", function () {
+        document.querySelector("input[placeholder='Search']").addEventListener("keyup", function () {
             let value = this.value.toLowerCase();
             document.querySelectorAll("table tbody tr").forEach(function (row) {
                 row.style.display = row.innerText.toLowerCase().includes(value) ? "" : "none";
             });
         });
-                // Fungsi export ke CSV
+        // Fungsi export ke CSV
         function exportCSV() {
             let table = document.querySelector("table");
             let rows = table.querySelectorAll("tr");
@@ -200,13 +231,17 @@
         }
 
         // Fungsi export ke PDF (pakai print)
-        function exportPDF() {
-            window.print();
-        }
 
         // Fungsi refresh halaman
-        function refreshPage() {
-            location.reload();
+        function exportPDF() {
+            // Tampilkan surat resmi dulu
+            document.getElementById("suratResmi").style.display = "block";
+
+            // Jalankan print
+            window.print();
+
+            // Sembunyikan lagi biar tidak muncul di layar
+            document.getElementById("suratResmi").style.display = "none";
         }
 
         // Fungsi sorting (contoh sorting alfabet kolom pertama)

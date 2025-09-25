@@ -20,7 +20,6 @@
             <div class="left-controls">
                 <select onchange="handleExport(this.value)">
                     <option value="">Pilih Export</option>
-                    <option value="print">Export Print</option>
                     <option value="pdf">Export PDF</option>
                     <option value="csv">Export CSV</option>
                     <option value="excel">Export Excel</option>
@@ -45,7 +44,7 @@
         <table>
             <thead>
                 <tr>
-                    <th><input type="checkbox"></th>
+                    <th><input type="checkbox" id="selectAll"></th>
                     <th>Kode</th>
                     <th>Nama</th>
                     <th>Alamat</th>
@@ -57,7 +56,7 @@
             <tbody>
                 @foreach($pelanggan as $p)
                     <tr>
-                        <td><input type="checkbox"></td>
+                        <td><input type="checkbox" class="rowCheckbox"></td>
                         <td>{{ $p->kdpelanggan }}</td>
                         <td>{{ $p->namapelanggan }}</td>
                         <td>{{ $p->alamatpelanggan }}</td>
@@ -157,39 +156,65 @@
         </div>
     </div>
     <script>
+        // === Export CSV ===
         function exportCSV() {
-            let table = document.querySelector("table");
-            let rows = table.querySelectorAll("tr");
-            let csv = [];
-
-            rows.forEach(row => {
-                let cols = row.querySelectorAll("td, th");
-                let rowData = [];
-                cols.forEach(col => rowData.push(col.innerText));
-                csv.push(rowData.join(","));
+            let rows = getSelectedRows();
+            let csv = "Kode,Nama,Alamat,Kontak,Point\n";
+            rows.forEach(r => {
+                csv += `${r.kode},${r.nama},${r.alamat},${r.kontak},${r.poin}\n`;
             });
-
-            let csvContent = "data:text/csv;charset=utf-8," + csv.join("\n");
+            let blob = new Blob([csv], { type: "text/csv" });
             let link = document.createElement("a");
-            link.setAttribute("href", csvContent);
-            link.setAttribute("download", "data_pelanggan.csv");
+            link.href = URL.createObjectURL(blob);
+            link.download = "data_pelanggan.csv";
             link.click();
         }
 
-        // Fungsi export ke Excel (sederhana)
+        // === Export Excel ===
         function exportExcel() {
-            let table = document.querySelector("table").outerHTML;
-            let data = new Blob([table], { type: "application/vnd.ms-excel" });
+            let rows = getSelectedRows();
+            let table = `<table><tr><th>Kode</th><th>Nama</th><th>Alamat</th><th>Kontak</th><th>Point</th></tr>`;
+            rows.forEach(r => {
+                table += `<tr><td>${r.kode}</td><td>${r.nama}</td><td>${r.alamat}</td><td>${r.kontak}</td><td>${r.poin}</td></tr>`;
+            });
+            table += `</table>`;
+            let blob = new Blob([table], { type: "application/vnd.ms-excel" });
             let link = document.createElement("a");
-            link.href = URL.createObjectURL(data);
+            link.href = URL.createObjectURL(blob);
             link.download = "data_pelanggan.xls";
             link.click();
         }
 
-        // Fungsi export ke PDF (pakai print)
+        // === Export PDF (Surat Resmi) ===
         function exportPDF() {
-            window.print();
+            let rows = getSelectedRows();
+            let tableRows = "";
+            rows.forEach(r => {
+                tableRows += `<tr><td>${r.kode}</td><td>${r.nama}</td><td>${r.alamat}</td><td>${r.kontak}</td><td>${r.poin}</td></tr>`;
+            });
+
+            let surat = `
+            <h2 style="text-align:center;">SURAT RESMI DATA PELANGGAN</h2>
+            <p>Kepada Yth,</p>
+            <p><b>Pimpinan Perusahaan</b></p>
+            <p>di Tempat</p><br>
+            <p>Dengan hormat,</p>
+            <p>Bersama ini kami sampaikan daftar pelanggan:</p>
+            <table border="1" cellspacing="0" cellpadding="5" width="100%">
+                <thead><tr><th>Kode</th><th>Nama</th><th>Alamat</th><th>Kontak</th><th>Point</th></tr></thead>
+                <tbody>${tableRows}</tbody>
+            </table>
+            <br><br><p>Hormat kami,</p><br><br>
+            <p><b>(................................)</b></p>
+        `;
+
+            let win = window.open("", "", "width=800,height=600");
+            win.document.write(`<html><head><title>Surat Resmi</title></head><body>${surat}</body></html>`);
+            win.document.close();
+            win.print();
+            win.close();
         }
+
 
         // Fungsi refresh halaman
         function refreshPage() {
@@ -205,7 +230,6 @@
         }
 
         function handleExport(value) {
-            if (value === "print") window.print();
             if (value === "pdf") exportPDF();
             if (value === "csv") exportCSV();
             if (value === "excel") exportExcel();
@@ -239,6 +263,35 @@
                 row.style.display = row.innerText.toLowerCase().includes(value) ? "" : "none";
             });
         });
+
+        // === Checkbox Select All ===
+        document.getElementById("selectAll").addEventListener("change", function () {
+            let checked = this.checked;
+            document.querySelectorAll(".rowCheckbox").forEach(cb => cb.checked = checked);
+        });
+
+        // === Ambil baris terpilih (atau semua kalau tidak ada yg dicentang) ===
+        function getSelectedRows() {
+            let selected = [];
+            let checkboxes = document.querySelectorAll(".rowCheckbox:checked");
+
+            let rows = (checkboxes.length > 0)
+                ? Array.from(checkboxes).map(cb => cb.closest("tr"))
+                : Array.from(document.querySelectorAll("table tbody tr"));
+
+            rows.forEach(row => {
+                let cols = row.querySelectorAll("td");
+                selected.push({
+                    kode: cols[1].innerText,
+                    nama: cols[2].innerText,
+                    alamat: cols[3].innerText,
+                    kontak: cols[4].innerText,
+                    poin: cols[5].innerText
+                });
+            });
+
+            return selected;
+        }
     </script>
 </body>
 

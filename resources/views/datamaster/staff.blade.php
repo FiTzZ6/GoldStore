@@ -17,7 +17,6 @@
             <div class="left-controls">
                 <select onchange="handleExport(this.value)">
                     <option value="">Pilih Export</option>
-                    <option value="print">Export Print</option>
                     <option value="pdf">Export PDF</option>
                     <option value="csv">Export CSV</option>
                     <option value="excel">Export Excel</option>
@@ -42,7 +41,7 @@
         <table>
             <thead>
                 <tr>
-                    <th><input type="checkbox"></th>
+                    <th><input type="checkbox" id="checkAll"></th>
                     <th>Kode Staff</th>
                     <th>Nama Staff</th>
                     <th>Posisi</th>
@@ -54,7 +53,7 @@
             <tbody>
                 @foreach($staff as $row)
                     <tr>
-                        <td><input type="checkbox"></td>
+                        <td><input type="checkbox" class="row-check"></td>
                         <td>{{ $row->kdstaff }}</td>
                         <td>{{ $row->nama }}</td>
                         <td>{{ $row->posisi }}</td>
@@ -150,12 +149,8 @@
     </div>
 
     <script>
-        function openModal(id) {
-            document.getElementById(id).style.display = "block";
-        }
-        function closeModal(id) {
-            document.getElementById(id).style.display = "none";
-        }
+        function openModal(id) { document.getElementById(id).style.display = "block"; }
+        function closeModal(id) { document.getElementById(id).style.display = "none"; }
 
         function openEdit(kdstaff, nama, posisi, kdtoko) {
             document.getElementById("formEdit").action = "/staff-update/" + kdstaff;
@@ -180,39 +175,117 @@
             rows.forEach(row => table.appendChild(row));
         }
 
-        function handleExport(value) {
-            if (value === "print") window.print();
-            if (value === "pdf") window.print();
-            if (value === "csv") exportCSV();
-            if (value === "excel") exportExcel();
+        // === Checkbox Select All ===
+        document.getElementById("checkAll").addEventListener("change", function () {
+            let checked = this.checked;
+            document.querySelectorAll(".row-check").forEach(cb => cb.checked = checked);
+        });
+
+        // === Ambil baris terpilih (kalau kosong → ambil semua) ===
+        function getSelectedRows() {
+            let selected = [];
+            let checkboxes = document.querySelectorAll(".row-check:checked");
+
+            let rows = (checkboxes.length > 0)
+                ? Array.from(checkboxes).map(cb => cb.closest("tr"))
+                : Array.from(document.querySelectorAll("table tbody tr"));
+
+            rows.forEach(row => {
+                let cols = row.querySelectorAll("td");
+                selected.push({
+                    kode: cols[1].innerText,
+                    nama: cols[2].innerText,
+                    posisi: cols[3].innerText,
+                    kdtoko: cols[4].innerText,
+                    namatoko: cols[5].innerText
+                });
+            });
+
+            return selected;
         }
 
+        // === Export CSV ===
         function exportCSV() {
-            let table = document.querySelector("table");
-            let rows = table.querySelectorAll("tr");
-            let csv = [];
-            rows.forEach(row => {
-                let cols = row.querySelectorAll("td, th");
-                let rowData = [];
-                cols.forEach(col => rowData.push(col.innerText));
-                csv.push(rowData.join(","));
+            let rows = getSelectedRows();
+            let csv = "Kode Staff,Nama Staff,Posisi,Kode Toko,Nama Toko\n";
+            rows.forEach(r => {
+                csv += `${r.kode},${r.nama},${r.posisi},${r.kdtoko},${r.namatoko}\n`;
             });
-            let csvContent = "data:text/csv;charset=utf-8," + csv.join("\n");
+            let blob = new Blob([csv], { type: "text/csv" });
             let link = document.createElement("a");
-            link.setAttribute("href", csvContent);
-            link.setAttribute("download", "staff.csv");
+            link.href = URL.createObjectURL(blob);
+            link.download = "staff.csv";
             link.click();
         }
 
+        // === Export Excel ===
         function exportExcel() {
-            let table = document.querySelector("table").outerHTML;
-            let data = new Blob([table], { type: "application/vnd.ms-excel" });
+            let rows = getSelectedRows();
+            let table = `<table><tr><th>Kode Staff</th><th>Nama Staff</th><th>Posisi</th><th>Kode Toko</th><th>Nama Toko</th></tr>`;
+            rows.forEach(r => {
+                table += `<tr><td>${r.kode}</td><td>${r.nama}</td><td>${r.posisi}</td><td>${r.kdtoko}</td><td>${r.namatoko}</td></tr>`;
+            });
+            table += `</table>`;
+            let blob = new Blob([table], { type: "application/vnd.ms-excel" });
             let link = document.createElement("a");
-            link.href = URL.createObjectURL(data);
+            link.href = URL.createObjectURL(blob);
             link.download = "staff.xls";
             link.click();
         }
 
+        // === Export PDF (pakai window.print surat resmi sederhana) ===
+        function exportPDF() {
+            let rows = getSelectedRows();
+            let tableRows = "";
+            rows.forEach(r => {
+                tableRows += `<tr>
+            <td>${r.kode}</td>
+            <td>${r.nama}</td>
+            <td>${r.posisi}</td>
+            <td>${r.kdtoko}</td>
+            <td>${r.namatoko}</td>
+        </tr>`;
+            });
+
+            let surat = `
+        <h2 style="text-align:center;">SURAT RESMI DATA STAFF</h2>
+        <p>Kepada Yth,</p>
+        <p><b>Pimpinan Perusahaan</b></p>
+        <p>di Tempat</p><br>
+        <p>Dengan hormat,</p>
+        <p>Bersama ini kami sampaikan daftar staff sebagai berikut:</p>
+        <table border="1" cellspacing="0" cellpadding="5" width="100%">
+            <thead>
+                <tr>
+                    <th>Kode Staff</th>
+                    <th>Nama Staff</th>
+                    <th>Posisi</th>
+                    <th>Kode Toko</th>
+                    <th>Nama Toko</th>
+                </tr>
+            </thead>
+            <tbody>${tableRows}</tbody>
+        </table>
+        <br><br><p>Hormat kami,</p><br><br>
+        <p><b>(................................)</b></p>
+    `;
+
+            let win = window.open("", "", "width=800,height=600");
+            win.document.write(`<html><head><title>Surat Resmi</title></head><body>${surat}</body></html>`);
+            win.document.close();
+            win.print();
+            win.close();
+        }
+
+
+        // Handle export
+        function handleExport(value) {
+            if (value === "pdf") exportPDF();
+            if (value === "csv") exportCSV();
+            if (value === "excel") exportExcel();
+        }
+
+        // Search sederhana
         document.querySelector("input[placeholder='Search']").addEventListener("keyup", function () {
             let value = this.value.toLowerCase();
             document.querySelectorAll("table tbody tr").forEach(function (row) {

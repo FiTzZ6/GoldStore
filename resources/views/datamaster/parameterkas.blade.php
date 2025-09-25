@@ -18,7 +18,6 @@
             <div class="left-controls">
                 <select onchange="handleExport(this.value)">
                     <option value="">Pilih Export</option>
-                    <option value="print">Export Print</option>
                     <option value="pdf">Export PDF</option>
                     <option value="csv">Export CSV</option>
                     <option value="excel">Export Excel</option>
@@ -46,7 +45,7 @@
         <table>
             <thead>
                 <tr>
-                    <th><input type="checkbox"></th>
+                    <th><input type="checkbox" id="selectAll"></th>
                     <th>Kode Parameter</th>
                     <th>Paramater Kas</th>
                     <th>Kode Toko</th>
@@ -56,7 +55,7 @@
             <tbody>
                 @foreach($parameterkas as $pk)
                     <tr>
-                        <td><input type="checkbox"></td>
+                        <td><input type="checkbox" class="rowCheckbox"></td>
                         <td>{{ $pk->kdparameterkas }}</td>
                         <td>{{ $pk->parameterkas }}</td>
                         <td>{{ $pk->cabang->namatoko ?? '-' }}</td>
@@ -182,39 +181,90 @@
             });
         });
 
-        // Fungsi export ke CSV
-        function exportCSV() {
-            let table = document.querySelector("table");
-            let rows = table.querySelectorAll("tr");
-            let csv = [];
+        // === Checkbox Select All ===
+        document.getElementById("selectAll").addEventListener("change", function () {
+            let checked = this.checked;
+            document.querySelectorAll(".rowCheckbox").forEach(cb => cb.checked = checked);
+        });
+
+        // === Ambil baris terpilih, kalau kosong → ambil semua ===
+        function getSelectedRows() {
+            let selected = [];
+            let checkboxes = document.querySelectorAll(".rowCheckbox:checked");
+
+            let rows = (checkboxes.length > 0)
+                ? Array.from(checkboxes).map(cb => cb.closest("tr"))
+                : Array.from(document.querySelectorAll("table tbody tr"));
 
             rows.forEach(row => {
-                let cols = row.querySelectorAll("td, th");
-                let rowData = [];
-                cols.forEach(col => rowData.push(col.innerText));
-                csv.push(rowData.join(","));
+                let cols = row.querySelectorAll("td");
+                selected.push({
+                    kode: cols[1].innerText,
+                    nama: cols[2].innerText,
+                    toko: cols[3].innerText
+                });
             });
 
-            let csvContent = "data:text/csv;charset=utf-8," + csv.join("\n");
+            return selected;
+        }
+
+        // === Export CSV ===
+        function exportCSV() {
+            let rows = getSelectedRows();
+            let csv = "Kode Parameter,Parameter Kas,Kode Toko\n";
+            rows.forEach(r => {
+                csv += `${r.kode},${r.nama},${r.toko}\n`;
+            });
+            let blob = new Blob([csv], { type: "text/csv" });
             let link = document.createElement("a");
-            link.setAttribute("href", csvContent);
-            link.setAttribute("download", "area.csv");
+            link.href = URL.createObjectURL(blob);
+            link.download = "parameter_kas.csv";
             link.click();
         }
 
-        // Fungsi export ke Excel (sederhana)
+        // === Export Excel ===
         function exportExcel() {
-            let table = document.querySelector("table").outerHTML;
-            let data = new Blob([table], { type: "application/vnd.ms-excel" });
+            let rows = getSelectedRows();
+            let table = `<table><tr><th>Kode Parameter</th><th>Parameter Kas</th><th>Kode Toko</th></tr>`;
+            rows.forEach(r => {
+                table += `<tr><td>${r.kode}</td><td>${r.nama}</td><td>${r.toko}</td></tr>`;
+            });
+            table += `</table>`;
+            let blob = new Blob([table], { type: "application/vnd.ms-excel" });
             let link = document.createElement("a");
-            link.href = URL.createObjectURL(data);
-            link.download = "area.xls";
+            link.href = URL.createObjectURL(blob);
+            link.download = "parameter_kas.xls";
             link.click();
         }
 
-        // Fungsi export ke PDF (pakai print)
+        // === Export PDF (pakai window.print surat resmi sederhana) ===
         function exportPDF() {
-            window.print();
+            let rows = getSelectedRows();
+            let tableRows = "";
+            rows.forEach(r => {
+                tableRows += `<tr><td>${r.kode}</td><td>${r.nama}</td><td>${r.toko}</td></tr>`;
+            });
+
+            let surat = `
+            <h2 style="text-align:center;">SURAT RESMI DATA PARAMETER KAS</h2>
+            <p>Kepada Yth,</p>
+            <p><b>Pimpinan Perusahaan</b></p>
+            <p>di Tempat</p><br>
+            <p>Dengan hormat,</p>
+            <p>Bersama ini kami sampaikan daftar parameter kas:</p>
+            <table border="1" cellspacing="0" cellpadding="5" width="100%">
+                <thead><tr><th>Kode Parameter</th><th>Parameter Kas</th><th>Kode Toko</th></tr></thead>
+                <tbody>${tableRows}</tbody>
+            </table>
+            <br><br><p>Hormat kami,</p><br><br>
+            <p><b>(................................)</b></p>
+        `;
+
+            let win = window.open("", "", "width=800,height=600");
+            win.document.write(`<html><head><title>Surat Resmi</title></head><body>${surat}</body></html>`);
+            win.document.close();
+            win.print();
+            win.close();
         }
 
         // Fungsi refresh halaman
@@ -231,12 +281,10 @@
         }
 
         function handleExport(value) {
-            if (value === "print") window.print();
             if (value === "pdf") exportPDF();
             if (value === "csv") exportCSV();
             if (value === "excel") exportExcel();
         }
-
     </script>
 </body>
 

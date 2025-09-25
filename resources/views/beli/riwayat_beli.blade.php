@@ -64,7 +64,10 @@
                                         <div class="transaction-total">
                                             Total: Rp {{ number_format($trx->total, 0, ',', '.') }}
                                         </div>
-                                        <button class="detail-btn">Lihat Detail</button>
+                                        <button class="detail-btn"
+                                            onclick="window.location='{{ route('riwayatbeli.struk', $trx->nofaktur) }}'">
+                                            Lihat Detail
+                                        </button>
                                     </div>
                                 </div>
                             @endforeach

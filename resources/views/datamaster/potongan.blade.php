@@ -18,7 +18,6 @@
             <div class="left-controls">
                 <select onchange="handleExport(this.value)">
                     <option value="">Pilih Export</option>
-                    <option value="print">Export Print</option>
                     <option value="pdf">Export PDF</option>
                     <option value="csv">Export CSV</option>
                     <option value="excel">Export Excel</option>
@@ -46,7 +45,7 @@
         <table>
             <thead>
                 <tr>
-                    <th><input type="checkbox"></th>
+                    <th><input type="checkbox" id="selectAll"></th>
                     <th>Nomor</th>
                     <th>Kode Kategori</th>
                     <th>Jumlah Potongan / Gram</th>
@@ -57,7 +56,7 @@
             <tbody>
                 @foreach($potongan as $p)
                     <tr>
-                        <td><input type="checkbox"></td>
+                        <td><input type="checkbox" class="rowCheckbox"></td>
                         <td>{{ $p->kdpotongan }}</td>
                         <td>{{ $p->kategori->namakategori ?? '-' }}</td>
                         <td>{{ $p->jumlahpotongan }}</td>
@@ -203,40 +202,80 @@
             });
         });
 
-        // Fungsi export ke CSV
+        // === Export CSV ===
         function exportCSV() {
-            let table = document.querySelector("table");
-            let rows = table.querySelectorAll("tr");
-            let csv = [];
+            let rows = getSelectedRows();
+            let csv = "Nomor,Kategori,Jumlah Potongan,Jenis Potongan\n";
+            rows.forEach(r => {
+                csv += `${r.nomor},${r.kategori},${r.jumlah},${r.jenis}\n`;
+            });
+            let blob = new Blob([csv], { type: "text/csv" });
+            let link = document.createElement("a");
+            link.href = URL.createObjectURL(blob);
+            link.download = "potongan.csv";
+            link.click();
+        }
 
-            rows.forEach(row => {
-                let cols = row.querySelectorAll("td, th");
-                let rowData = [];
-                cols.forEach(col => rowData.push(col.innerText));
-                csv.push(rowData.join(","));
+        // === Export Excel ===
+        function exportExcel() {
+            let rows = getSelectedRows();
+            let table = `<table><tr><th>Nomor</th><th>Kategori</th><th>Jumlah Potongan</th><th>Jenis Potongan</th></tr>`;
+            rows.forEach(r => {
+                table += `<tr><td>${r.nomor}</td><td>${r.kategori}</td><td>${r.jumlah}</td><td>${r.jenis}</td></tr>`;
+            });
+            table += `</table>`;
+            let blob = new Blob([table], { type: "application/vnd.ms-excel" });
+            let link = document.createElement("a");
+            link.href = URL.createObjectURL(blob);
+            link.download = "potongan.xls";
+            link.click();
+        }
+
+        // === Export PDF (Surat) ===
+        function exportPDF() {
+            let rows = getSelectedRows();
+            let tableRows = "";
+            rows.forEach(r => {
+                tableRows += `<tr><td>${r.nomor}</td><td>${r.kategori}</td><td>${r.jumlah}</td><td>${r.jenis}</td></tr>`;
             });
 
-            let csvContent = "data:text/csv;charset=utf-8," + csv.join("\n");
-            let link = document.createElement("a");
-            link.setAttribute("href", csvContent);
-            link.setAttribute("download", "area.csv");
-            link.click();
+            let surat = `
+            <h2 style="text-align:center;">SURAT RESMI DATA POTONGAN</h2>
+            <p>Kepada Yth,</p>
+            <p><b>Pimpinan Perusahaan</b></p>
+            <p>di Tempat</p><br>
+            <p>Dengan hormat,</p>
+            <p>Bersama ini kami sampaikan daftar potongan:</p>
+            <table border="1" cellspacing="0" cellpadding="5" width="100%">
+                <thead>
+                    <tr><th>Nomor</th><th>Kategori</th><th>Jumlah Potongan</th><th>Jenis Potongan</th></tr>
+                </thead>
+                <tbody>${tableRows}</tbody>
+            </table>
+            <br><br><p>Hormat kami,</p><br><br>
+            <p><b>(................................)</b></p>
+        `;
+
+            let win = window.open("", "", "width=800,height=600");
+            win.document.write(`
+            <html>
+                <head>
+                    <title>Surat Resmi Potongan</title>
+                    <style>
+                        body { font-family: Arial, sans-serif; margin: 20px; }
+                        table { border-collapse: collapse; width: 100%; }
+                        th, td { border: 1px solid #000; padding: 6px; }
+                        h2 { text-align: center; }
+                    </style>
+                </head>
+                <body>${surat}</body>
+            </html>
+        `);
+            win.document.close();
+            win.print();
+            win.close();
         }
 
-        // Fungsi export ke Excel (sederhana)
-        function exportExcel() {
-            let table = document.querySelector("table").outerHTML;
-            let data = new Blob([table], { type: "application/vnd.ms-excel" });
-            let link = document.createElement("a");
-            link.href = URL.createObjectURL(data);
-            link.download = "area.xls";
-            link.click();
-        }
-
-        // Fungsi export ke PDF (pakai print)
-        function exportPDF() {
-            window.print();
-        }
 
         // Fungsi refresh halaman
         function refreshPage() {
@@ -251,11 +290,38 @@
             rows.forEach(row => table.appendChild(row));
         }
 
+        // === Handle Export ===
         function handleExport(value) {
-            if (value === "print") window.print();
             if (value === "pdf") exportPDF();
             if (value === "csv") exportCSV();
             if (value === "excel") exportExcel();
+        }
+        // === Checkbox Select All ===
+        document.getElementById("selectAll").addEventListener("change", function () {
+            let checked = this.checked;
+            document.querySelectorAll(".rowCheckbox").forEach(cb => cb.checked = checked);
+        });
+
+        // === Ambil baris terpilih, kalau kosong → ambil semua ===
+        function getSelectedRows() {
+            let selected = [];
+            let checkboxes = document.querySelectorAll(".rowCheckbox:checked");
+
+            let rows = (checkboxes.length > 0)
+                ? Array.from(checkboxes).map(cb => cb.closest("tr"))
+                : Array.from(document.querySelectorAll("table tbody tr"));
+
+            rows.forEach(row => {
+                let cols = row.querySelectorAll("td");
+                selected.push({
+                    nomor: cols[1].innerText,
+                    kategori: cols[2].innerText,
+                    jumlah: cols[3].innerText,
+                    jenis: cols[4].innerText
+                });
+            });
+
+            return selected;
         }
 
     </script>

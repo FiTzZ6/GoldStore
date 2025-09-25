@@ -25,7 +25,6 @@
             <div class="left-controls">
                 <select onchange="handleExport(this.value)">
                     <option value="">Pilih Export</option>
-                    <option value="print">Export Print</option>
                     <option value="pdf">Export PDF</option>
                     <option value="csv">Export CSV</option>
                     <option value="excel">Export Excel</option>
@@ -36,7 +35,7 @@
             <div style="display:flex; align-items:center; gap:6px;">
                 <div class="icon-group">
                     <button title="Sorting" onclick="sortTable()"><i class="fas fa-sort"></i></button>
-                    <button title="Refresh"onclick="refreshPage()"><i class="fas fa-sync"></i></button>
+                    <button title="Refresh" onclick="refreshPage()"><i class="fas fa-sync"></i></button>
                 </div>
                 <input type="text" placeholder="Search">
             </div>
@@ -51,7 +50,7 @@
         <table id="tabelKondisi" class="display">
             <thead>
                 <tr>
-                    <th><input type="checkbox"></th>
+                    <th><input type="checkbox" id="selectAll"></th>
                     <th>Nomor</th>
                     <th>Kondisi</th>
                     <th>Action</th>
@@ -60,7 +59,7 @@
             <tbody>
                 @foreach($kondisi as $index => $row)
                     <tr>
-                        <td><input type="checkbox"></td>
+                        <td><input type="checkbox" class="rowCheckbox"></td>
                         <td>{{ $index + 1 }}</td>
                         <td>{{ $row->kondisibarang }}</td>
                         <td>
@@ -148,39 +147,98 @@
             openModal("modalEdit");
         }
 
-        // Fungsi export ke CSV
+        // === Export CSV ===
         function exportCSV() {
-            let table = document.querySelector("table");
-            let rows = table.querySelectorAll("tr");
-            let csv = [];
+            let rows = getSelectedRows();
+            if (rows.length === 0) return alert("Pilih data dulu!");
+            let csv = "Nomor,Kondisi\n";
+            rows.forEach(r => {
+                csv += `${r.nomor},${r.kondisi}\n`;
+            });
+            let blob = new Blob([csv], { type: "text/csv" });
+            let link = document.createElement("a");
+            link.href = URL.createObjectURL(blob);
+            link.download = "kondisi.csv";
+            link.click();
+        }
 
-            rows.forEach(row => {
-                let cols = row.querySelectorAll("td, th");
-                let rowData = [];
-                cols.forEach(col => rowData.push(col.innerText));
-                csv.push(rowData.join(","));
+        // === Export Excel ===
+        function exportExcel() {
+            let rows = getSelectedRows();
+            if (rows.length === 0) return alert("Pilih data dulu!");
+            let table = `<table><tr><th>Nomor</th><th>Kondisi</th></tr>`;
+            rows.forEach(r => {
+                table += `<tr><td>${r.nomor}</td><td>${r.kondisi}</td></tr>`;
+            });
+            table += `</table>`;
+            let blob = new Blob([table], { type: "application/vnd.ms-excel" });
+            let link = document.createElement("a");
+            link.href = URL.createObjectURL(blob);
+            link.download = "kondisi.xls";
+            link.click();
+        }
+
+        // === Export PDF (Surat Resmi) ===
+        function exportPDF() {
+            let rows = getSelectedRows();
+            if (rows.length === 0) return alert("Pilih data dulu!");
+
+            let tableRows = "";
+            rows.forEach(r => {
+                tableRows += `<tr>
+                <td>${r.nomor}</td>
+                <td>${r.kondisi}</td>
+            </tr>`;
             });
 
-            let csvContent = "data:text/csv;charset=utf-8," + csv.join("\n");
-            let link = document.createElement("a");
-            link.setAttribute("href", csvContent);
-            link.setAttribute("download", "area.csv");
-            link.click();
+            let surat = `
+            <h2 style="text-align:center;">SURAT RESMI</h2>
+            <p>Kepada Yth,</p>
+            <p><b>Pimpinan Perusahaan</b></p>
+            <p>di Tempat</p><br>
+            <p>Dengan hormat,</p>
+            <p>Bersama ini kami sampaikan daftar kondisi barang:</p>
+            <table border="1" cellspacing="0" cellpadding="5" width="100%">
+                <thead>
+                    <tr><th>Nomor</th><th>Kondisi</th></tr>
+                </thead>
+                <tbody>${tableRows}</tbody>
+            </table>
+            <br><br><p>Hormat kami,</p><br><br>
+            <p><b>(................................)</b></p>
+        `;
+
+            let win = window.open("", "", "width=800,height=600");
+            win.document.write(`
+            <html>
+                <head>
+                    <title>Surat Resmi Kondisi</title>
+                    <style>
+                        body { font-family: Arial, sans-serif; margin: 20px; }
+                        table { border-collapse: collapse; width: 100%; }
+                        th, td { border: 1px solid #000; padding: 6px; }
+                        h2 { text-align: center; }
+                    </style>
+                </head>
+                <body>${surat}</body>
+            </html>
+        `);
+            win.document.close();
+            win.focus();
+            win.print();
+            win.close();
         }
 
-        // Fungsi export ke Excel (sederhana)
-        function exportExcel() {
-            let table = document.querySelector("table").outerHTML;
-            let data = new Blob([table], { type: "application/vnd.ms-excel" });
-            let link = document.createElement("a");
-            link.href = URL.createObjectURL(data);
-            link.download = "area.xls";
-            link.click();
-        }
+        // === Select All ===
+        document.getElementById("selectAll").addEventListener("change", function () {
+            document.querySelectorAll(".rowCheckbox").forEach(cb => cb.checked = this.checked);
+        });
 
-        // Fungsi export ke PDF (pakai print)
-        function exportPDF() {
-            window.print();
+        // === Handle Export ===
+        function handleExport(value) {
+            if (value === "pdf") exportPDF();
+            if (value === "csv") exportCSV();
+            if (value === "excel") exportExcel();
         }
 
         // Fungsi refresh halaman
@@ -196,19 +254,26 @@
             rows.forEach(row => table.appendChild(row));
         }
 
-        function handleExport(value) {
-            if (value === "print") window.print();
-            if (value === "pdf") exportPDF();
-            if (value === "csv") exportCSV();
-            if (value === "excel") exportExcel();
-        }
-
         document.querySelector("input[placeholder='Search']").addEventListener("keyup", function () {
             let value = this.value.toLowerCase();
             document.querySelectorAll("table tbody tr").forEach(function (row) {
                 row.style.display = row.innerText.toLowerCase().includes(value) ? "" : "none";
             });
         });
+
+        // === Ambil baris yang dipilih ===
+        function getSelectedRows() {
+            let selected = [];
+            document.querySelectorAll(".rowCheckbox:checked").forEach(cb => {
+                let row = cb.closest("tr");
+                let cols = row.querySelectorAll("td");
+                selected.push({
+                    nomor: cols[1].innerText,
+                    kondisi: cols[2].innerText
+                });
+            });
+            return selected;
+        }
 
     </script>
 

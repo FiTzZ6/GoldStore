@@ -295,6 +295,7 @@ Route::post('/BatalBeli/store', [BatalBeliController::class, 'store'])->name('ba
 
 //BeliRiwayat-Beli
 Route::get('/RiwayatBeli', [RiwayatBeliController::class, 'index'])->name('riwayatbeli');
+Route::get('/riwayat-beli/{nofaktur}/struk', [RiwayatBeliController::class, 'cetakStruk'])->name('riwayatbeli.struk');
 
 //BeliRiwayat-Batal-Beli
 Route::get('/RiwayatBatalBeli', [RiwayatBatalBeliController::class, 'index'])->name('riwayatbatalbeli');

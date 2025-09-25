@@ -35,12 +35,11 @@
             <div class="left-controls">
                 <select onchange="handleExport(this.value)">
                     <option value="">Pilih Export</option>
-                    <option value="print">Export Print</option>
                     <option value="pdf">Export PDF</option>
                     <option value="csv">Export CSV</option>
                     <option value="excel">Export Excel</option>
                 </select>
-                <button class="btn-primary" onclick="openModal('modalTambah')">+ Tambah Kategori</button>
+                <button class="btn-primary" onclick="openModal('modalTambah')">+ Tambah Supplier</button>
             </div>
             <div style="display:flex; align-items:center; gap:6px;">
                 <div class="icon-group">
@@ -54,6 +53,7 @@
         <table id="supplierTable">
             <thead>
                 <tr>
+                    <th><input type="checkbox" id="selectAll"></th>
                     <th>Kode Supplier</th>
                     <th>Nama Supplier</th>
                     <th>Alamat</th>
@@ -66,6 +66,7 @@
             <tbody>
                 @foreach($suppliers as $s)
                     <tr>
+                        <td><input type="checkbox" class="rowCheckbox"></td>
                         <td>{{ $s->kdsupplier }}</td>
                         <td>{{ $s->namasupplier }}</td>
                         <td>{{ $s->alamat }}</td>
@@ -74,15 +75,15 @@
                         <td>{{ $s->ket }}</td>
                         <td>
                             <button class="btn-edit" onclick="openEditModal(
-                                        '{{ $s->kdsupplier }}',
-                                        '{{ $s->namasupplier }}',
-                                        '{{ $s->alamat }}',
-                                        '{{ $s->hp }}',
-                                        '{{ $s->email }}',
-                                        '{{ $s->ket }}'
-                                    )"><i class="fa-solid fa-pen-to-square"></i></button>
+                                                                '{{ $s->kdsupplier }}',
+                                                                '{{ $s->namasupplier }}',
+                                                                '{{ $s->alamat }}',
+                                                                '{{ $s->hp }}',
+                                                                '{{ $s->email }}',
+                                                                '{{ $s->ket }}'
+                                                            )"><i class="fa-solid fa-pen-to-square"></i></button>
 
-                                <button class="fas fa-trash" onclick="openDeleteModal('{{ $s->kdsupplier }}')"></button>
+                            <button class="fas fa-trash" onclick="openDeleteModal('{{ $s->kdsupplier }}')"></button>
                         </td>
                     </tr>
                 @endforeach
@@ -169,20 +170,13 @@
 
 
     <script>
-        function openModal(id) {
-            document.getElementById(id).classList.add('show');
-        }
-
-        function closeModal(id) {
-            document.getElementById(id).classList.remove('show');
-        }
+        function openModal(id) { document.getElementById(id).classList.add('show'); }
+        function closeModal(id) { document.getElementById(id).classList.remove('show'); }
 
         function openEditModal(kdsupplier, nama, alamat, hp, email, ket) {
             let modal = document.getElementById('modalEdit');
             modal.classList.add('show');
-
             document.getElementById('formEdit').action = "/update-supplier/" + kdsupplier;
-
             document.getElementById('editKdsupplier').value = kdsupplier;
             document.getElementById('editNama').value = nama;
             document.getElementById('editAlamat').value = alamat;
@@ -200,66 +194,155 @@
         // Search filter
         document.querySelector("input[placeholder='Search']").addEventListener("keyup", function () {
             let value = this.value.toLowerCase();
-            document.querySelectorAll("table tbody tr").forEach(function (row) {
+            document.querySelectorAll("#supplierTable tbody tr").forEach(function (row) {
                 row.style.display = row.innerText.toLowerCase().includes(value) ? "" : "none";
             });
         });
 
-        // Fungsi export ke CSV
-        function exportCSV() {
-            let table = document.querySelector("table");
-            let rows = table.querySelectorAll("tr");
-            let csv = [];
+        // Ambil baris yang dicentang
+        function getSelectedRows() {
+            let selected = [];
+            document.querySelectorAll(".rowCheckbox:checked").forEach(cb => {
+                let row = cb.closest("tr");
+                let cols = row.querySelectorAll("td");
+                selected.push({
+                    kdsupplier: cols[1].innerText,
+                    namasupplier: cols[2].innerText,
+                    alamat: cols[3].innerText,
+                    hp: cols[4].innerText,
+                    email: cols[5].innerText,
+                    ket: cols[6].innerText
+                });
+            });
+            return selected;
+        }
 
-            rows.forEach(row => {
-                let cols = row.querySelectorAll("td, th");
-                let rowData = [];
-                cols.forEach(col => rowData.push(col.innerText));
-                csv.push(rowData.join(","));
+        // Export CSV
+        function exportCSV() {
+            let rows = getSelectedRows();
+            if (rows.length === 0) return alert("Pilih data dulu!");
+
+            let csv = "Kode Supplier,Nama Supplier,Alamat,Kontak,Email,Keterangan\n";
+            rows.forEach(r => {
+                csv += `${r.kdsupplier},${r.namasupplier},${r.alamat},${r.hp},${r.email},${r.ket}\n`;
             });
 
-            let csvContent = "data:text/csv;charset=utf-8," + csv.join("\n");
+            let blob = new Blob([csv], { type: "text/csv" });
             let link = document.createElement("a");
-            link.setAttribute("href", csvContent);
-            link.setAttribute("download", "kategori.csv");
+            link.href = URL.createObjectURL(blob);
+            link.download = "supplier.csv";
             link.click();
         }
 
-        // Fungsi export ke Excel (sederhana)
+        // Export Excel
         function exportExcel() {
-            let table = document.querySelector("table").outerHTML;
-            let data = new Blob([table], { type: "application/vnd.ms-excel" });
+            let rows = getSelectedRows();
+            if (rows.length === 0) return alert("Pilih data dulu!");
+
+            let table = `<table><tr><th>Kode Supplier</th><th>Nama Supplier</th><th>Alamat</th><th>Kontak</th><th>Email</th><th>Keterangan</th></tr>`;
+            rows.forEach(r => {
+                table += `<tr><td>${r.kdsupplier}</td><td>${r.namasupplier}</td><td>${r.alamat}</td><td>${r.hp}</td><td>${r.email}</td><td>${r.ket}</td></tr>`;
+            });
+            table += `</table>`;
+
+            let blob = new Blob([table], { type: "application/vnd.ms-excel" });
             let link = document.createElement("a");
-            link.href = URL.createObjectURL(data);
-            link.download = "kategori.xls";
+            link.href = URL.createObjectURL(blob);
+            link.download = "supplier.xls";
             link.click();
         }
 
-        // Fungsi export ke PDF (pakai print)
+        // Export PDF (surat resmi)
         function exportPDF() {
-            window.print();
+            let rows = getSelectedRows();
+            if (rows.length === 0) return alert("Pilih data dulu!");
+
+            let tableRows = "";
+            rows.forEach(r => {
+                tableRows += `
+                    <tr>
+                        <td>${r.kdsupplier}</td>
+                        <td>${r.namasupplier}</td>
+                        <td>${r.alamat}</td>
+                        <td>${r.hp}</td>
+                        <td>${r.email}</td>
+                        <td>${r.ket}</td>
+                    </tr>
+                `;
+            });
+
+            let surat = `
+                <h2 style="text-align:center;">SURAT RESMI</h2>
+                <p>Kepada Yth,</p>
+                <p><b>Pimpinan Perusahaan</b></p>
+                <p>di Tempat</p>
+                <br>
+                <p>Dengan hormat,</p>
+                <p>Bersama ini kami sampaikan daftar supplier yang ada dalam sistem:</p>
+
+                <table border="1" cellspacing="0" cellpadding="5" width="100%">
+                    <thead>
+                        <tr>
+                            <th>Kode</th>
+                            <th>Nama</th>
+                            <th>Alamat</th>
+                            <th>Kontak</th>
+                            <th>Email</th>
+                            <th>Keterangan</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        ${tableRows}
+                    </tbody>
+                </table>
+
+                <br><br>
+                <p>Hormat kami,</p>
+                <br><br>
+                <p><b>(................................)</b></p>
+            `;
+
+            let win = window.open("", "", "width=800,height=600");
+            win.document.write(`
+                <html>
+                    <head>
+                        <title>Surat Resmi Supplier</title>
+                        <style>
+                            body { font-family: Arial, sans-serif; margin: 20px; }
+                            table { border-collapse: collapse; width: 100%; }
+                            th, td { border: 1px solid #000; padding: 6px; text-align: left; }
+                            h2 { text-align: center; }
+                        </style>
+                    </head>
+                    <body>${surat}</body>
+                </html>
+            `);
+            win.document.close();
+            win.focus();
+            win.print();
+            win.close();
         }
 
-        // Fungsi refresh halaman
-        function refreshPage() {
-            location.reload();
-        }
-
-        // Fungsi sorting (contoh sorting alfabet kolom pertama)
+        function refreshPage() { location.reload(); }
         function sortTable() {
-            let table = document.querySelector("table");
-            let rows = Array.from(table.rows).slice(1); // skip header
-            rows.sort((a, b) => a.cells[0].innerText.localeCompare(b.cells[0].innerText));
+            let table = document.querySelector("#supplierTable");
+            let rows = Array.from(table.rows).slice(1);
+            rows.sort((a, b) => a.cells[1].innerText.localeCompare(b.cells[1].innerText));
             rows.forEach(row => table.appendChild(row));
         }
 
         function handleExport(value) {
-            if (value === "print") window.print();
             if (value === "pdf") exportPDF();
             if (value === "csv") exportCSV();
             if (value === "excel") exportExcel();
         }
+
+        // Select All
+        document.getElementById("selectAll").addEventListener("change", function () {
+            document.querySelectorAll(".rowCheckbox").forEach(cb => cb.checked = this.checked);
+        });
     </script>
+
 </body>
 
 </html>

@@ -157,3 +157,21 @@ table th {
     padding: 8px;
     margin-top: 8px;
 }
+
+@media print {
+    body * {
+        visibility: hidden;
+    }
+
+    #suratResmi,
+    #suratResmi * {
+        visibility: visible;
+    }
+
+    #suratResmi {
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 100%;
+    }
+}

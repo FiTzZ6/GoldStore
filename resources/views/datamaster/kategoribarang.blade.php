@@ -33,7 +33,6 @@
             <div class="left-controls">
                 <select onchange="handleExport(this.value)">
                     <option value="">Pilih Export</option>
-                    <option value="print">Export Print</option>
                     <option value="pdf">Export PDF</option>
                     <option value="csv">Export CSV</option>
                     <option value="excel">Export Excel</option>
@@ -68,7 +67,7 @@
         <table>
             <thead>
                 <tr>
-                    <th><input type="checkbox"></th>
+                    <th><input type="checkbox" id="selectAll"></th>
                     <th>Kode Kategori</th>
                     <th>Nama Kategori</th>
                     <th>Harga/gr</th>
@@ -79,7 +78,7 @@
             <tbody>
                 @foreach($kategori as $row)
                     <tr>
-                        <td><input type="checkbox"></td>
+                        <td><input type="checkbox" class="rowCheckbox"></td>
                         <td>{{ $row->kdkategori }}</td>
                         <td>{{ $row->namakategori }}</td>
                         <td>{{ number_format($row->hargapergr, 0, ',', '.') }}</td>
@@ -159,94 +158,148 @@
     </div>
 
     <script>
-        function openModal(id) {
-            document.getElementById(id).classList.add('show');
-        }
-
-        function closeModal(id) {
-            document.getElementById(id).classList.remove('show');
-        }
-
+        // === Modal ===
+        function openModal(id) { document.getElementById(id).classList.add('show'); }
+        function closeModal(id) { document.getElementById(id).classList.remove('show'); }
         function openEditModal(id, kdkategori, nama, harga, kadar) {
             let modal = document.getElementById('modalEdit');
             modal.classList.add('show');
-
             document.getElementById('editkategori').value = kdkategori;
             document.getElementById('editNama').value = nama;
             document.getElementById('editHarga').value = harga;
             document.getElementById('editKadar').value = kadar;
-
             document.getElementById('formEdit').action = '/update-kategori/' + kdkategori;
         }
-
         function openDeleteModal(kdkategori) {
             let modal = document.getElementById('modalHapus');
             modal.classList.add('show');
             document.getElementById('formHapus').action = '/hapus-kategori/' + kdkategori;
         }
 
-        // Search filter
-        document.querySelector("input[placeholder='Search']").addEventListener("keyup", function () {
-            let value = this.value.toLowerCase();
-            document.querySelectorAll("table tbody tr").forEach(function (row) {
-                row.style.display = row.innerText.toLowerCase().includes(value) ? "" : "none";
+        // === Checkbox pilih baris ===
+        function getSelectedRows() {
+            let selected = [];
+            document.querySelectorAll(".rowCheckbox:checked").forEach(cb => {
+                let row = cb.closest("tr");
+                let cols = row.querySelectorAll("td");
+                selected.push({
+                    kdkategori: cols[1].innerText,
+                    namakategori: cols[2].innerText,
+                    hargapergr: cols[3].innerText,
+                    kadar: cols[4].innerText
+                });
             });
-        });
+            return selected;
+        }
 
-        // Fungsi export ke CSV
+        // === Export CSV ===
         function exportCSV() {
-            let table = document.querySelector("table");
-            let rows = table.querySelectorAll("tr");
-            let csv = [];
-
-            rows.forEach(row => {
-                let cols = row.querySelectorAll("td, th");
-                let rowData = [];
-                cols.forEach(col => rowData.push(col.innerText));
-                csv.push(rowData.join(","));
+            let rows = getSelectedRows();
+            if (rows.length === 0) return alert("Pilih data dulu!");
+            let csv = "Kode, Nama, Harga/gr, Kadar\n";
+            rows.forEach(r => {
+                csv += `${r.kdkategori},${r.namakategori},${r.hargapergr},${r.kadar}\n`;
             });
-
-            let csvContent = "data:text/csv;charset=utf-8," + csv.join("\n");
+            let blob = new Blob([csv], { type: "text/csv" });
             let link = document.createElement("a");
-            link.setAttribute("href", csvContent);
-            link.setAttribute("download", "kategori.csv");
+            link.href = URL.createObjectURL(blob);
+            link.download = "kategori.csv";
             link.click();
         }
 
-        // Fungsi export ke Excel (sederhana)
+        // === Export Excel ===
         function exportExcel() {
-            let table = document.querySelector("table").outerHTML;
-            let data = new Blob([table], { type: "application/vnd.ms-excel" });
+            let rows = getSelectedRows();
+            if (rows.length === 0) return alert("Pilih data dulu!");
+            let table = `<table><tr><th>Kode</th><th>Nama</th><th>Harga/gr</th><th>Kadar</th></tr>`;
+            rows.forEach(r => {
+                table += `<tr><td>${r.kdkategori}</td><td>${r.namakategori}</td><td>${r.hargapergr}</td><td>${r.kadar}</td></tr>`;
+            });
+            table += `</table>`;
+            let blob = new Blob([table], { type: "application/vnd.ms-excel" });
             let link = document.createElement("a");
-            link.href = URL.createObjectURL(data);
+            link.href = URL.createObjectURL(blob);
             link.download = "kategori.xls";
             link.click();
         }
 
-        // Fungsi export ke PDF (pakai print)
+        // === Export PDF (Surat Resmi) ===
         function exportPDF() {
-            window.print();
+            let rows = getSelectedRows();
+            if (rows.length === 0) return alert("Pilih data dulu!");
+            let tableRows = "";
+            rows.forEach(r => {
+                tableRows += `<tr>
+                    <td>${r.kdkategori}</td>
+                    <td>${r.namakategori}</td>
+                    <td>${r.hargapergr}</td>
+                    <td>${r.kadar}</td>
+                </tr>`;
+            });
+            let surat = `
+                <h2 style="text-align:center;">SURAT RESMI</h2>
+                <p>Kepada Yth,</p>
+                <p><b>Pimpinan Perusahaan</b></p>
+                <p>di Tempat</p><br>
+                <p>Dengan hormat,</p>
+                <p>Bersama ini kami sampaikan daftar kategori barang:</p>
+                <table border="1" cellspacing="0" cellpadding="5" width="100%">
+                    <thead>
+                        <tr><th>Kode</th><th>Nama</th><th>Harga/gr</th><th>Kadar</th></tr>
+                    </thead>
+                    <tbody>${tableRows}</tbody>
+                </table>
+                <br><br><p>Hormat kami,</p><br><br>
+                <p><b>(................................)</b></p>
+            `;
+            let win = window.open("", "", "width=800,height=600");
+            win.document.write(`
+                <html>
+                    <head>
+                        <title>Surat Resmi Kategori</title>
+                        <style>
+                            body { font-family: Arial, sans-serif; margin: 20px; }
+                            table { border-collapse: collapse; width: 100%; }
+                            th, td { border: 1px solid #000; padding: 6px; }
+                            h2 { text-align: center; }
+                        </style>
+                    </head>
+                    <body>${surat}</body>
+                </html>
+            `);
+            win.document.close();
+            win.focus();
+            win.print();
+            win.close();
         }
 
-        // Fungsi refresh halaman
-        function refreshPage() {
-            location.reload();
-        }
-
-        // Fungsi sorting (contoh sorting alfabet kolom pertama)
+        // === Lain-lain ===
+        function refreshPage() { location.reload(); }
         function sortTable() {
-            let table = document.querySelector("table");
-            let rows = Array.from(table.rows).slice(1); // skip header
-            rows.sort((a, b) => a.cells[0].innerText.localeCompare(b.cells[0].innerText));
+            let table = document.querySelector("#kategoriTable");
+            let rows = Array.from(table.rows).slice(1);
+            rows.sort((a, b) => a.cells[1].innerText.localeCompare(b.cells[1].innerText));
             rows.forEach(row => table.appendChild(row));
         }
-
         function handleExport(value) {
             if (value === "print") window.print();
             if (value === "pdf") exportPDF();
             if (value === "csv") exportCSV();
             if (value === "excel") exportExcel();
         }
+
+        // Select All
+        document.getElementById("selectAll").addEventListener("change", function () {
+            document.querySelectorAll(".rowCheckbox").forEach(cb => cb.checked = this.checked);
+        });
+
+        // Search
+        document.querySelector("input[placeholder='Search']").addEventListener("keyup", function () {
+            let value = this.value.toLowerCase();
+            document.querySelectorAll("#kategoriTable tbody tr").forEach(row => {
+                row.style.display = row.innerText.toLowerCase().includes(value) ? "" : "none";
+            });
+        });
     </script>
 
 
