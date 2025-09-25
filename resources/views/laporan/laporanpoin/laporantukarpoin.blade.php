@@ -59,19 +59,20 @@
 
         {{-- Tools --}}
         <div class="tools">
-            <button class="btn btn-primary"><i class="fas fa-eye"></i> Show 10 rows</button>
-            <button class="btn btn-secondary"><i class="fas fa-copy"></i> Copy</button>
-            <button class="btn btn-secondary"><i class="fas fa-file-csv"></i> CSV</button>
-            <button class="btn btn-secondary"><i class="fas fa-file-excel"></i> Excel</button>
-            <button class="btn btn-danger"><i class="fas fa-file-pdf"></i> PDF</button>
-            <button class="btn btn-success"><i class="fas fa-print"></i> Print</button>
+            <select onchange="handleExport(this.value)">
+                <option value="">Pilih Export</option>
+                <option value="csv">Export CSV</option>
+                <option value="excel">Export Excel</option>
+                <option value="pdf">Export PDF</option>
+            </select>
         </div>
 
         {{-- Tabel Riwayat Redeem --}}
         <div class="table-container">
-            <table>
+            <table id="redeemTable">
                 <thead>
                     <tr>
+                        <th><input type="checkbox" id="selectAll"></th>
                         <th>Tanggal</th>
                         <th>Nama Pelanggan</th>
                         <th>Merchandise</th>
@@ -82,6 +83,7 @@
                 <tbody>
                     @foreach ($redeems as $r)
                         <tr>
+                            <td><input type="checkbox" class="rowCheckbox"></td>
                             <td>{{ \Carbon\Carbon::parse($r->created_at)->format('d-m-Y H:i') }}</td>
                             <td>{{ $r->namapelanggan }}</td>
                             <td>{{ $r->nama_merch }}</td>
@@ -92,115 +94,140 @@
                 </tbody>
             </table>
         </div>
-
-        {{-- Pagination --}}
-        <div class="pagination">
-            @if ($redeems instanceof \Illuminate\Pagination\LengthAwarePaginator)
-                        <div class="pagination-info">
-                            Menampilkan {{ $redeems->firstItem() }} hingga {{ $redeems->lastItem() }} dari
-                            {{ $redeems->total() }} entri
-                        </div>
-                        <div class="pagination-controls">
-                            {{-- Tombol Previous --}}
-                            @if ($redeems->onFirstPage())
-                                <button class="pagination-btn" disabled>&laquo; Previous</button>
-                            @else
-                                <a href="{{ $redeems->previousPageUrl() }}" class="pagination-btn">&laquo; Previous</a>
-                            @endif
-
-                            {{-- Tombol Halaman Maksimal 5 --}}
-                            @php
-                                $start = max($redeems->currentPage() - 2, 1);
-                                $end = min($start + 4, $redeems->lastPage());
-                                if ($end - $start < 4) {
-                                    $start = max($end - 4, 1);
-                                }
-                            @endphp
-
-                            @if ($start > 1)
-                                <a href="{{ $redeems->url(1) }}" class="pagination-btn">1</a>
-                                @if ($start > 2)
-                                    <span class="pagination-btn">...</span>
-                                @endif
-                            @endif
-
-                            @for ($page = $start; $page <= $end; $page++)
-                                @if ($page == $redeems->currentPage())
-                                    <button class="pagination-btn active">{{ $page }}</button>
-                                @else
-                                    <a href="{{ $redeems->url($page) }}" class="pagination-btn">{{ $page }}</a>
-                                @endif
-                            @endfor
-
-                            @if ($end < $redeems->lastPage())
-                                @if ($end < $redeems->lastPage() - 1)
-                                    <span class="pagination-btn">...</span>
-                                @endif
-                                <a href="{{ $redeems->url($redeems->lastPage()) }}"
-                                    class="pagination-btn">{{ $redeems->lastPage() }}</a>
-                            @endif
-
-                            {{-- Tombol Next --}}
-                            @if ($redeems->hasMorePages())
-                                <a href="{{ $redeems->nextPageUrl() }}" class="pagination-btn">Next &raquo;</a>
-                            @else
-                                <button class="pagination-btn" disabled>Next &raquo;</button>
-                            @endif
-                        </div>
-            @else
-                <div class="pagination-info">
-                    Menampilkan {{ count($redeems) }} data hasil filter
-                </div>
-            @endif
-        </div>
     </div>
 
     <script>
         // Pencarian Global
         document.getElementById('global-search').addEventListener('keyup', function () {
             const searchText = this.value.toLowerCase();
-            const rows = document.querySelectorAll('tbody tr');
-
+            const rows = document.querySelectorAll('#redeemTable tbody tr');
             rows.forEach(row => {
-                let found = false;
-                const cells = row.querySelectorAll('td');
-                cells.forEach(cell => {
-                    if (cell.textContent.toLowerCase().includes(searchText)) {
-                        found = true;
-                    }
-                });
-                row.style.display = found ? '' : 'none';
+                row.style.display = Array.from(row.cells).some(td => td.innerText.toLowerCase().includes(searchText)) ? '' : 'none';
             });
         });
 
-        // Sort Kolom
-        document.querySelectorAll('th').forEach(header => {
-            header.addEventListener('click', function () {
-                const columnIndex = Array.from(this.parentElement.children).indexOf(this);
-                const rows = Array.from(document.querySelectorAll('tbody tr'));
-                const isNumeric = !isNaN(parseFloat(rows[0].querySelectorAll('td')[columnIndex].textContent));
+        // Select All Checkbox
+        document.getElementById('selectAll').addEventListener('change', function () {
+            const checked = this.checked;
+            document.querySelectorAll('.rowCheckbox').forEach(cb => cb.checked = checked);
+        });
 
-                rows.sort((a, b) => {
-                    const aValue = a.querySelectorAll('td')[columnIndex].textContent;
-                    const bValue = b.querySelectorAll('td')[columnIndex].textContent;
-
-                    return isNumeric
-                        ? parseFloat(aValue.replace(/\./g, '')) - parseFloat(bValue.replace(/\./g, ''))
-                        : aValue.localeCompare(bValue);
-                });
-
-                if (this.getAttribute('data-sorted') === 'asc') {
-                    rows.reverse();
-                    this.setAttribute('data-sorted', 'desc');
-                } else {
-                    this.setAttribute('data-sorted', 'asc');
+        // Ambil baris terpilih
+        function getSelectedRows() {
+            const rows = document.querySelectorAll('#redeemTable tbody tr');
+            let selected = [];
+            const anyChecked = document.querySelectorAll('.rowCheckbox:checked').length > 0;
+            rows.forEach(row => {
+                const cb = row.querySelector('.rowCheckbox');
+                if (!anyChecked || cb.checked) { // jika ada yang dicentang ambil hanya yang dicentang, jika tidak ambil semua
+                    const cols = row.querySelectorAll('td');
+                    selected.push({
+                        tanggal: cols[1].innerText,
+                        pelanggan: cols[2].innerText,
+                        merch: cols[3].innerText,
+                        poin: cols[4].innerText,
+                        stok: cols[5].innerText
+                    });
                 }
-
-                const tbody = document.querySelector('tbody');
-                tbody.innerHTML = '';
-                rows.forEach(row => tbody.appendChild(row));
             });
-        });
+            return selected;
+        }
+
+        // Export CSV
+        function exportCSV() {
+            const rows = getSelectedRows();
+            if (!rows.length) return alert('Tidak ada data untuk diexport!');
+            let csv = 'Tanggal,Nama Pelanggan,Merchandise,Poin Digunakan,Stok Sisa\n';
+            rows.forEach(r => csv += `${r.tanggal},${r.pelanggan},${r.merch},${r.poin},${r.stok}\n`);
+            const blob = new Blob([csv], { type: 'text/csv' });
+            const link = document.createElement('a');
+            link.href = URL.createObjectURL(blob);
+            link.download = 'laporan_tukar_poin.csv';
+            link.click();
+        }
+
+        // Export Excel
+        function exportExcel() {
+            const rows = getSelectedRows();
+            if (!rows.length) return alert('Tidak ada data untuk diexport!');
+            let table = `<table><tr><th>Tanggal</th><th>Nama Pelanggan</th><th>Merchandise</th><th>Poin Digunakan</th><th>Stok Sisa</th></tr>`;
+            rows.forEach(r => table += `<tr><td>${r.tanggal}</td><td>${r.pelanggan}</td><td>${r.merch}</td><td>${r.poin}</td><td>${r.stok}</td></tr>`);
+            table += '</table>';
+            const blob = new Blob([table], { type: 'application/vnd.ms-excel' });
+            const link = document.createElement('a');
+            link.href = URL.createObjectURL(blob);
+            link.download = 'laporan_tukar_poin.xls';
+            link.click();
+        }
+
+        // Export PDF versi surat resmi
+        function exportPDF() {
+            const rows = getSelectedRows();
+            if (!rows.length) return alert('Tidak ada data untuk dicetak!');
+
+            // Buat baris tabel
+            let tableRows = '';
+            rows.forEach(r => {
+                tableRows += `<tr>
+            <td>${r.tanggal}</td>
+            <td>${r.barcode || r.pelanggan}</td>
+            <td>${r.namabarang || r.merch}</td>
+            <td>${r.kategori || r.poin}</td>
+            <td>${r.baki || r.stok}</td>
+            <td>${r.berat || ''}</td>
+            <td>${r.kadar || ''}</td>
+        </tr>`;
+            });
+
+            // Format surat resmi
+            const surat = `
+        <h2 style="text-align:center;">SURAT RESMI LAPORAN</h2>
+        <p>Kepada Yth,</p>
+        <p><b>Pimpinan Perusahaan</b></p>
+        <p>di Tempat</p><br>
+        <p>Dengan hormat,</p>
+        <p>Bersama ini kami sampaikan laporan sebagai berikut:</p>
+        <table border="1" cellspacing="0" cellpadding="5" width="100%">
+            <thead>
+                <tr>
+                    <th>Tanggal</th>
+                    <th>Barcode / Pelanggan</th>
+                    <th>Nama Barang / Merchandise</th>
+                    <th>Kategori / Poin</th>
+                    <th>Baki / Stok</th>
+                    <th>Berat</th>
+                    <th>Kadar</th>
+                </tr>
+            </thead>
+            <tbody>${tableRows}</tbody>
+        </table>
+        <br><br><p>Hormat kami,</p><br><br>
+        <p><b>(................................)</b></p>
+    `;
+
+            // Buka window baru dan cetak
+            const win = window.open("", "", "width=900,height=600");
+            win.document.write(`
+        <html>
+            <head>
+                <title>Surat Resmi Laporan</title>
+            </head>
+            <body>
+                ${surat}
+            </body>
+        </html>
+    `);
+            win.document.close();
+            win.print();
+            win.close();
+        }
+
+        // Handle Export Dropdown
+        function handleExport(value) {
+            if (value === 'csv') exportCSV();
+            if (value === 'excel') exportExcel();
+            if (value === 'pdf') exportPDF();
+        }
     </script>
 </body>
 

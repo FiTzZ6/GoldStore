@@ -38,6 +38,16 @@
             </button>
         </form>
 
+        <!-- Export -->
+        <div class="tools">
+            <select onchange="handleExport(this.value)">
+                <option value="">Pilih Export</option>
+                <option value="csv">Export CSV</option>
+                <option value="excel">Export Excel</option>
+                <option value="pdf">Export PDF (Surat Resmi)</option>
+            </select>
+        </div>
+
         <!-- Search -->
         <div class="search-container">
             <div class="search-box">
@@ -51,6 +61,7 @@
             <table id="reportTable">
                 <thead>
                     <tr>
+                        <th><input type="checkbox" id="selectAll"></th>
                         <th>Tanggal</th>
                         <th>Barcode</th>
                         <th>Nama Barang</th>
@@ -63,6 +74,7 @@
                 <tbody>
                     @forelse($reports as $r)
                         <tr>
+                            <td><input type="checkbox" class="rowCheckbox"></td>
                             <td>{{ $r->tanggal }}</td>
                             <td>{{ $r->barcode }}</td>
                             <td>{{ $r->namabarang }}</td>
@@ -156,6 +168,98 @@
                 row.style.display = text.includes(filter) ? "" : "none";
             });
         });
+
+        // Select All
+        document.getElementById('selectAll').addEventListener('change', function () {
+            const checked = this.checked;
+            document.querySelectorAll('.rowCheckbox').forEach(cb => cb.checked = checked);
+        });
+
+        // Ambil baris terpilih
+        function getSelectedRows() {
+            const rows = document.querySelectorAll('tbody tr');
+            let selected = [];
+            rows.forEach(row => {
+                const cb = row.querySelector('.rowCheckbox');
+                if (cb.checked || document.querySelectorAll('.rowCheckbox:checked').length === 0) {
+                    const cols = row.querySelectorAll('td');
+                    selected.push({
+                        tanggal: cols[1].innerText,
+                        barcode: cols[2].innerText,
+                        namabarang: cols[3].innerText,
+                        kategori: cols[4].innerText,
+                        baki: cols[5].innerText,
+                        berat: cols[6].innerText,
+                        kadar: cols[7].innerText
+                    });
+                }
+            });
+            return selected;
+        }
+
+        // Export CSV
+        function exportCSV() {
+            const rows = getSelectedRows();
+            if (!rows.length) return alert('Tidak ada data untuk diexport!');
+            let csv = 'Tanggal,Barcode,Nama Barang,Kategori,Baki,Berat,Kadar\n';
+            rows.forEach(r => csv += `${r.tanggal},${r.barcode},${r.namabarang},${r.kategori},${r.baki},${r.berat},${r.kadar}\n`);
+            const blob = new Blob([csv], { type: 'text/csv' });
+            const link = document.createElement('a');
+            link.href = URL.createObjectURL(blob);
+            link.download = 'stok_opname.csv';
+            link.click();
+        }
+
+        // Export Excel
+        function exportExcel() {
+            const rows = getSelectedRows();
+            if (!rows.length) return alert('Tidak ada data untuk diexport!');
+            let table = `<table><tr><th>Tanggal</th><th>Barcode</th><th>Nama Barang</th><th>Kategori</th><th>Baki</th><th>Berat</th><th>Kadar</th></tr>`;
+            rows.forEach(r => table += `<tr><td>${r.tanggal}</td><td>${r.barcode}</td><td>${r.namabarang}</td><td>${r.kategori}</td><td>${r.baki}</td><td>${r.berat}</td><td>${r.kadar}</td></tr>`);
+            table += '</table>';
+            const blob = new Blob([table], { type: 'application/vnd.ms-excel' });
+            const link = document.createElement('a');
+            link.href = URL.createObjectURL(blob);
+            link.download = 'stok_opname.xls';
+            link.click();
+        }
+
+        // Export PDF
+        function exportPDF() {
+            const rows = getSelectedRows();
+            if (!rows.length) return alert('Tidak ada data untuk dicetak!');
+            let tableRows = '';
+            rows.forEach(r => tableRows += `<tr><td>${r.tanggal}</td><td>${r.barcode}</td><td>${r.namabarang}</td><td>${r.kategori}</td><td>${r.baki}</td><td>${r.berat}</td><td>${r.kadar}</td></tr>`);
+            const surat = `
+        <h2 style="text-align:center;">SURAT RESMI LAPORAN STOK OPNAME</h2>
+        <p>Kepada Yth,</p>
+        <p><b>Pimpinan Perusahaan</b></p>
+        <p>di Tempat</p><br>
+        <p>Dengan hormat,</p>
+        <p>Bersama ini kami sampaikan daftar stok opname:</p>
+        <table border="1" cellspacing="0" cellpadding="5" width="100%">
+            <thead>
+                <tr><th>Tanggal</th><th>Barcode</th><th>Nama Barang</th><th>Kategori</th><th>Baki</th><th>Berat</th><th>Kadar</th></tr>
+            </thead>
+            <tbody>${tableRows}</tbody>
+        </table>
+        <br><br><p>Hormat kami,</p><br><br>
+        <p><b>(................................)</b></p>
+    `;
+            const win = window.open("", "", "width=900,height=600");
+            win.document.write(`<html><head><title>Surat Resmi Stok Opname</title></head><body>${surat}</body></html>`);
+            win.document.close();
+            win.print();
+            win.close();
+        }
+
+        // Handle Export
+        function handleExport(value) {
+            if (value === 'csv') exportCSV();
+            if (value === 'excel') exportExcel();
+            if (value === 'pdf') exportPDF();
+        }
+        
     </script>
 </body>
 

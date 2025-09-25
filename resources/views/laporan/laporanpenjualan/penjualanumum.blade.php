@@ -83,12 +83,12 @@
 
         <!-- Tools -->
         <div class="tools">
-            <button class="btn btn-primary"><i class="fas fa-eye"></i> Show 10 rows</button>
-            <button class="btn btn-secondary"><i class="fas fa-copy"></i> Copy</button>
-            <button class="btn btn-secondary"><i class="fas fa-file-csv"></i> CSV</button>
-            <button class="btn btn-secondary"><i class="fas fa-file-excel"></i> Excel</button>
-            <button class="btn btn-danger"><i class="fas fa-file-pdf"></i> PDF</button>
-            <button class="btn btn-success"><i class="fas fa-print"></i> Print</button>
+            <select onchange="handleExport(this.value)">
+                <option value="">Pilih Export</option>
+                <option value="csv">Export CSV</option>
+                <option value="excel">Export Excel</option>
+                <option value="pdf">Export PDF</option>
+            </select>
         </div>
 
         <!-- Table -->
@@ -96,6 +96,7 @@
             <table>
                 <thead>
                     <tr>
+                        <th><input type="checkbox" id="selectAll"></th>
                         <th>No Faktur <i class="fas fa-sort"></i></th>
                         <th>Nama Barang <i class="fas fa-sort"></i></th>
                         <th>Kategori <i class="fas fa-sort"></i></th>
@@ -109,6 +110,7 @@
                 <tbody>
                     @forelse($penjualan as $jual)
                         <tr>
+                            <td><input type="checkbox" class="rowCheckbox"></td>
                             <td>{{ $jual->nofaktur }}</td>
                             <td>{{ $jual->barang->namabarang ?? $jual->namabarang }}</td>
                             <td>{{ $jual->barang->KategoriBarang->namakategori ?? '-' }}</td>
@@ -182,55 +184,115 @@
         </div>
     </div>
 
-    <script>
-        // Search
-        document.getElementById('global-search').addEventListener('keyup', function () {
-            const searchText = this.value.toLowerCase();
-            const rows = document.querySelectorAll('tbody tr');
+<script>
+// Search
+document.getElementById('global-search').addEventListener('keyup', function() {
+    const searchText = this.value.toLowerCase();
+    document.querySelectorAll('tbody tr').forEach(row => {
+        row.style.display = Array.from(row.cells).some(td => td.innerText.toLowerCase().includes(searchText)) ? '' : 'none';
+    });
+});
 
-            rows.forEach(row => {
-                let found = false;
-                const cells = row.querySelectorAll('td');
+// Sort
+document.querySelectorAll('th').forEach((th, index) => {
+    if(index === 0) return; // skip checkbox
+    th.addEventListener('click', function() {
+        const tbody = th.closest('table').querySelector('tbody');
+        Array.from(tbody.querySelectorAll('tr'))
+            .sort((a, b) => {
+                let aText = a.cells[index].innerText;
+                let bText = b.cells[index].innerText;
+                if(!isNaN(aText) && !isNaN(bText)) return aText - bText;
+                return aText.localeCompare(bText);
+            })
+            .forEach(tr => tbody.appendChild(tr));
+    });
+});
 
-                cells.forEach(cell => {
-                    if (cell.textContent.toLowerCase().includes(searchText)) {
-                        found = true;
-                    }
-                });
+// Checkbox Select All
+document.getElementById('selectAll').addEventListener('change', function() {
+    const checked = this.checked;
+    document.querySelectorAll('.rowCheckbox').forEach(cb => cb.checked = checked);
+});
 
-                row.style.display = found ? '' : 'none';
+// Ambil baris terpilih
+function getSelectedRows() {
+    const rows = document.querySelectorAll('tbody tr');
+    let selected = [];
+    rows.forEach(row => {
+        if(row.querySelector('.rowCheckbox:checked') || document.querySelectorAll('.rowCheckbox:checked').length === 0){
+            const cols = row.querySelectorAll('td');
+            selected.push({
+                no: cols[1].innerText,
+                nama: cols[2].innerText,
+                terjual: cols[3].innerText
             });
-        });
+        }
+    });
+    return selected;
+}
 
-        // Sort
-        document.querySelectorAll('th').forEach(header => {
-            header.addEventListener('click', function () {
-                const columnIndex = Array.from(this.parentElement.children).indexOf(this);
-                const rows = Array.from(document.querySelectorAll('tbody tr'));
-                const isNumeric = !isNaN(parseFloat(rows[0].querySelectorAll('td')[columnIndex].textContent));
+// Export CSV
+function exportCSV() {
+    const rows = getSelectedRows();
+    if(!rows.length) return alert('Tidak ada data untuk diexport!');
+    let csv = 'No,Nama Barang,Jumlah Terjual\n';
+    rows.forEach(r => csv += `${r.no},${r.nama},${r.terjual}\n`);
+    const blob = new Blob([csv], {type: 'text/csv'});
+    const link = document.createElement('a');
+    link.href = URL.createObjectURL(blob);
+    link.download = 'cepat_laku.csv';
+    link.click();
+}
 
-                rows.sort((a, b) => {
-                    const aValue = a.querySelectorAll('td')[columnIndex].textContent;
-                    const bValue = b.querySelectorAll('td')[columnIndex].textContent;
+// Export Excel
+function exportExcel() {
+    const rows = getSelectedRows();
+    if(!rows.length) return alert('Tidak ada data untuk diexport!');
+    let table = `<table><tr><th>No</th><th>Nama Barang</th><th>Jumlah Terjual</th></tr>`;
+    rows.forEach(r => table += `<tr><td>${r.no}</td><td>${r.nama}</td><td>${r.terjual}</td></tr>`);
+    table += '</table>';
+    const blob = new Blob([table], {type:'application/vnd.ms-excel'});
+    const link = document.createElement('a');
+    link.href = URL.createObjectURL(blob);
+    link.download = 'cepat_laku.xls';
+    link.click();
+}
 
-                    return isNumeric
-                        ? parseFloat(aValue) - parseFloat(bValue)
-                        : aValue.localeCompare(bValue);
-                });
+// Export PDF (Surat Resmi)
+function exportPDF() {
+    const rows = getSelectedRows();
+    if(!rows.length) return alert('Tidak ada data untuk dicetak!');
+    let tableRows = '';
+    rows.forEach(r => tableRows += `<tr><td>${r.no}</td><td>${r.nama}</td><td>${r.terjual}</td></tr>`);
+    const surat = `
+        <h2 style="text-align:center;">SURAT RESMI LAPORAN CEPAT LAKU</h2>
+        <p>Kepada Yth,</p>
+        <p><b>Pimpinan Perusahaan</b></p>
+        <p>di Tempat</p><br>
+        <p>Dengan hormat,</p>
+        <p>Bersama ini kami sampaikan daftar barang cepat laku:</p>
+        <table border="1" cellspacing="0" cellpadding="5" width="100%">
+            <thead><tr><th>No</th><th>Nama Barang</th><th>Jumlah Terjual</th></tr></thead>
+            <tbody>${tableRows}</tbody>
+        </table>
+        <br><br><p>Hormat kami,</p><br><br>
+        <p><b>(................................)</b></p>
+    `;
+    const win = window.open("", "", "width=800,height=600");
+    win.document.write(`<html><head><title>Surat Resmi</title></head><body>${surat}</body></html>`);
+    win.document.close();
+    win.print();
+    win.close();
+}
 
-                if (this.getAttribute('data-sorted') === 'asc') {
-                    rows.reverse();
-                    this.setAttribute('data-sorted', 'desc');
-                } else {
-                    this.setAttribute('data-sorted', 'asc');
-                }
-
-                const tbody = document.querySelector('tbody');
-                tbody.innerHTML = '';
-                rows.forEach(row => tbody.appendChild(row));
-            });
-        });
-    </script>
+// Handle Export
+function handleExport(value) {
+    if(value==='csv') exportCSV();
+    if(value==='excel') exportExcel();
+    if(value==='pdf') exportPDF();
+}
+</script>
 </body>
 
 </html>

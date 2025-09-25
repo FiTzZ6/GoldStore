@@ -35,18 +35,19 @@
         </div>
 
         <div class="tools">
-            <button class="btn btn-primary"><i class="fas fa-eye"></i> Show 10 rows</button>
-            <button class="btn btn-secondary"><i class="fas fa-copy"></i> Copy</button>
-            <button class="btn btn-secondary"><i class="fas fa-file-csv"></i> CSV</button>
-            <button class="btn btn-secondary"><i class="fas fa-file-excel"></i> Excel</button>
-            <button class="btn btn-danger"><i class="fas fa-file-pdf"></i> PDF</button>
-            <button class="btn btn-success"><i class="fas fa-print"></i> Print</button>
+            <select onchange="handleExport(this.value)">
+                <option value="">Pilih Export</option>
+                <option value="csv">Export CSV</option>
+                <option value="excel">Export Excel</option>
+                <option value="pdf">Export PDF (Surat Resmi)</option>
+            </select>
         </div>
 
         <div class="table-container mt-4">
             <table class="table table-bordered">
                 <thead>
                     <tr>
+                        <th><input type="checkbox" id="selectAll"></th>
                         <th>Tanggal</th>
                         <th>Jenis</th>
                         <th>Kategori</th>
@@ -57,6 +58,7 @@
                 <tbody>
                     @foreach($kas as $row)
                         <tr>
+                            <td><input type="checkbox" class="rowCheckbox"></td>
                             <td>{{ \Carbon\Carbon::parse($row->tanggal)->format('d-m-Y') }}</td>
                             <td>{{ strtoupper($row->type) }}</td>
                             <td>{{ $row->parameterKas->parameterkas ?? '-' }}</td>
@@ -181,6 +183,95 @@
                 rows.forEach(row => tbody.appendChild(row));
             });
         });
+
+        // Checkbox Select All
+        document.getElementById('selectAll').addEventListener('change', function () {
+            const checked = this.checked;
+            document.querySelectorAll('.rowCheckbox').forEach(cb => cb.checked = checked);
+        });
+
+        // Ambil baris terpilih
+        function getSelectedRows() {
+            const rows = document.querySelectorAll('tbody tr');
+            let selected = [];
+            rows.forEach(row => {
+                const cb = row.querySelector('.rowCheckbox');
+                if (cb.checked || document.querySelectorAll('.rowCheckbox:checked').length === 0) {
+                    const cols = row.querySelectorAll('td');
+                    selected.push({
+                        tanggal: cols[1].innerText,
+                        type: cols[2].innerText,
+                        kategori: cols[3].innerText,
+                        jumlah: cols[4].innerText,
+                        keterangan: cols[5].innerText
+                    });
+                }
+            });
+            return selected;
+        }
+
+        // Export CSV
+        function exportCSV() {
+            const rows = getSelectedRows();
+            if (!rows.length) return alert('Tidak ada data untuk diexport!');
+            let csv = 'Tanggal,Jenis,Kategori,Jumlah,Keterangan\n';
+            rows.forEach(r => csv += `${r.tanggal},${r.type},${r.kategori},${r.jumlah},${r.keterangan}\n`);
+            const blob = new Blob([csv], { type: 'text/csv' });
+            const link = document.createElement('a');
+            link.href = URL.createObjectURL(blob);
+            link.download = 'transaksi_kas.csv';
+            link.click();
+        }
+
+        // Export Excel
+        function exportExcel() {
+            const rows = getSelectedRows();
+            if (!rows.length) return alert('Tidak ada data untuk diexport!');
+            let table = `<table><tr><th>Tanggal</th><th>Jenis</th><th>Kategori</th><th>Jumlah</th><th>Keterangan</th></tr>`;
+            rows.forEach(r => table += `<tr><td>${r.tanggal}</td><td>${r.type}</td><td>${r.kategori}</td><td>${r.jumlah}</td><td>${r.keterangan}</td></tr>`);
+            table += '</table>';
+            const blob = new Blob([table], { type: 'application/vnd.ms-excel' });
+            const link = document.createElement('a');
+            link.href = URL.createObjectURL(blob);
+            link.download = 'transaksi_kas.xls';
+            link.click();
+        }
+
+        // Export PDF
+        function exportPDF() {
+            const rows = getSelectedRows();
+            if (!rows.length) return alert('Tidak ada data untuk dicetak!');
+            let tableRows = '';
+            rows.forEach(r => tableRows += `<tr><td>${r.tanggal}</td><td>${r.type}</td><td>${r.kategori}</td><td>${r.jumlah}</td><td>${r.keterangan}</td></tr>`);
+            const surat = `
+        <h2 style="text-align:center;">SURAT RESMI LAPORAN TRANSAKSI KAS</h2>
+        <p>Kepada Yth,</p>
+        <p><b>Pimpinan Perusahaan</b></p>
+        <p>di Tempat</p><br>
+        <p>Dengan hormat,</p>
+        <p>Bersama ini kami sampaikan daftar transaksi kas:</p>
+        <table border="1" cellspacing="0" cellpadding="5" width="100%">
+            <thead>
+                <tr><th>Tanggal</th><th>Jenis</th><th>Kategori</th><th>Jumlah</th><th>Keterangan</th></tr>
+            </thead>
+            <tbody>${tableRows}</tbody>
+        </table>
+        <br><br><p>Hormat kami,</p><br><br>
+        <p><b>(................................)</b></p>
+    `;
+            const win = window.open("", "", "width=900,height=600");
+            win.document.write(`<html><head><title>Surat Resmi Transaksi Kas</title></head><body>${surat}</body></html>`);
+            win.document.close();
+            win.print();
+            win.close();
+        }
+
+        // Handle Export
+        function handleExport(value) {
+            if (value === 'csv') exportCSV();
+            if (value === 'excel') exportExcel();
+            if (value === 'pdf') exportPDF();
+        }
     </script>
 </body>
 

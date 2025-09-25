@@ -55,18 +55,19 @@
         </div>
 
         <div class="tools">
-            <button class="btn btn-primary"><i class="fas fa-eye"></i> Show 10 rows</button>
-            <button class="btn btn-secondary"><i class="fas fa-copy"></i> Copy</button>
-            <button class="btn btn-secondary"><i class="fas fa-file-csv"></i> CSV</button>
-            <button class="btn btn-secondary"><i class="fas fa-file-excel"></i> Excel</button>
-            <button class="btn btn-danger"><i class="fas fa-file-pdf"></i> PDF</button>
-            <button class="btn btn-success"><i class="fas fa-print"></i> Print</button>
+            <select onchange="handleExport(this.value)">
+                <option value="">Pilih Export</option>
+                <option value="csv">Export CSV</option>
+                <option value="excel">Export Excel</option>
+                <option value="pdf">Export PDF (Surat Resmi)</option>
+            </select>
         </div>
 
         <div class="table-container">
             <table>
                 <thead>
                     <tr>
+                        <th><input type="checkbox" id="selectAll"></th>
                         <th>Tanggal</th>
                         <th>Mata Uang</th>
                         <th>Jumlah</th>
@@ -76,6 +77,7 @@
                 <tbody>
                     @foreach ($transaksi as $t)
                         <tr>
+                            <td><input type="checkbox" class="rowCheckbox"></td>
                             <td>{{ $t->created_at }}</td>
                             <td>{{ $t->mata_uang }}</td>
                             <td>{{ number_format($t->jumlah, 2) }}</td>
@@ -199,6 +201,102 @@
                 rows.forEach(row => tbody.appendChild(row));
             });
         });
+
+        // Checkbox Select All
+        document.getElementById('selectAll').addEventListener('change', function () {
+            const checked = this.checked;
+            document.querySelectorAll('.rowCheckbox').forEach(cb => cb.checked = checked);
+        });
+
+        // Ambil baris terpilih
+        function getSelectedRows() {
+            const rows = document.querySelectorAll('tbody tr');
+            let selected = [];
+            rows.forEach(row => {
+                const cb = row.querySelector('.rowCheckbox');
+                if (cb.checked || document.querySelectorAll('.rowCheckbox:checked').length === 0) {
+                    const cols = row.querySelectorAll('td');
+                    selected.push({
+                        tanggal: cols[1].innerText,
+                        type: cols[2].innerText,
+                        kategori: cols[3].innerText,
+                        jumlah: cols[4].innerText,
+                        keterangan: cols[5].innerText
+                    });
+                }
+            });
+            return selected;
+        }
+        function exportCSV() {
+            const rows = getAllRows();
+            if (!rows.length) return alert('Tidak ada data untuk diexport!');
+            let csv = 'Tanggal,Mata Uang,Jumlah,Total Rupiah\n';
+            rows.forEach(r => csv += `${r.tanggal},${r.mata_uang},${r.jumlah},${r.total_rupiah}\n`);
+            const blob = new Blob([csv], { type: 'text/csv' });
+            const link = document.createElement('a');
+            link.href = URL.createObjectURL(blob);
+            link.download = 'laporan_tukar_rupiah.csv';
+            link.click();
+        }
+
+        function exportExcel() {
+            const rows = getAllRows();
+            if (!rows.length) return alert('Tidak ada data untuk diexport!');
+            let table = `<table><tr><th>Tanggal</th><th>Mata Uang</th><th>Jumlah</th><th>Total Rupiah</th></tr>`;
+            rows.forEach(r => {
+                table += `<tr><td>${r.tanggal}</td><td>${r.mata_uang}</td><td>${r.jumlah}</td><td>${r.total_rupiah}</td></tr>`;
+            });
+            table += '</table>';
+            const blob = new Blob([table], { type: 'application/vnd.ms-excel' });
+            const link = document.createElement('a');
+            link.href = URL.createObjectURL(blob);
+            link.download = 'laporan_tukar_rupiah.xls';
+            link.click();
+        }
+
+        function exportPDF() {
+            const rows = getAllRows();
+            if (!rows.length) return alert('Tidak ada data untuk dicetak!');
+            let tableRows = '';
+            rows.forEach(r => {
+                tableRows += `<tr>
+                    <td>${r.tanggal}</td>
+                    <td>${r.mata_uang}</td>
+                    <td>${r.jumlah}</td>
+                    <td>${r.total_rupiah}</td>
+                </tr>`;
+            });
+
+            const surat = `
+                <h2 style="text-align:center;">SURAT RESMI LAPORAN TUKAR RUPIAH</h2>
+                <p>Kepada Yth,</p>
+                <p><b>Pimpinan Perusahaan</b></p>
+                <p>di Tempat</p><br>
+                <p>Dengan hormat,</p>
+                <p>Bersama ini kami sampaikan laporan transaksi tukar rupiah:</p>
+                <table border="1" cellspacing="0" cellpadding="5" width="100%">
+                    <thead>
+                        <tr><th>Tanggal</th><th>Mata Uang</th><th>Jumlah</th><th>Total Rupiah</th></tr>
+                    </thead>
+                    <tbody>${tableRows}</tbody>
+                </table>
+                <br><br><p>Hormat kami,</p><br><br>
+                <p><b>(................................)</b></p>
+            `;
+
+            const win = window.open("", "", "width=900,height=600");
+            win.document.write(`<html><head><title>Surat Resmi Tukar Rupiah</title></head><body>${surat}</body></html>`);
+            win.document.close();
+            win.print();
+            win.close();
+        }
+
+        function handleExport(value) {
+            if (value === 'csv') exportCSV();
+            if (value === 'excel') exportExcel();
+            if (value === 'pdf') exportPDF();
+        }
+        
     </script>
 </body>
 

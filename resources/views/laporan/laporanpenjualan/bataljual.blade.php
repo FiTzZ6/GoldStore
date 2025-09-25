@@ -58,18 +58,19 @@
         </div>
 
         <div class="tools">
-            <button class="btn btn-primary"><i class="fas fa-eye"></i> Show 10 rows</button>
-            <button class="btn btn-secondary"><i class="fas fa-copy"></i> Copy</button>
-            <button class="btn btn-secondary"><i class="fas fa-file-csv"></i> CSV</button>
-            <button class="btn btn-secondary"><i class="fas fa-file-excel"></i> Excel</button>
-            <button class="btn btn-danger"><i class="fas fa-file-pdf"></i> PDF</button>
-            <button class="btn btn-success"><i class="fas fa-print"></i> Print</button>
+            <select onchange="handleExport(this.value)">
+                <option value="">Pilih Export</option>
+                <option value="csv">Export CSV</option>
+                <option value="excel">Export Excel</option>
+                <option value="pdf">Export PDF (Surat Resmi)</option>
+            </select>
         </div>
 
         <div class="table-container">
             <table>
                 <thead>
                     <tr>
+                        <th><input type="checkbox" id="selectAll"></th>
                         <th>Faktur Batal</th>
                         <th>Faktur Jual</th>
                         <th>Barang</th>
@@ -82,6 +83,7 @@
                 <tbody>
                     @forelse($data as $d)
                         <tr>
+                            <td><input type="checkbox" class="rowCheckbox"></td>
                             <td>{{ $d->fakturbataljual }}</td>
                             <td>{{ $d->fakturjual }}</td>
                             <td>{{ $d->namabarang }}</td>
@@ -204,6 +206,98 @@
                 rows.forEach(row => tbody.appendChild(row));
             });
         });
+
+        // Checkbox Select All
+        document.getElementById('selectAll').addEventListener('change', function () {
+            const checked = this.checked;
+            document.querySelectorAll('.rowCheckbox').forEach(cb => cb.checked = checked);
+        });
+
+        // Ambil baris terpilih
+        function getSelectedRows() {
+            const rows = document.querySelectorAll('tbody tr');
+            let selected = [];
+            rows.forEach(row => {
+                const cb = row.querySelector('.rowCheckbox');
+                if (cb.checked || document.querySelectorAll('.rowCheckbox:checked').length === 0) {
+                    const cols = row.querySelectorAll('td');
+                    selected.push({
+                        fakturBatal: cols[1].innerText,
+                        fakturJual: cols[2].innerText,
+                        barang: cols[3].innerText,
+                        staff: cols[4].innerText,
+                        qty: cols[5].innerText,
+                        harga: cols[6].innerText,
+                        tanggal: cols[7].innerText
+                    });
+                }
+            });
+            return selected;
+        }
+
+        // Export CSV
+        function exportCSV() {
+            const rows = getSelectedRows();
+            if (!rows.length) return alert('Tidak ada data untuk diexport!');
+            let csv = 'Faktur Batal,Faktur Jual,Barang,Staff,Qty,Harga,Tanggal\n';
+            rows.forEach(r => csv += `${r.fakturBatal},${r.fakturJual},${r.barang},${r.staff},${r.qty},${r.harga},${r.tanggal}\n`);
+            const blob = new Blob([csv], { type: 'text/csv' });
+            const link = document.createElement('a');
+            link.href = URL.createObjectURL(blob);
+            link.download = 'batal_jual.csv';
+            link.click();
+        }
+
+        // Export Excel
+        function exportExcel() {
+            const rows = getSelectedRows();
+            if (!rows.length) return alert('Tidak ada data untuk diexport!');
+            let table = `<table><tr><th>Faktur Batal</th><th>Faktur Jual</th><th>Barang</th><th>Staff</th><th>Qty</th><th>Harga</th><th>Tanggal</th></tr>`;
+            rows.forEach(r => table += `<tr><td>${r.fakturBatal}</td><td>${r.fakturJual}</td><td>${r.barang}</td><td>${r.staff}</td><td>${r.qty}</td><td>${r.harga}</td><td>${r.tanggal}</td></tr>`);
+            table += '</table>';
+            const blob = new Blob([table], { type: 'application/vnd.ms-excel' });
+            const link = document.createElement('a');
+            link.href = URL.createObjectURL(blob);
+            link.download = 'batal_jual.xls';
+            link.click();
+        }
+
+        // Export PDF (Surat Resmi)
+        function exportPDF() {
+            const rows = getSelectedRows();
+            if (!rows.length) return alert('Tidak ada data untuk dicetak!');
+            let tableRows = '';
+            rows.forEach(r => tableRows += `<tr><td>${r.fakturBatal}</td><td>${r.fakturJual}</td><td>${r.barang}</td><td>${r.staff}</td><td>${r.qty}</td><td>${r.harga}</td><td>${r.tanggal}</td></tr>`);
+            const surat = `
+        <h2 style="text-align:center;">SURAT RESMI LAPORAN BATAL JUAL</h2>
+        <p>Kepada Yth,</p>
+        <p><b>Pimpinan Perusahaan</b></p>
+        <p>di Tempat</p><br>
+        <p>Dengan hormat,</p>
+        <p>Bersama ini kami sampaikan daftar penjualan batal:</p>
+        <table border="1" cellspacing="0" cellpadding="5" width="100%">
+            <thead>
+                <tr><th>Faktur Batal</th><th>Faktur Jual</th><th>Barang</th><th>Staff</th><th>Qty</th><th>Harga</th><th>Tanggal</th></tr>
+            </thead>
+            <tbody>${tableRows}</tbody>
+        </table>
+        <br><br><p>Hormat kami,</p><br><br>
+        <p><b>(................................)</b></p>
+    `;
+            const win = window.open("", "", "width=900,height=600");
+            win.document.write(`<html><head><title>Surat Resmi Batal Jual</title></head><body>${surat}</body></html>`);
+            win.document.close();
+            win.print();
+            win.close();
+        }
+
+        // Handle Export
+        function handleExport(value) {
+            if (value === 'csv') exportCSV();
+            if (value === 'excel') exportExcel();
+            if (value === 'pdf') exportPDF();
+        }
+        
     </script>
 </body>
 
