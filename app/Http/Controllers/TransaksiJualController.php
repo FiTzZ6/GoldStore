@@ -136,8 +136,7 @@ class TransaksiJualController extends Controller
         }
 
 
-        return redirect()->route('transpenjualan')
-            ->with('success', 'Transaksi berhasil disimpan');
+        return redirect()->route('transpenjualan.struk', $data['nofaktur']);
     }
 
     public function daftarPesanan()

@@ -23,6 +23,7 @@ class DetailPP extends Model
         'harga2',
         'supplier3',
         'harga3',
+        'supplier_pilih',
         'tanggal_permintaan',
         'tanggal_dibutuhkan',
     ];

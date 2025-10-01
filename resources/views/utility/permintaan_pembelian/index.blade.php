@@ -53,11 +53,7 @@
                             <td>{{ $pp->namabarang }}</td>
                             <td>{{ $pp->jumlah }}</td>
                             <td>{{ $pp->satuan }}</td>
-                            <td>
-                                {{ $pp->supplier1 }}
-                                @if($pp->supplier2) / {{ $pp->supplier2 }} @endif
-                                @if($pp->supplier3) / {{ $pp->supplier3 }} @endif
-                            </td>
+                            <td>{{ $pp->supplier_pilih}}</td>
                             <td>{{ \Carbon\Carbon::parse($pp->tanggal_permintaan)->format('d-m-Y H:i') }}</td>
                             <td>{{ \Carbon\Carbon::parse($pp->tanggal_dibutuhkan)->format('d-m-Y') }}</td>
                         </tr>

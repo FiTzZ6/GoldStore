@@ -7,7 +7,7 @@
     <link rel="stylesheet" href="https://cdn.datatables.net/1.13.5/css/jquery.dataTables.min.css">
     <link rel="stylesheet" href="https://cdn.datatables.net/buttons/2.4.1/css/buttons.dataTables.min.css">
     <link href="https://fonts.googleapis.com/css?family=Montserrat:400,800" rel="stylesheet">
-    <title>Data Supplier</title>
+    <title>Barang Stok</title>
     <meta name="csrf-token" content="{{ csrf_token() }}">
 </head>
 

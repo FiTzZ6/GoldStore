@@ -22,6 +22,7 @@ class FormulirPPController extends Controller
         $kdtoko = $request->input('kdtoko'); // ambil kode toko dari form
         $tanggal_permintaan = Carbon::now();
         $tanggal_dibutuhkan = $request->input('tanggal_dibutuhkan');
+        $supplier_pilih = $request->input('supplier_pilih', []);
 
         // ====== Generate No. PP Otomatis ======
         $tahunBulan = Carbon::now()->format('ym'); // contoh: 2509 untuk Sept 2025
@@ -71,6 +72,7 @@ class FormulirPPController extends Controller
                 'harga2' => $harga2[$i],
                 'supplier3' => $supplier3[$i],
                 'harga3' => $harga3[$i],
+                'supplier_pilih' => $supplier_pilih[$i],
                 'tanggal_permintaan' => $tanggal_permintaan,
                 'tanggal_dibutuhkan' => $tanggal_dibutuhkan,
             ]);

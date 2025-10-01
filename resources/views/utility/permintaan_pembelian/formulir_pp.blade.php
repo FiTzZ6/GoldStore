@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="id">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -11,8 +12,9 @@
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
+
 <body>
-@include('partials.navbar')
+    @include('partials.navbar')
     <div class="container">
 
         @if(session('success'))
@@ -115,9 +117,9 @@
                                     <td>
                                         <select name="supplier_pilih[]">
                                             <option value="">Pilih Supplier</option>
-                                            <option value="supplier1">Supplier 1</option>
-                                            <option value="supplier2">Supplier 2</option>
-                                            <option value="supplier3">Supplier 3</option>
+                                            ${sup1 !== '-' ? `<option value="${sup1}">${sup1}</option>` : ''}
+                                            ${sup2 ? `<option value="${sup2}">${sup2}</option>` : ''}
+                                            ${sup3 ? `<option value="${sup3}">${sup3}</option>` : ''}
                                         </select>
                                     </td>
                                 </tr>
@@ -145,15 +147,15 @@
     </div>
 
     <script>
-        $(function() {
+        $(function () {
             $("#barang").autocomplete({
-                source: function(request, response) {
+                source: function (request, response) {
                     $.ajax({
                         url: "{{ route('formulirpp.search.barang') }}",
                         data: { q: request.term },
-                        success: function(data) {
+                        success: function (data) {
                             // hanya tampilkan label nama barang (tidak duplikat supplier)
-                            response($.map(data, function(item) {
+                            response($.map(data, function (item) {
                                 return {
                                     label: item.namabarang,
                                     value: item.namabarang,
@@ -163,17 +165,17 @@
                         }
                     });
                 },
-                select: function(event, ui) {
+                select: function (event, ui) {
                     const opts = ui.item.options;
 
                     // supplier pertama (selalu ada minimal 1)
-                    const sup1  = opts[0]?.supplier || '-';
-                    const harga1= opts[0]?.harga || 0;
+                    const sup1 = opts[0]?.supplier || '-';
+                    const harga1 = opts[0]?.harga || 0;
                     // supplier kedua dan ketiga jika ada
-                    const sup2  = opts[1]?.supplier || '';
-                    const harga2= opts[1]?.harga || '';
-                    const sup3  = opts[2]?.supplier || '';
-                    const harga3= opts[2]?.harga || '';
+                    const sup2 = opts[1]?.supplier || '';
+                    const harga2 = opts[1]?.harga || '';
+                    const sup3 = opts[2]?.supplier || '';
+                    const harga3 = opts[2]?.harga || '';
 
                     const tableBody = document.getElementById('barang-body');
                     const rowHtml = `
@@ -195,11 +197,11 @@
                         <td><input type="number" name="harga3[]" value="${harga3}" min="0" readonly></td>
                         <td>
                             <select name="supplier_pilih[]">
-                                <option value="">Pilih Supplier</option>
-                                <option value="supplier1">Supplier 1</option>
-                                <option value="supplier2">Supplier 2</option>
-                                <option value="supplier3">Supplier 3</option>
-                            </select>
+            <option value="">Pilih Supplier</option>
+            ${sup1 !== '-' ? `<option value="${sup1}">${sup1}</option>` : ''}
+            ${sup2 ? `<option value="${sup2}">${sup2}</option>` : ''}
+            ${sup3 ? `<option value="${sup3}">${sup3}</option>` : ''}
+        </select>
                         </td>
                     `;
 
@@ -218,12 +220,12 @@
             });
         });
 
-        document.addEventListener('DOMContentLoaded', function() {
+        document.addEventListener('DOMContentLoaded', function () {
             const tambahBarangBtn = document.getElementById('tambah-barang');
             const tableBody = document.getElementById('barang-body');
 
             // Tambah baris baru
-            tambahBarangBtn.addEventListener('click', function() {
+            tambahBarangBtn.addEventListener('click', function () {
                 const newRow = document.createElement('tr');
                 newRow.innerHTML = `
                     <td><input type="text" name="namabarang[]" placeholder="Nama barang"></td>
@@ -258,7 +260,7 @@
             });
 
             // Generate nomor PP otomatis
-            document.getElementById('kdtoko').addEventListener('change', function() {
+            document.getElementById('kdtoko').addEventListener('change', function () {
                 let kdtoko = this.value;
 
                 if (kdtoko) {
@@ -274,4 +276,5 @@
         });
     </script>
 </body>
+
 </html>

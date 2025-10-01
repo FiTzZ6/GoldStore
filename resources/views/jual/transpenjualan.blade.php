@@ -158,9 +158,6 @@
                     <div class="payment-section">
                         <h3>Metode Pembayaran</h3>
                         <label><input type="radio" name="payment" value="Tunai" checked> Tunai</label>
-                        <label><input type="radio" name="payment" value="Debit"> Debit</label>
-                        <label><input type="radio" name="payment" value="Kredit"> Kredit</label>
-                        <label><input type="radio" name="payment" value="Transfer"> Transfer</label>
                     </div>
 
                     <div class="actions">
@@ -170,9 +167,9 @@
                         <button type="submit" class="btn btn-success">
                             <i class="fas fa-credit-card"></i> BAYAR
                         </button>
-                        <button type="button" class="btn btn-warning" id="print-btn">
+                        <!-- <button type="button" class="btn btn-warning" id="print-btn">
                             <i class="fas fa-receipt"></i> Cetak Struk
-                        </button>
+                        </button> -->
                         <button type="button" class="btn btn-danger" id="reset-btn">
                             <i class="fas fa-redo"></i> RESET
                         </button>
@@ -288,7 +285,7 @@
 
             document.getElementById('new-invoice-btn').addEventListener('click', createNewInvoice);
             document.getElementById('reset-btn').addEventListener('click', () => confirm('Reset invoice?') && createNewInvoice());
-            document.getElementById('print-btn').addEventListener('click', () => currentInvoice.items.length ? window.print() : alert('Belum ada item.'));
+            // document.getElementById('print-btn').addEventListener('click', () => currentInvoice.items.length ? window.print() : alert('Belum ada item.'));
 
             // 🔹 Toggle field pesanan (digabung di sini)
             document.getElementById('typepesanan').addEventListener('input', e => {

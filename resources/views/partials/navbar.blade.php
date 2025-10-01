@@ -149,7 +149,7 @@
                 <a href="#"><i class="fas fa-database"></i> Data Master</a>
                 <ul>
                     {{-- SUPER ADMIN, DIREKTUR, DIREKSI, AKUNTAN, MANAGER TOKO --}}
-                    @if(in_array(session('typeuser'), [1, 2, 3, 6,7, 8]))
+                    @if(in_array(session('typeuser'), [1, 2, 3, 7, 8]))
                         <li><a href="{{ route('area') }}">Area</a></li>
                         <li><a href="{{ route('cabang') }}">Cabang</a></li>
                         <li><a href="{{ route('supplier') }}">Supplier</a></li>
@@ -171,7 +171,7 @@
             </li>
 
             {{-- ====================== BARANG ====================== --}}
-            @if(in_array(session('typeuser'), [1, 2, 4, 5,6, 8, 9]))
+            @if(in_array(session('typeuser'), [1, 2, 4, 5, 8, 9]))
                 <li>
                     <a href="#"><i class="fas fa-box"></i> Barang</a>
                     <ul>
@@ -246,7 +246,7 @@
             @endif
 
             {{-- ====================== PESANAN (Staff & Customer) ====================== --}}
-            @if(in_array(session('typeuser'), [1, 2, 3,6, 8, 10]))
+            @if(in_array(session('typeuser'), [1, 2, 3, 8, 10]))
                 <li>
                     <a href="#"><i class="fas fa-clipboard-list"></i> Pesanan</a>
                     <ul>
@@ -267,7 +267,7 @@
             @endif
 
             {{-- ====================== UANG KAS (Admin, Akuntan) ====================== --}}
-            @if(in_array(session('typeuser'), [1,6, 7]))
+            @if(in_array(session('typeuser'), [1, 7]))
                 <li>
                     <a href="#"><i class="fa-solid fa-sack-dollar"></i> Uang Kas</a>
                     <ul>
@@ -278,6 +278,7 @@
 
 
             <!-- navbar laporan  -->
+             @if(in_array(session('typeuser'), [1, 2, 3, 8]))
             <li>
                 <a href="#"><i class="fas fa-chart-bar"></i> Laporan</a>
                 <ul>
@@ -315,6 +316,7 @@
                     <li><a href="{{ route('laporancucisepuh') }}">Laporan Cuci Sepuh</a></li>
                 </ul>
             </li>
+            @endif
 
             {{-- ====================== STOK OPNAME ====================== --}}
             @if(session('typeuser') == 1)
@@ -327,7 +329,7 @@
             @endif
 
             {{-- ====================== UTILITY ====================== --}}
-            @if(in_array(session('typeuser'), [1,6, 7, 8]))
+            @if(in_array(session('typeuser'), [1, 7, 8]))
                 <li>
                     <a href="#"><i class="fas fa-cogs"></i> Utility</a>
                     <ul>
