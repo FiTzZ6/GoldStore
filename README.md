@@ -9,6 +9,8 @@
 
 yang perlu ada  di laravel anda ketika kalian ambil dari github ini adalah : 
  - Composer install
+ - install composer require barryvdh/laravel-dompdf:^3.1
+ - intall php vesi 8.2
  - masukkan env nya
  - php artisan storage:link
 
